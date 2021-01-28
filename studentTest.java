@@ -172,12 +172,40 @@ class Student extends superNode {
             }
 
         }
+    }
 
+    //format: "MW-8:00-10:00"
+    public boolean isOverlap(String slot1, String slot2) {
+        String[] sched1 = slot1.split("-");
+        String[] sched2 = slot2.split("-");
+        Date[] time1 = new Date[2];
+        Date[] time2 = new Date[2];
 
+        try {
+            time1[0] = format.parse(sched1[1]);
+            time1[1] = format.parse(sched1[2]);
+            time2[0] = format.parse(sched2[1]);
+            time2[1] = format.parse(sched2[2]);
 
-
-
-}
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e.getMessage(),e);
+        }
+        Boolean dateConflict = false;
+        for(int i=0;i<sched1[0].length();i++){
+            for(int j=0;j<sched2[0].length();j++){
+                if(sched1[0].charAt(i) == sched2[0].charAt(j)){
+                    dateConflict = true;
+                }
+            }
+        }
+        if(!dateConflict){
+            return false;
+        }
+        if (time1[0].before(time2[1]) && time1[1].after(time2[0])) {
+            return true;
+        }
+        return false;
+    }
 }
 
 public class studentTest {
