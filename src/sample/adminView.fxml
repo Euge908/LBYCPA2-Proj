@@ -76,29 +76,29 @@
                                                 <Insets right="5.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField prefHeight="26.0" prefWidth="67.0">
+                                          <TextField fx:id="courseSearchField" prefHeight="26.0" prefWidth="67.0">
                                              <HBox.margin>
                                                 <Insets right="10.0" />
                                              </HBox.margin>
                                           </TextField>
-                                          <Button mnemonicParsing="false" text="Search">
+                                          <Button fx:id="courseSearchBtn" mnemonicParsing="false" text="Search">
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin>
                                           </Button>
                                           <Label text="Days:" />
-                                          <TextField prefHeight="26.0" prefWidth="33.0" />
+                                          <TextField fx:id="filterDay" prefHeight="26.0" prefWidth="33.0" />
                                           <Label text="Time Slot:">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin></Label>
-                                          <TextField prefHeight="26.0" prefWidth="78.0" />
+                                          <TextField fx:id="filterTime" prefHeight="26.0" prefWidth="78.0" />
                                           <Label text="Student Name:">
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField prefHeight="26.0" prefWidth="102.0">
+                                          <TextField fx:id="filterName" prefHeight="26.0" prefWidth="102.0">
                                              <HBox.margin>
                                                 <Insets left="5.0" />
                                              </HBox.margin>
@@ -108,16 +108,16 @@
                                                 <Insets left="20.0" right="5.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField prefHeight="26.0" prefWidth="80.0" />
+                                          <TextField fx:id="filterID" prefHeight="26.0" prefWidth="80.0" />
                                        </children>
                                     </HBox>
-                                    <TableView prefHeight="322.0" prefWidth="830.0">
+                                    <TableView fx:id="studentsTable" prefHeight="322.0" prefWidth="830.0">
                                       <columns>
-                                        <TableColumn prefWidth="93.59999120235443" text="ID" />
-                                        <TableColumn prefWidth="246.39995574951172" text="Name" />
-                                          <TableColumn prefWidth="76.79998779296875" text="Units" />
-                                          <TableColumn prefWidth="71.20001220703125" text="Day" />
-                                          <TableColumn prefWidth="108.79998779296875" text="Time Slot" />
+                                        <TableColumn fx:id="idCol" prefWidth="93.59999120235443" text="ID" />
+                                        <TableColumn fx:id="nameCol" prefWidth="246.39995574951172" text="Name" />
+                                          <TableColumn fx:id="unitsCol" prefWidth="76.79998779296875" text="Units" />
+                                          <TableColumn fx:id="dayCol" prefWidth="71.20001220703125" text="Day" />
+                                          <TableColumn fx:id="slotCol" prefWidth="108.79998779296875" text="Time Slot" />
                                           <TableColumn prefWidth="137.60003662109375" text="Add/Remove" />
                                       </columns>
                                     </TableView>
