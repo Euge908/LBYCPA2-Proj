@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.adminController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.adminController">
    <top>
       <VBox prefHeight="108.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
          <children>
@@ -81,7 +81,7 @@
                                                 <Insets right="10.0" />
                                              </HBox.margin>
                                           </TextField>
-                                          <Button fx:id="courseSearchBtn" mnemonicParsing="false" text="Search">
+                                          <Button fx:id="courseSearchBtn" mnemonicParsing="false" onMouseClicked="#searchCourse" text="Search">
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin>
@@ -121,8 +121,8 @@
                                           <TableColumn prefWidth="137.60003662109375" text="Add/Remove" />
                                       </columns>
                                     </TableView>
-                                    <Label text="Course: " />
-                                    <Label text="Number of students:" />
+                                    <Label fx:id="courseLabel" text="Course: " />
+                                    <Label fx:id="studentsCountLabel" text="Number of students:" />
                                  </children></VBox>
                            </children>
                         </AnchorPane>
@@ -130,7 +130,10 @@
                 </Tab>
                   <Tab text="Courses">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="579.0" prefWidth="842.0" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
               </tabs>

@@ -1,20 +1,24 @@
-package sample;
+package admin;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class adminController {
 
     //observalble list to store data
     private final ObservableList<sampleTable> dataList = FXCollections.observableArrayList();
+    public Label courseLabel;
+    public Label studentsCountLabel;
+
+
+    FilteredList<sampleTable> filteredData = new FilteredList<>(dataList, b -> true);
+
 
 
     public TableView studentsTable;
@@ -49,12 +53,9 @@ public class adminController {
         sampleTable p5 = new sampleTable(109,"felix",15,"WF","15:00-18:00");
 
         dataList.addAll(p1,p2,p3,p4,p5);
-        filterSettings();
     }
 
     public void filterSettings(){
-        FilteredList<sampleTable> filteredData = new FilteredList<>(dataList, b -> true);
-
         //filters
         filteredData.predicateProperty().bind(Bindings.createObjectBinding(()-> person ->
                         String.valueOf(person.getCourseID()).contains(filterID.getText())
@@ -65,9 +66,34 @@ public class adminController {
                 filterDay.textProperty(),filterTime.textProperty()
                 )
         );
+    }
 
+
+    public void searchCourse(MouseEvent mouseEvent) {
+        //datalist.clear
+        /* Subject subj = new subj();
+        for each courses : course list {
+            if course.name().equals(courseSearchField).getText()
+                subj = course;
+                }
+         }
+
+         if(subj found){
+            for each person : graph.get(subj){
+               datalist.add(person)
+           }
+          }
+          else{ popup.display("course not found")}
+         */
+
+        filterSettings();
         SortedList<sampleTable> sortedData = new SortedList<>(filteredData);
 
+
+        courseLabel.setText("Course: "+courseSearchField.getText());
+        studentsCountLabel.setText("Number of students: "+dataList.size());
+
         studentsTable.setItems(sortedData);
+
     }
 }
