@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -17,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <VBox prefHeight="108.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
          <children>
@@ -60,51 +59,28 @@
                                     </Label>
                                     <HBox prefHeight="40.0" prefWidth="830.0">
                                        <children>
-                                          <Label text="Course Name:">
+                                          <Label text="Course Code:">
                                              <HBox.margin>
                                                 <Insets right="10.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="courseTextField">
+                                          <TextField>
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin>
                                           </TextField>
-                                          <Label text="Day">
-                                             <HBox.margin>
-                                                <Insets right="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <ComboBox fx:id="dayComboBox" prefHeight="25.0" prefWidth="26.0">
-                                             <HBox.margin>
-                                                <Insets right="20.0" />
-                                             </HBox.margin>
-                                          </ComboBox>
-                                          <Label layoutX="260.0" layoutY="10.0" text="Time Sched: ">
-                                             <HBox.margin>
-                                                <Insets right="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <ComboBox fx:id="timeComboBox" prefHeight="25.0" prefWidth="61.0">
-                                             <HBox.margin>
-                                                <Insets right="20.0" />
-                                             </HBox.margin>
-                                          </ComboBox>
-                                          <Button fx:id="search" mnemonicParsing="false" onAction="#search" text="Search" />
-                                          <Button fx:id="addCourseButton1" mnemonicParsing="false" onAction="#addCourse" text="Add" />
-                                          <Button fx:id="deleteCourseButton" layoutX="260.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteCourse" text="Delete" />
-                                          <Button fx:id="enrollCourseButton" mnemonicParsing="false" onAction="#enrollCourse" text="Enroll Courses" />
+                                          <Button mnemonicParsing="false" text="Search" />
                                        </children>
                                     </HBox>
-                                    <TableView fx:id="enrollCoursesTable" prefHeight="469.0" prefWidth="830.0">
+                                    <TableView prefHeight="469.0" prefWidth="830.0">
                                       <columns>
-                                        <TableColumn fx:id="courseCodeTableColumn" prefWidth="93.59999120235443" text="Course Code" />
-                                        <TableColumn fx:id="nameTableColumn" prefWidth="246.39995574951172" text="Name" />
-                                          <TableColumn fx:id="unitsTableColumn" prefWidth="76.79998779296875" text="Units" />
-                                          <TableColumn fx:id="dayTableColumn" prefWidth="71.20001220703125" text="Day" />
-                                          <TableColumn fx:id="timeSlotTableColumn" prefWidth="108.79998779296875" text="Time Slot" />
-                                          <TableColumn fx:id="slotsTableColumn" prefWidth="92.80001831054688" text="Slots" />
-                                          <TableColumn fx:id="addRemoveTableColumn" prefWidth="137.60003662109375" text="Add/Remove" />
+                                        <TableColumn prefWidth="93.59999120235443" text="Course Code" />
+                                        <TableColumn prefWidth="246.39995574951172" text="Name" />
+                                          <TableColumn prefWidth="76.79998779296875" text="Units" />
+                                          <TableColumn prefWidth="71.20001220703125" text="Day" />
+                                          <TableColumn prefWidth="108.79998779296875" text="Time Slot" />
+                                          <TableColumn prefWidth="92.80001831054688" text="Slots" />
+                                          <TableColumn prefWidth="137.60003662109375" text="Add/Remove" />
                                       </columns>
                                     </TableView>
                                  </children></VBox>
@@ -123,7 +99,7 @@
                                           <Font size="28.0" />
                                        </font>
                                     </Label>
-                                    <TableView fx:id="enrolledCoursesTable" prefHeight="534.0" prefWidth="842.0">
+                                    <TableView prefHeight="534.0" prefWidth="842.0">
                                       <columns>
                                         <TableColumn prefWidth="85.60002291202545" text="Course Code" />
                                         <TableColumn prefWidth="339.99996185302734" text="Name" />
