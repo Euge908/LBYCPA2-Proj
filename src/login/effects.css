@@ -1,0 +1,27 @@
+.button {
+    -fx-background-color:  #01ba8e;
+    -fx-border-width: 0px 0px 3px 0px;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: darkcyan;
+    -fx-text-fill: beige;
+}
+
+.button:pressed {
+    -fx-translate-y: 4;
+}
+
+.text-field {
+    -fx-background-color: -fx-text-box-border, -fx-background ;
+    -fx-background-insets: 0, 0 0 3 0 ;
+    -fx-background-radius: 3 ;
+}
+
+.text-field:focused {
+    -fx-background-color: #01ba8e, -fx-background ;
+}
+
+
+
