@@ -244,7 +244,81 @@ public class studentTest {
             return 3;
         } else if (subject.toLowerCase().contains("fnd")) {
             return 3;
-        } else if (subject.toLowerCase().contains("lby")) {
+        } else if (subject.toLowerCase().contains("pro")) {
+            return 2;
+
+        }else if (subject.toLowerCase().contains("diff")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("dat")) {
+            return 1;
+
+        }else if (subject.toLowerCase().contains("dis")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("fund")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("num")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("sof")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("dig")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("log")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("oper")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("mic")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("re")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("fdc")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("com")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("emb")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("lca")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("mx")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("cpe")) {
+            return 2;
+
+        }else if (subject.toLowerCase().contains("och")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("lce")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("emer")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("con")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("ths")) {
+            return 1;
+
+        }else if (subject.toLowerCase().contains("ecn")) {
+            return 3;
+
+        }else if (subject.toLowerCase().contains("lby")) {
+            return 1;
+        }else if (subject.toLowerCase().contains("lby")) {
             return 1;
         }
         return -1;
