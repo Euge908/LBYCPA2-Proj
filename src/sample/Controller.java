@@ -3,6 +3,7 @@ package sample;
 import java.util.HashMap;
 
 public class Controller {
+    HashMap<String, String[]> timeSlot= new HashMap<String, String[]>();;
 
     public void initialize() {
 
@@ -11,7 +12,6 @@ public class Controller {
     }
 
     private void initializeTimeSlot() {
-        HashMap<String, String[]> timeSlot = new HashMap<String, String[]>();
         timeSlot.put("caleng2", new String[]{"14:15-17:45,TH", "15:15-17:45,MW"});
         timeSlot.put("engchem", new String[]{"07:30-09:00,TH", "09:15-10:45,TH", "07:30-09:00,MW"});
         timeSlot.put("lbych1a", new String[]{"09:15-12:15,T", "14:30-17:30,W", "14:30-17:30,T"});
