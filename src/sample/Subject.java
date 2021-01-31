@@ -6,6 +6,7 @@ public class Subject {
     public String name;
     public int subjectUnit;
     public String time;
+
     public LinkedList<Student> studentList = new LinkedList<>();
 
 
