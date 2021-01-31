@@ -79,18 +79,21 @@ public class Controller {
     }
 
     public void addCourse(){
-        if(search()){
-            data.add(new Subject(courseTextField.getText(), selectedTime + "," +selectedDay));
+        String course = courseTextField.getText();
+
+        if(timeSlot.containsKey(course)){
+            data.add(new Subject(course, selectedTime + "," +selectedDay));
             enrollCoursesTable.setItems(data);
         }
 
     }
 
 
-    public boolean search(){
+    public void search(){
         String course = courseTextField.getText();
 
         //ComboBox dayComboBox, timeComboBox;
+
 
         timeComboBox.getItems().clear();
         dayComboBox.getItems().clear();
@@ -105,11 +108,7 @@ public class Controller {
                 timeComboBox.getItems().add(sched.substring(0, sched.lastIndexOf(",")));
             }
 
-            return true;
-        }else{
-            return false;
         }
-
 
     }
 
