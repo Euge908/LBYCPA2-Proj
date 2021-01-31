@@ -43,10 +43,13 @@ public class Controller {
 
         dayComboBox.setOnAction(e -> {
             selectedDay = (String) dayComboBox.getSelectionModel().getSelectedItem();
+            System.out.println(selectedDay);
         });
 
         timeComboBox.setOnAction(e -> {
-            selectedDay = (String) timeComboBox.getSelectionModel().getSelectedItem();
+            selectedTime = (String) timeComboBox.getSelectionModel().getSelectedItem();
+            System.out.println(selectedTime);
+
         });
 
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
@@ -103,13 +106,23 @@ public class Controller {
             }
 
             return true;
+        }else{
+            return false;
         }
 
-        return false;
 
     }
 
     public void deleteCourse(){
+        String course = courseTextField.getText();
+
+        for(Subject a: data){
+            if(a.getName().equals(course)){
+                data.remove(a);
+                enrollCoursesTable.setItems(data);
+                return;
+            }
+        }
 
     }
 

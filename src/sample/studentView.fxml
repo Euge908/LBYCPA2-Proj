@@ -60,7 +60,7 @@
                                     </Label>
                                     <HBox prefHeight="40.0" prefWidth="830.0">
                                        <children>
-                                          <Label text="Course Code:">
+                                          <Label text="Course Name:">
                                              <HBox.margin>
                                                 <Insets right="10.0" />
                                              </HBox.margin>
@@ -90,7 +90,7 @@
                                                 <Insets right="20.0" />
                                              </HBox.margin>
                                           </ComboBox>
-                                          <Button fx:id="addCourseButton" mnemonicParsing="false" onAction="#search" text="Search" />
+                                          <Button fx:id="search" mnemonicParsing="false" onAction="#search" text="Search" />
                                           <Button fx:id="addCourseButton1" mnemonicParsing="false" onAction="#addCourse" text="Add" />
                                           <Button fx:id="deleteCourseButton" layoutX="260.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteCourse" text="Delete" />
                                           <Button fx:id="enrollCourseButton" mnemonicParsing="false" onAction="#enrollCourse" text="Enroll Courses" />
