@@ -81,6 +81,10 @@ public class Controller {
     public void addCourse(){
         String course = courseTextField.getText();
 
+        //add condition to check the time to avoid bugs
+        //^ above will create erronous time if smart ass uses it up
+
+
         if(timeSlot.containsKey(course)){
             data.add(new Subject(course, selectedTime + "," +selectedDay));
             enrollCoursesTable.setItems(data);
