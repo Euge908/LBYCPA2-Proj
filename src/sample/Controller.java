@@ -1,5 +1,7 @@
 package sample;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -25,8 +27,58 @@ public class Controller {
         timeSlot.put("lbyec2m", new String[]{"09:15-12:15,M", "09:15-12:15,W", "14:30-17:30,T"});
         ///new changes
     }
-    //save to Text
+
+    /** takes student and subjects linked list and appends it to text file
+     *
+     * @param st current student object
+     * @param subjects linked list of students' subjects
+     */
     void saveToText(Student st, LinkedList<Subject> subjects){
+        //array to store the csv string
+        //FORMAT: name,idNum,currentUnits,maxUnits,subjects...
+        ArrayList<String> data = new ArrayList<String>();
+        data.add(st.name);
+        data.add(st.idNumber);
+        data.add(String.valueOf(st.currentUnits));
+        data.add(String.valueOf(st.maxUnits));
+        //loop thorough linked list and get name and time and append
+        //subject format subject.name>subject.time
+        for (Subject subject : subjects) {
+            data.add(subject.name + ">" + subject.time);
+        }
+
+        ///convert  array to string and add | delimiter
+        StringBuilder sb = new StringBuilder();
+        for (String s : data) {
+            sb.append(s);
+            sb.append("|");
+        }
+
+        System.out.println(sb.toString());
+        appendStrToFile("src/sample/test.txt", sb.toString());
+
+
+    }
+
+    /** Takes string and appends to txt file
+     *
+     * @param path filename path for text file
+     * @param str data in string format
+     */
+    static void appendStrToFile(String path, String str) {
+        try {
+
+            File file = new File(path);
+            FileWriter fr = new FileWriter(file, true);
+            BufferedWriter br = new BufferedWriter(fr);
+            PrintWriter writer = new PrintWriter(br);
+            writer.println(str);
+            writer.close();
+
+
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
 
 
     }
