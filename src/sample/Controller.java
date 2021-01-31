@@ -6,10 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.HashMap;
@@ -18,7 +15,7 @@ import java.util.LinkedList;
 public class Controller {
 
     @FXML
-    TextField courseTextField ;
+    TextField courseTextField;
     @FXML
     Button addCourseButton, deleteCourseButton;
     @FXML
@@ -26,24 +23,31 @@ public class Controller {
 
     @FXML
     TableColumn courseCodeTableColumn, nameTableColumn, unitsTableColumn,
-                dayTableColumn, timeSlotTableColumn, slotsTableColumn, addRemoveTableColumn;
+            dayTableColumn, timeSlotTableColumn, slotsTableColumn, addRemoveTableColumn;
+
+    @FXML
+    ComboBox dayComboBox, timeComboBox;
+
+    String selectedDay, selectedTime;
+
 
     private HashMap<String, String[]> timeSlot = new HashMap<>(); //replace this na lang
     private LinkedList<Subject> subjects = new LinkedList<>();
-//    private Student currentStudent = new Student();
+    private Student currentStudent = new Student("Jon Doe", "11917113", 22);
 
-    private ObservableList<Subject> data= FXCollections.observableArrayList();
+    private ObservableList<Subject> data = FXCollections.observableArrayList();
 
 
-    public void initialize(){
+    public void initialize() {
         initializeTimeSlot();
 
-        //sample subjects lng
-        subjects.add(new Subject("caleng2", 3, "waka waka"));
-        subjects.add(new Subject("caleng3", 3, "waka waka"));
-        subjects.add(new Subject("caleng4", 3, "waka waka"));
-        subjects.add(new Subject("caleng5", 3, "waka waka"));
-        subjects.add(new Subject("caleng6", 3, "waka waka"));
+        dayComboBox.setOnAction(e -> {
+            selectedDay = (String) dayComboBox.getSelectionModel().getSelectedItem();
+        });
+
+        timeComboBox.setOnAction(e -> {
+            selectedDay = (String) timeComboBox.getSelectionModel().getSelectedItem();
+        });
 
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
@@ -69,20 +73,39 @@ public class Controller {
         ///new changes
 
 
-
     }
 
     public void addCourse(){
-//        String course = courseTextField.getText();
-//        for(Subject subj: subjects){
-//            if(subj.name.equals(course)){
-//                break;
-//            }
-//        }
+        if(search()){
+            data.add(new Subject(courseTextField.getText(), selectedTime + "," +selectedDay));
+            enrollCoursesTable.setItems(data);
+        }
+
+    }
 
 
-        data.add(new Subject("Dummy", 99, "DummySched"));
-        enrollCoursesTable.setItems(data);
+    public boolean search(){
+        String course = courseTextField.getText();
+
+        //ComboBox dayComboBox, timeComboBox;
+
+        timeComboBox.getItems().clear();
+        dayComboBox.getItems().clear();
+
+
+        //still doesn't check if student already enrolled in course
+        //still allows multiple classes to work
+        if(timeSlot.containsKey(course)){
+            String[] availableSched = timeSlot.get(course);
+            for(String sched: availableSched){
+                dayComboBox.getItems().add(sched.substring(sched.length()-2));
+                timeComboBox.getItems().add(sched.substring(0, sched.lastIndexOf(",")));
+            }
+
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -93,7 +116,6 @@ public class Controller {
     public void enrollCourse(){
 
     }
-
 
 
 

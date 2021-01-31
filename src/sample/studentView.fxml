@@ -90,7 +90,8 @@
                                                 <Insets right="20.0" />
                                              </HBox.margin>
                                           </ComboBox>
-                                          <Button fx:id="addCourseButton" mnemonicParsing="false" onAction="#addCourse" text="Add" />
+                                          <Button fx:id="addCourseButton" mnemonicParsing="false" onAction="#search" text="Search" />
+                                          <Button fx:id="addCourseButton1" mnemonicParsing="false" onAction="#addCourse" text="Add" />
                                           <Button fx:id="deleteCourseButton" layoutX="260.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteCourse" text="Delete" />
                                           <Button fx:id="enrollCourseButton" mnemonicParsing="false" onAction="#enrollCourse" text="Enroll Courses" />
                                        </children>
