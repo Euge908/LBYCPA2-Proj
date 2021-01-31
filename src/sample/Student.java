@@ -1,3 +1,5 @@
+
+
 package sample;
 
 import java.util.HashMap;
@@ -44,23 +46,23 @@ public class Student {
      *
      * @param subjectToBeEnrolled String for subject
      * @param timeToBeEnrolled    string time
-     * @param unit    unit count
+     * @param unit                unit count
      */
 
 
     void addSchedule(String subjectToBeEnrolled, String timeToBeEnrolled, int unit) {
         //TODO: Time format is 0X:00-0Y:00,Day
-        int currentLowerBound = Integer.parseInt(timeToBeEnrolled.substring(0, 3)+timeToBeEnrolled.substring(4, 6));
-        int currentUpperBound = Integer.parseInt(timeToBeEnrolled.substring(6, 8)+timeToBeEnrolled.substring(9, 11));
+        int currentLowerBound = Integer.parseInt(timeToBeEnrolled.substring(0, 3) + timeToBeEnrolled.substring(4, 6));
+        int currentUpperBound = Integer.parseInt(timeToBeEnrolled.substring(6, 8) + timeToBeEnrolled.substring(9, 11));
         String currentDay = timeToBeEnrolled.substring(timeToBeEnrolled.lastIndexOf(","));
         //check if there is a time conflict
 
-        for(String pastTimeSched: schedule.values()){
-            int pastLowerBound = Integer.parseInt(pastTimeSched.substring(0, 3)+ pastTimeSched.substring(4, 6));
-            int pastUpperBound = Integer.parseInt(pastTimeSched.substring(6, 8)+ pastTimeSched.substring(9, 11));
+        for (String pastTimeSched : schedule.values()) {
+            int pastLowerBound = Integer.parseInt(pastTimeSched.substring(0, 3) + pastTimeSched.substring(4, 6));
+            int pastUpperBound = Integer.parseInt(pastTimeSched.substring(6, 8) + pastTimeSched.substring(9, 11));
             String pastDay = pastTimeSched.substring(pastTimeSched.lastIndexOf(","));
             //if there is a time and day intersection: quit
-            if((currentLowerBound<= pastUpperBound || currentUpperBound     >= pastLowerBound) && (!pastDay.equals(currentDay))){
+            if ((currentLowerBound <= pastUpperBound || currentUpperBound >= pastLowerBound) && (!pastDay.equals(currentDay))) {
                 return;
             }
         }
@@ -70,13 +72,13 @@ public class Student {
         } else if (schedule.containsKey(subjectToBeEnrolled)) {
             //checks if student already enrolled
             System.out.println("Subject already enrolled");
-        }else {
+        } else {
             schedule.put(subjectToBeEnrolled, timeToBeEnrolled);
             currentUnits = currentUnits + unit;
-            tuition = currentUnits*tuitionMultiplier;
+            tuition = currentUnits * tuitionMultiplier;
 
             //add subject to linkedList
-            subjectList.add(new Subject(subjectToBeEnrolled, timeToBeEnrolled));
+            subjectList.add(new Subject(subjectToBeEnrolled, unit, timeToBeEnrolled));
             //add student to student list of Subject
 
             addStudentToSubject();
@@ -150,6 +152,7 @@ public class Student {
 
     /**
      * drop subject
+     *
      * @param subject
      */
     public void delete(String subject) {
@@ -162,15 +165,12 @@ public class Student {
             if (subject.equals(temp.name)) {
                 iterator.remove();
                 currentUnits = currentUnits - temp.subjectUnit;
-                tuition = currentUnits*tuitionMultiplier;
+                tuition = currentUnits * tuitionMultiplier;
                 System.out.println("Current unit is now " + currentUnits);
 
             }
 
         }
-
-
-
 
 
     }

@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Controller {
     HashMap<String, String[]> timeSlot= new HashMap<String, String[]>();;
@@ -24,5 +25,12 @@ public class Controller {
         timeSlot.put("lbyec2m", new String[]{"09:15-12:15,M", "09:15-12:15,W", "14:30-17:30,T"});
         ///new changes
     }
+    //save to Text
+    void saveToText(Student st, LinkedList<Subject> subjects){
+
+
+    }
+
+
 
 }
