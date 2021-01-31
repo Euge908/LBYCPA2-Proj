@@ -76,7 +76,7 @@ public class Student {
             tuition = currentUnits*tuitionMultiplier;
 
             //add subject to linkedList
-            subjectList.add(new Subject(subjectToBeEnrolled, unit, timeToBeEnrolled));
+            subjectList.add(new Subject(subjectToBeEnrolled, timeToBeEnrolled));
             //add student to student list of Subject
 
             addStudentToSubject();
