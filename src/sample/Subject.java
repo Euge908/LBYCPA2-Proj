@@ -6,7 +6,7 @@ public class Subject {
     public String name;
     public int subjectUnit;
     public String time;
-    public LinkedList<Student> studentList = new LinkedList<Student>();
+    public LinkedList<Student> studentList = new LinkedList<>();
 
 
 
@@ -28,7 +28,7 @@ public class Subject {
     }
 
     public int getSubjectUnit() {
-        if (name.toLowerCase().contains("ge") || name.toLowerCase().contains("eng") || name.toLowerCase().contains("fnd")) {
+        if (name.toLowerCase().startsWith("ge") || name.toLowerCase().startsWith("eng") || name.toLowerCase().startsWith("fnd") || name.toLowerCase().startsWith("dis")) {
             this.subjectUnit = 3;
         } else if (name.toLowerCase().contains("lby")) {
             this.subjectUnit = 1;
