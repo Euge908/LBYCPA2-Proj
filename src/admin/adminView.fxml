@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.adminController">
+   <top>
+      <VBox prefHeight="108.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="151.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;" />
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="425.0" prefWidth="229.0" style="-fx-background-color: 292D38;" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Pane prefHeight="76.0" prefWidth="209.0" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" text="John Doe">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="180.0" text="JohnDoe@dlsu.edu.ph" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TabPane prefHeight="611.0" prefWidth="842.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Students">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="824.0">
+                           <children>
+                              <VBox prefHeight="577.0" prefWidth="830.0" spacing="10.0">
+                                 <children>
+                                    <HBox prefHeight="38.0" prefWidth="830.0">
+                                       <children>
+                                          <Label text="Search course:">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Filter by:">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="50.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="40.0" prefWidth="846.0">
+                                       <children>
+                                          <Label text="Course Code:">
+                                             <HBox.margin>
+                                                <Insets right="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="courseSearchField" prefHeight="26.0" prefWidth="67.0">
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <Button fx:id="courseSearchBtn" mnemonicParsing="false" onMouseClicked="#searchCourse" text="Search">
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Label text="Days:" />
+                                          <TextField fx:id="filterDay" prefHeight="26.0" prefWidth="33.0" />
+                                          <Label text="Time Slot:">
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin></Label>
+                                          <TextField fx:id="filterTime" prefHeight="26.0" prefWidth="78.0" />
+                                          <Label text="Student Name:">
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="filterName" prefHeight="26.0" prefWidth="102.0">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <Label text="Student ID:">
+                                             <HBox.margin>
+                                                <Insets left="20.0" right="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="filterID" prefHeight="26.0" prefWidth="80.0" />
+                                       </children>
+                                    </HBox>
+                                    <TableView fx:id="studentsTable" prefHeight="322.0" prefWidth="830.0">
+                                      <columns>
+                                        <TableColumn fx:id="idCol" prefWidth="93.59999120235443" text="ID" />
+                                        <TableColumn fx:id="nameCol" prefWidth="246.39995574951172" text="Name" />
+                                          <TableColumn fx:id="unitsCol" prefWidth="76.79998779296875" text="Units" />
+                                          <TableColumn fx:id="dayCol" prefWidth="71.20001220703125" text="Day" />
+                                          <TableColumn fx:id="slotCol" prefWidth="108.79998779296875" text="Time Slot" />
+                                          <TableColumn prefWidth="137.60003662109375" text="Add/Remove" />
+                                      </columns>
+                                    </TableView>
+                                    <Label fx:id="courseLabel" text="Course: " />
+                                    <Label fx:id="studentsCountLabel" text="Number of students:" />
+                                 </children></VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Courses">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="579.0" prefWidth="842.0" />
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children></AnchorPane>
+   </center>
+</BorderPane>
