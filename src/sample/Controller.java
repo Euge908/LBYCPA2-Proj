@@ -1,16 +1,122 @@
 package sample;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Controller {
-    HashMap<String, String[]> timeSlot= new HashMap<String, String[]>();;
+
+    @FXML
+    TextField courseTextField;
+    @FXML
+    Button addCourseButton, deleteCourseButton;
+    @FXML
+    TableView enrollCoursesTable, enrolledCoursesTable;
+
+    @FXML
+    TableColumn courseCodeTableColumn, nameTableColumn, unitsTableColumn,
+            dayTableColumn, timeSlotTableColumn, slotsTableColumn, addRemoveTableColumn;
+
+    @FXML
+    ComboBox dayComboBox, timeComboBox;
+
+    String selectedDay, selectedTime;
+
+
+    private HashMap<String, String[]> timeSlot = new HashMap<>(); //replace this na lang
+    private LinkedList<Subject> subjects = new LinkedList<>();
+
+    //dummy student
+    private Student currentStudent = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18);
+
+    private ObservableList<Subject> data = FXCollections.observableArrayList();
+
 
     public void initialize() {
-
         initializeTimeSlot();
+
+        dayComboBox.setOnAction(e -> {
+            selectedDay = (String) dayComboBox.getSelectionModel().getSelectedItem();
+            System.out.println(selectedDay);
+        });
+
+        timeComboBox.setOnAction(e -> {
+            selectedTime = (String) timeComboBox.getSelectionModel().getSelectedItem();
+            System.out.println(selectedTime);
+
+        });
+
+        courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
+        nameTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
+        unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
+        dayTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+        timeSlotTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+        slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+
+
+    }
+
+    public void addCourse(){
+        String course = courseTextField.getText();
+
+        //add condition to check the time to avoid bugs
+        //^ above will create erronous time if smart ass uses it up
+        //also simplify the table 
+
+        if(timeSlot.containsKey(course)){
+            data.add(new Subject(course, selectedTime + "," +selectedDay));
+            enrollCoursesTable.setItems(data);
+        }
+
+    }
+
+
+    public void search(){
+        String course = courseTextField.getText();
+
+        //ComboBox dayComboBox, timeComboBox;
+
+
+        timeComboBox.getItems().clear();
+        dayComboBox.getItems().clear();
+
+
+        //still doesn't check if student already enrolled in course
+        //still allows multiple classes to work
+        if(timeSlot.containsKey(course)){
+            String[] availableSched = timeSlot.get(course);
+            for(String sched: availableSched){
+                dayComboBox.getItems().add(sched.substring(sched.length()-2));
+                timeComboBox.getItems().add(sched.substring(0, sched.lastIndexOf(",")));
+            }
+
+        }
+
+    }
+
+    public void deleteCourse(){
+        String course = courseTextField.getText();
+
+        for(Subject a: data){
+            if(a.getName().equals(course)){
+                data.remove(a);
+                enrollCoursesTable.setItems(data);
+                return;
+            }
+        }
 
     }
 
