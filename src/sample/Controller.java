@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,6 +20,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Controller {
+
+    /**
+     * temp storage for units for adding and deleting subjects
+     * convert this to student.currentUnits during enrollment
+     */
+    int tempUnits = 0;
 
     @FXML
     TextField courseTextField;
@@ -92,7 +100,7 @@ public class Controller {
         });
 
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
-        nameTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
+
         unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         scheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
         slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
@@ -104,6 +112,7 @@ public class Controller {
         String course = courseTextField.getText();
 
         Subject courseToBeAdded = new Subject(course, selectedTime);
+
 
 
 
@@ -139,7 +148,8 @@ public class Controller {
         if(timeSlot.containsKey(course)){
             //check if max units is acheived
             //check if already enrolled
-            if (currentStudent.getCurrentUnits() + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
+
+            if (tempUnits + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
                 errorMessage.setContentText("Max Units Cannot Add anymore");
                 errorMessage.showAndWait();
                 return ;
@@ -157,6 +167,10 @@ public class Controller {
 
             data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
+            tempUnits = tempUnits + courseToBeAdded.getSubjectUnit();
+            //clear time combo
+            timeComboBox.getItems().clear();
+            System.out.println("temp units is " + tempUnits);
 
         }else{
             //if course input does not exist
@@ -206,8 +220,29 @@ public class Controller {
                 timeComboBox.getItems().add(sched);
             }
 
+            //if not found
+        }else{
+        display("Subject not Found!!");
         }
 
+    }
+
+    /** Uses alert object to display prompt
+     *
+     * @param display string to be displayed
+     */
+    public void display(String display) {
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+
+
+        alert.setContentText(display);
+
+        // Get the Stage.
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:assets/icon.png")); // To add an icon
+        alert.showAndWait();
     }
 
     public void deleteCourse(){
@@ -216,7 +251,11 @@ public class Controller {
         for(Subject a: data){
             if(a.getName().equals(course)){
                 data.remove(a);
+                tempUnits = tempUnits - a.subjectUnit;
+                System.out.println("temp units is " + tempUnits);
                 enrollCoursesTable.setItems(data);
+
+
                 return;
             }
         }
@@ -230,7 +269,7 @@ public class Controller {
         timeSlot.put("lbych1a", new String[]{"09:15-12:15,T", "14:30-17:30,W", "14:30-17:30,T"});
         timeSlot.put("lclsone", new String[]{"07:30-9:30,M", "10:30-12:00,F", "16:30-18:30,W"});
         timeSlot.put("geethic", new String[]{"14:30-16:00,TH", "12:45-14:15,MW", "07:30-09:00,MW"});
-        timeSlot.put("datsral", new String[]{"14:30-15:30,M", "16:15-15:15,T", "16:15-17:15,M"});
+        timeSlot.put("datsral", new String[]{"14:30-15:30,M", "14:15-15:15,T", "16:15-17:15,M"});
         timeSlot.put("discrmt", new String[]{"12:45-14:15,MW", "11:00-12:30,TH", "09:15-10:45,TH"});
         timeSlot.put("fndckt", new String[]{"16:15-17:45,MW", "11:00-12:30,TH", "14:30-16:00,MW"});
         timeSlot.put("lbycpa2", new String[]{"09:15-12:15,W", "09:15-12:15,M", "14:30-17:30,H"});
