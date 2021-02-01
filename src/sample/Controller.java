@@ -11,16 +11,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Controller {
 
+    public TableColumn courseCodeRef;
+    public TableColumn unitRef;
+    public TableColumn scheduleRef;
+    public TableView refTable;
     /**
      * temp storage for units for adding and deleting subjects
      * convert this to student.currentUnits during enrollment
@@ -55,6 +57,7 @@ public class Controller {
     private Student currentStudent = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18);
 
     private ObservableList<Subject> data = FXCollections.observableArrayList();
+    private ObservableList<Subject> ref = FXCollections.observableArrayList();
 
     private Alert errorMessage = new Alert(Alert.AlertType.WARNING);
 
@@ -85,7 +88,10 @@ public class Controller {
 
 
     public void initialize() {
+
         initializeTimeSlot();
+        initializeCourseCodeTab();
+
 
         errorMessage.setHeaderText(null);
         errorMessage.setTitle("Error Message");
@@ -102,6 +108,35 @@ public class Controller {
         unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         scheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
         slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+
+        //for the reference table
+        courseCodeRef.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
+        unitRef.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
+        scheduleRef.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+
+
+    }
+
+    /**
+     * creates course code tab
+     */
+    private void initializeCourseCodeTab() {
+        //loop through hashmap and make subjects and add them to refTable
+        Iterator it = timeSlot.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            StringBuffer sb = new StringBuffer();
+
+            ref.add(new Subject(String.valueOf(pair.getKey()), Arrays.toString(timeSlot.get(String.valueOf(pair.getKey())))));
+            refTable.setItems(ref);
+
+        }
+
+
+
+
+
 
 
         enrolledCourseCodesTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
