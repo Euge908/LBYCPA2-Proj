@@ -83,6 +83,8 @@ public class Controller {
 
     }
 
+    public void enrollCourse(){
+    }
 
     public void search(){
         String course = courseTextField.getText();
