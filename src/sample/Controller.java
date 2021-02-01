@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.time.LocalTime;
 import java.util.*;
 
 import java.io.*;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Controller {
-
 
     public TableColumn courseCodeRef;
     public TableColumn unitRef;
@@ -44,8 +44,9 @@ public class Controller {
     TableView enrollCoursesTable, enrolledCoursesTable;
 
     @FXML
-    TableColumn courseCodeTableColumn, nameTableColumn, unitsTableColumn,
-            scheduleTableColumn, slotsTableColumn;
+    TableColumn courseCodeTableColumn, unitsTableColumn,
+            scheduleTableColumn, slotsTableColumn, enrolledCourseCodesTableColumn,
+            enrolledUnitsTableColumn, enrolledScheduleTableColumn, enrolledSlotsTableColumn;
 
     @FXML
     ComboBox timeComboBox;
@@ -65,32 +66,32 @@ public class Controller {
     private ObservableList<Subject> data = FXCollections.observableArrayList();
     private ObservableList<Subject> ref = FXCollections.observableArrayList();
 
+    private Alert errorMessage = new Alert(Alert.AlertType.WARNING);
 
 
-    public static boolean isTimeConflict(String time1, String time2){
+    public boolean isTimeConflict(String time1, String time2){
         //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
 
-        int currentLowerBound = Integer.parseInt(time1.substring(0, 2)+time1.substring(3, 5));
-        int currentUpperBound = Integer.parseInt(time1.substring(6, 8)+time1.substring(9, 11));
         String currentDay = time1.substring(time1.lastIndexOf(","));
-
-        //check if there is a time conflict
-        int pastLowerBound = Integer.parseInt(time2.substring(0, 2)+ time2.substring(3, 5));
-        int pastUpperBound = Integer.parseInt(time2.substring(6, 8)+ time2.substring(9, 11));
         String pastDay = time2.substring(time2.lastIndexOf(","));
 
+        LocalTime startA = LocalTime.of(Integer.parseInt(time1.substring(0, 2)), Integer.parseInt(time1.substring(3, 5)));
+        LocalTime stopA = LocalTime.of(Integer.parseInt(time1.substring(6, 8)), Integer.parseInt(time1.substring(9, 11)));
 
-        //Bug: still need to fix especially T TH
-        //M T W H F
-        // TH
+        LocalTime startB = LocalTime.of(Integer.parseInt(time2.substring(0, 2)), Integer.parseInt(time2.substring(3, 5)));
+        LocalTime stopB = LocalTime.of(Integer.parseInt(time2.substring(6, 8)), Integer.parseInt(time2.substring(9, 11)));
 
+//
+//        System.out.println(currentLowerBound + "," + currentUpperBound);
+//        System.out.println((currentDay.contains(pastDay) || pastDay.contains(currentDay)));
+//        System.out.println((currentUpperBound<=pastLowerBound || pastUpperBound<=currentLowerBound));
+//        System.out.println(pastLowerBound + "," + pastUpperBound);
 
-
-        if(!(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound)){
-            if(currentDay.equals("T") && pastDay.equals("TH") || currentDay.equals("TH") && pastDay.equals("T") ){
-                return false;
+        //if the days are the same and there is time intersection
+        if(currentDay.contains(pastDay) || pastDay.contains(currentDay)){
+            if ( startA.isBefore( stopB )  &&  stopA.isAfter( startB ) ){
+                return true;
             }
-            return true;
         }
         return false;
 
@@ -98,13 +99,14 @@ public class Controller {
     }
 
 
-
-
     public void initialize() {
 
         initializeTimeSlot();
         initializeCourseCodeTab();
 
+
+        errorMessage.setHeaderText(null);
+        errorMessage.setTitle("Error Message");
 
         currentUserNameLabel.setText(currentStudent.name);
         currentUserEmailLabel.setText(currentStudent.email);
@@ -115,7 +117,6 @@ public class Controller {
         });
 
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
-
         unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         scheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
         slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
@@ -132,7 +133,6 @@ public class Controller {
      * creates course code tab
      */
     private void initializeCourseCodeTab() {
-        generateTuition(currentStudent);
         //loop through hashmap and make subjects and add them to refTable
         Iterator it = timeSlot.entrySet().iterator();
         while (it.hasNext()) {
@@ -151,45 +151,10 @@ public class Controller {
 
 
 
-    }
-    /**
-     * Generates Tuition after enrollment
-     *
-     * @param st1 current student object
-     */
-    private void generateTuition(Student st1) {
-        LocalDate dt = LocalDate.now();
-
-       // multiply current units with multiplier
-//        double tuitionFee = st1.currentUnits* tuitionMultiplier;
-        double tuitionFee = 80758;
-
-        double misc = tuitionFee * ((float) 5234 / 68124);
-        double special = tuitionFee * ((float) 200 / 68124);
-        double development = tuitionFee * ((float) 2000 / 68124);
-        double idValid = tuitionFee * ((float) 46 / 68124);
-        double finalFee = tuitionFee + misc +special+development+idValid;
-
-        DecimalFormat numberFormat = new DecimalFormat("#.00");
-        System.out.println(numberFormat.format(misc));
-
-        feeText.setText("FEES\t\t\t\t\tASSESSMENT"
-                + "\n\n" + "Tuition:\t\t\t\t" + tuitionFee
-                + "\n" + "Miscellaneous:\t\t\t" + (numberFormat.format(misc))
-                + "\n" + "Special Fees:\t\t\t" + (numberFormat.format(special))
-                + "\n" + "Development Fees:\t\t" + (numberFormat.format(development))
-                + "\n" + "ID Validation:\t\t\t" + (numberFormat.format(idValid))
-                + "\n\n\n" + "Deadline of Payment w/o Surcharge..................."+ dt.with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
-                + "\n" + "Deadline of Payment w/ Surcharge..................."+ dt.with(TemporalAdjusters.lastDayOfMonth())
-                +"\n" +"NOTE: Content is accurate only as of printing date and time. This is not a\n" +
-                "proof of official enrollment and final assessment of tuition and fees.\n" +
-                "Courses will be dropped automatically for unsettled payment.\n" +
-                "For DLSU internal use (payment purposes) only."
-                +"\n\n\n\n" +"ASSESSED AMOUNT:\t\t" +(numberFormat.format(finalFee))
-                +"\n" + "Other Fees:\t\t\t\t"+ "0.00"
-                +"\n" + "PLEASE PAY THIS AMOUNT:\t"+(numberFormat.format(finalFee)));
-
-
+        enrolledCourseCodesTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
+        enrolledUnitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
+        enrolledScheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+        enrolledSlotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
 
     }
 
@@ -204,12 +169,7 @@ public class Controller {
 
         //add condition to check the time to avoid bugs
         //^ above will create erroneous time if smart ass uses it up
-        //also simplify the table 
-
-        Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-        errorMessage.setHeaderText(null);
-        errorMessage.setTitle("Error Message");
-
+        //also simplify the table
 
 
         for(Subject x: data){
@@ -269,13 +229,18 @@ public class Controller {
 
         if(data.size()==0){
             //add something first before enrolling
-
+            errorMessage.setContentText("Add something first");
+            errorMessage.showAndWait();
         }
 
+        //set the table values of enrolled courses
+        enrolledCoursesTable.setItems(data);
+        enrollCoursesTable.setItems(null);
+
+        //set the
 
         for(Subject x: data){
-            Student dummy = currentStudent;
-
+            currentStudent.addSubject(x);
 
 
             //add student to course
@@ -339,8 +304,6 @@ public class Controller {
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
                 enrollCoursesTable.setItems(data);
-
-
                 return;
             }
         }
@@ -418,7 +381,6 @@ public class Controller {
 
 
     }
-
 
 
 
