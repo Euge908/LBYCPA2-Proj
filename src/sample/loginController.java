@@ -140,6 +140,8 @@ public class loginController {
                 source.studentData = studentList.get(index);
                 source.index = index;
                 System.out.println("student data is "+ source.studentData+"\n"+"index is" + source.index);
+                source.txtFile = studentList;
+                System.out.println(studentList);
 
 
 
