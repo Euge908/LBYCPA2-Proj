@@ -28,12 +28,15 @@ public class Controller {
 
     @FXML
     TableColumn courseCodeTableColumn, nameTableColumn, unitsTableColumn,
-            dayTableColumn, timeSlotTableColumn, slotsTableColumn, addRemoveTableColumn;
+            scheduleTableColumn, slotsTableColumn;
 
     @FXML
-    ComboBox dayComboBox, timeComboBox;
+    ComboBox timeComboBox;
 
-    String selectedDay, selectedTime;
+    @FXML
+    Label currentUserNameLabel, currentUserEmailLabel;
+
+    String selectedTime; //remove this
 
 
     private HashMap<String, String[]> timeSlot = new HashMap<>(); //replace this na lang
@@ -45,13 +48,31 @@ public class Controller {
     private ObservableList<Subject> data = FXCollections.observableArrayList();
 
 
+
+    public static boolean isTimeConflict(String time1, String time2){
+        //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
+
+        int currentLowerBound = Integer.parseInt(time1.substring(0, 2)+time1.substring(3, 5));
+        int currentUpperBound = Integer.parseInt(time1.substring(6, 8)+time1.substring(9, 11));
+        String currentDay = time1.substring(time1.lastIndexOf(","));
+
+        //check if there is a time conflict
+        int pastLowerBound = Integer.parseInt(time2.substring(0, 2)+ time2.substring(3, 5));
+        int pastUpperBound = Integer.parseInt(time2.substring(6, 8)+ time2.substring(9, 11));
+        String pastDay = time2.substring(time2.lastIndexOf(","));
+
+        if(!(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound) && currentDay.equals(pastDay)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+
     public void initialize() {
         initializeTimeSlot();
 
-        dayComboBox.setOnAction(e -> {
-            selectedDay = (String) dayComboBox.getSelectionModel().getSelectedItem();
-            System.out.println(selectedDay);
-        });
 
         timeComboBox.setOnAction(e -> {
             selectedTime = (String) timeComboBox.getSelectionModel().getSelectedItem();
@@ -62,8 +83,7 @@ public class Controller {
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
         unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
-        dayTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
-        timeSlotTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+        scheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
         slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
 
 
@@ -73,17 +93,43 @@ public class Controller {
         String course = courseTextField.getText();
 
         //add condition to check the time to avoid bugs
-        //^ above will create erronous time if smart ass uses it up
+        //^ above will create erroneous time if smart ass uses it up
         //also simplify the table 
 
+        Alert errorMessage = new Alert(Alert.AlertType.WARNING);
+        errorMessage.setHeaderText(null);
+        errorMessage.setTitle("Error Message");
+
+
+
+        for(Subject x: data){
+            if(x.getName().equals(course)){
+                //if user already added the course in table
+                errorMessage.setContentText("Course already added to table");
+                errorMessage.showAndWait();
+                return;
+            }else if(isTimeConflict(x.getTime(), selectedTime)){
+                //if one of the courses in the table has a time conflict
+                errorMessage.setContentText("Time conflict detected");
+                errorMessage.showAndWait();
+                return;
+            }
+        }
+
         if(timeSlot.containsKey(course)){
-            data.add(new Subject(course, selectedTime + "," +selectedDay));
+            data.add(new Subject(course, selectedTime));
             enrollCoursesTable.setItems(data);
+        }else{
+            //if course input does not exist
+            errorMessage.setContentText("Course Input does not exist");
+            errorMessage.showAndWait();
         }
 
     }
 
     public void enrollCourse(){
+
+
     }
 
     public void search(){
@@ -93,7 +139,6 @@ public class Controller {
 
 
         timeComboBox.getItems().clear();
-        dayComboBox.getItems().clear();
 
 
         //still doesn't check if student already enrolled in course
@@ -101,8 +146,7 @@ public class Controller {
         if(timeSlot.containsKey(course)){
             String[] availableSched = timeSlot.get(course);
             for(String sched: availableSched){
-                dayComboBox.getItems().add(sched.substring(sched.length()-2));
-                timeComboBox.getItems().add(sched.substring(0, sched.lastIndexOf(",")));
+                timeComboBox.getItems().add(sched);
             }
 
         }
@@ -121,6 +165,7 @@ public class Controller {
         }
 
     }
+
 
     private void initializeTimeSlot() {
         timeSlot.put("caleng2", new String[]{"14:15-17:45,TH", "15:15-17:45,MW"});
