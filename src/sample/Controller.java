@@ -33,7 +33,6 @@ public class Controller {
      * convert this to student.currentUnits during enrollment
      */
     int tempUnits = 0;
-    final int tuitionMultiplier = 3604;
 
     @FXML
     TextField courseTextField;
@@ -59,22 +58,23 @@ public class Controller {
     private LinkedList<Subject> subjects = new LinkedList<>();
 
     //dummy student
-    private Student currentStudent = new Student("felix", "felix@dlsu.edu.ph", "pass1", "119106606", 18);
+    private Student currentStudent = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18);
 
     private ObservableList<Subject> data = FXCollections.observableArrayList();
     private ObservableList<Subject> ref = FXCollections.observableArrayList();
 
 
-    public static boolean isTimeConflict(String time1, String time2) {
+
+    public static boolean isTimeConflict(String time1, String time2){
         //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
 
-        int currentLowerBound = Integer.parseInt(time1.substring(0, 2) + time1.substring(3, 5));
-        int currentUpperBound = Integer.parseInt(time1.substring(6, 8) + time1.substring(9, 11));
+        int currentLowerBound = Integer.parseInt(time1.substring(0, 2)+time1.substring(3, 5));
+        int currentUpperBound = Integer.parseInt(time1.substring(6, 8)+time1.substring(9, 11));
         String currentDay = time1.substring(time1.lastIndexOf(","));
 
         //check if there is a time conflict
-        int pastLowerBound = Integer.parseInt(time2.substring(0, 2) + time2.substring(3, 5));
-        int pastUpperBound = Integer.parseInt(time2.substring(6, 8) + time2.substring(9, 11));
+        int pastLowerBound = Integer.parseInt(time2.substring(0, 2)+ time2.substring(3, 5));
+        int pastUpperBound = Integer.parseInt(time2.substring(6, 8)+ time2.substring(9, 11));
         String pastDay = time2.substring(time2.lastIndexOf(","));
 
 
@@ -83,8 +83,9 @@ public class Controller {
         // TH
 
 
-        if (!(currentUpperBound < pastLowerBound || pastUpperBound < currentLowerBound)) {
-            if (currentDay.equals("T") && pastDay.equals("TH") || currentDay.equals("TH") && pastDay.equals("T")) {
+
+        if(!(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound)){
+            if(currentDay.equals("T") && pastDay.equals("TH") || currentDay.equals("TH") && pastDay.equals("T") ){
                 return false;
             }
             return true;
@@ -124,14 +125,13 @@ public class Controller {
     }
 
     /**
-     * intilaize   course code tab
+     * creates course code tab
      */
     private void initializeCourseCodeTab() {
-
         //loop through hashmap and make subjects and add them to refTable
         Iterator it = timeSlot.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
+            Map.Entry pair = (Map.Entry)it.next();
             System.out.println(pair.getKey() + " = " + pair.getValue());
             StringBuffer sb = new StringBuffer();
 
@@ -141,8 +141,12 @@ public class Controller {
         }
 
 
-    }
 
+
+
+
+
+    }
     /**
      * Generates Tuition after enrollment
      *
@@ -177,21 +181,19 @@ public class Controller {
                 "For DLSU internal use (payment purposes) only."
                 +"\n\n\n\n" +"ASSESSED AMOUNT:\t\t" +(numberFormat.format(finalFee))
                 +"\n" + "Other Fees:\t\t\t\t"+ "0.00"
-                +"\n" + "PLEASE PAY THIS AMOUNT:\t"+(numberFormat.format(finalFee))
+                +"\n" + "PLEASE PAY THIS AMOUNT:\t"+(numberFormat.format(finalFee)));
 
-
-
-
-
-        );
 
 
     }
 
-    public void addCourse() {
+    public void addCourse(){
         String course = courseTextField.getText();
 
         Subject courseToBeAdded = new Subject(course, selectedTime);
+
+
+
 
 
         //add condition to check the time to avoid bugs
@@ -203,13 +205,14 @@ public class Controller {
         errorMessage.setTitle("Error Message");
 
 
-        for (Subject x : data) {
-            if (x.getName().equals(course)) {
+
+        for(Subject x: data){
+            if(x.getName().equals(course)){
                 //if user already added the course in table
                 errorMessage.setContentText("Course already added to table");
                 errorMessage.showAndWait();
                 return;
-            } else if (isTimeConflict(x.getTime(), selectedTime)) {
+            }else if(isTimeConflict(x.getTime(), selectedTime)){
                 //if one of the courses in the table has a time conflict
                 errorMessage.setContentText("Time conflict detected");
                 errorMessage.showAndWait();
@@ -218,19 +221,22 @@ public class Controller {
         }
 
 
-        if (timeSlot.containsKey(course)) {
+
+
+
+        if(timeSlot.containsKey(course)){
             //check if max units is acheived
             //check if already enrolled
 
             if (tempUnits + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
                 errorMessage.setContentText("Max Units Cannot Add anymore");
                 errorMessage.showAndWait();
-                return;
+                return ;
 
             }
 
-            for (Subject x : subjects) {
-                if (x.getStudentList().contains(x)) {
+            for(Subject x: subjects){
+                if(x.getStudentList().contains(x)){
                     errorMessage.setContentText("Student Already Enrolled");
                     errorMessage.showAndWait();
                     return;
@@ -245,7 +251,7 @@ public class Controller {
             timeComboBox.getItems().clear();
             System.out.println("temp units is " + tempUnits);
 
-        } else {
+        }else{
             //if course input does not exist
             errorMessage.setContentText("Course Input does not exist");
             errorMessage.showAndWait();
@@ -253,16 +259,17 @@ public class Controller {
 
     }
 
-    public void enrollCourse() {
+    public void enrollCourse(){
 
-        if (data.size() == 0) {
+        if(data.size()==0){
             //add something first before enrolling
 
         }
 
 
-        for (Subject x : data) {
+        for(Subject x: data){
             Student dummy = currentStudent;
+
 
 
             //add student to course
@@ -275,7 +282,7 @@ public class Controller {
 
     }
 
-    public void search() {
+    public void search(){
         String course = courseTextField.getText();
 
         //ComboBox dayComboBox, timeComboBox;
@@ -286,21 +293,20 @@ public class Controller {
 
         //still doesn't check if student already enrolled in course
         //still allows multiple classes to work
-        if (timeSlot.containsKey(course)) {
+        if(timeSlot.containsKey(course)){
             String[] availableSched = timeSlot.get(course);
-            for (String sched : availableSched) {
+            for(String sched: availableSched){
                 timeComboBox.getItems().add(sched);
             }
 
             //if not found
-        } else {
-            display("Subject not Found!!");
+        }else{
+        display("Subject not Found!!");
         }
 
     }
 
-    /**
-     * Uses alert object to display prompt
+    /** Uses alert object to display prompt
      *
      * @param display string to be displayed
      */
@@ -318,11 +324,11 @@ public class Controller {
         alert.showAndWait();
     }
 
-    public void deleteCourse() {
+    public void deleteCourse(){
         String course = courseTextField.getText();
 
-        for (Subject a : data) {
-            if (a.getName().equals(course)) {
+        for(Subject a: data){
+            if(a.getName().equals(course)){
                 data.remove(a);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
@@ -350,13 +356,12 @@ public class Controller {
         ///new changes
     }
 
-    /**
-     * takes student and subjects linked list and appends it to text file
+    /** takes student and subjects linked list and appends it to text file
      *
-     * @param st       current student object
+     * @param st current student object
      * @param subjects linked list of students' subjects
      */
-    void saveToText(Student st, LinkedList<Subject> subjects) {
+    void saveToText(Student st, LinkedList<Subject> subjects){
         //array to store the csv string
         //FORMAT: name,idNum,currentUnits,maxUnits,subjects...
         ArrayList<String> data = new ArrayList<String>();
@@ -385,11 +390,10 @@ public class Controller {
 
     }
 
-    /**
-     * Takes string and appends to txt file
+    /** Takes string and appends to txt file
      *
      * @param path filename path for text file
-     * @param str  data in string format
+     * @param str data in string format
      */
     static void appendStrToFile(String path, String str) {
         try {
@@ -408,6 +412,7 @@ public class Controller {
 
 
     }
+
 
 
 }
