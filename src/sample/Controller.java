@@ -248,7 +248,11 @@ public class Controller {
         for(Subject a: data){
             if(a.getName().equals(course)){
                 data.remove(a);
+                tempUnits = tempUnits - a.subjectUnit;
+                System.out.println("temp units is " + tempUnits);
                 enrollCoursesTable.setItems(data);
+
+
                 return;
             }
         }
