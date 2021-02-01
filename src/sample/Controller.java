@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
@@ -32,6 +34,8 @@ public class Controller {
     public TextArea feeText;
     final int tuitionMultiplier = 3604;
     public Button logOutButton;
+    public Text welcomeTxt;
+    public ImageView logo;
     /**
      * temp storage for units for adding and deleting subjects
      * convert this to student.currentUnits during enrollment
@@ -101,8 +105,11 @@ public class Controller {
     }
 
 
-    public void initialize() {
-        initializeStudentData();
+    public void initialize() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("assets/icon.png"));
+        logo.setImage(image);
+
+//        initializeStudentData();
 
 
         initializeTimeSlot();
@@ -123,7 +130,7 @@ public class Controller {
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
         unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         scheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
-        slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+//        slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
 
         //for the reference table
         courseCodeRef.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
@@ -147,6 +154,7 @@ public class Controller {
     private void initializeStudentData() {
         String[] studentValues = source.studentData.split("\\|");
         currentStudent.name = studentValues[0];
+        welcomeTxt.setText("Welcome " + currentStudent.name + " to your dashboard!");
         currentStudent.email = studentValues[1];
         currentStudent.password = studentValues[2];
         currentStudent.idNumber = studentValues[3];
@@ -154,8 +162,10 @@ public class Controller {
 
         //check if student has subjects  if size is larger than 5
         if (studentValues.length > 5) {
+            currentStudent.currentUnits =  Integer.parseInt(studentValues[5]);
+            tempUnits = currentStudent.currentUnits;
 //            logOutButton.setDisable(false);
-            for (int i = 5; i < studentValues.length; i++) {
+            for (int i = 6; i < studentValues.length; i++) {
                 String[] temp = studentValues[i].split(">");
                 System.out.println("subject: " + temp[0] + "time:" + temp[1]);
 
@@ -269,7 +279,9 @@ public class Controller {
 
     public void enrollCourse() {
         logOutButton.setDisable(false);
-        currentStudent.currentUnits = tempUnits;
+        System.out.println("\n\n" + currentStudent.currentUnits+"&" + tempUnits);
+
+
 
         if (data.size() == 0) {
             //add something first before enrolling
@@ -295,7 +307,7 @@ public class Controller {
             //currentStudent.
         }
 
-
+        currentStudent.currentUnits = tempUnits;
         generateTuition(currentStudent);
 
     }
@@ -347,15 +359,18 @@ public class Controller {
 
     public void deleteCourse() {
         String course = courseTextField.getText();
+        System.out.println(course);
 
         for (Subject a : data) {
             if (a.getName().equals(course)) {
                 data.remove(a);
+                enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
-                enrollCoursesTable.setItems(data);
+
                 return;
             }
+
         }
 
     }
@@ -365,7 +380,7 @@ public class Controller {
         timeSlot.put("caleng2", new String[]{"14:15-17:45,TH", "15:15-17:45,MW"});
         timeSlot.put("engchem", new String[]{"07:30-09:00,TH", "09:15-10:45,TH", "07:30-09:00,MW"});
         timeSlot.put("lbych1a", new String[]{"09:15-12:15,T", "14:30-17:30,W", "14:30-17:30,T"});
-        timeSlot.put("lclsone", new String[]{"07:30-9:30,M", "10:30-12:00,F", "16:30-18:30,W"});
+        timeSlot.put("lclsone", new String[]{"07:30-09:30,M", "10:30-12:00,F", "16:30-18:30,W"});
         timeSlot.put("geethic", new String[]{"14:30-16:00,TH", "12:45-14:15,MW", "07:30-09:00,MW"});
         timeSlot.put("datsral", new String[]{"14:30-15:30,M", "14:15-15:15,T", "16:15-17:15,M"});
         timeSlot.put("discrmt", new String[]{"12:45-14:15,MW", "11:00-12:30,TH", "09:15-10:45,TH"});
@@ -389,6 +404,7 @@ public class Controller {
         data.add(st.password);
         data.add(st.idNumber);
         data.add(String.valueOf(st.maxUnits));
+        data.add(String.valueOf(st.currentUnits));
         //loop thorough linked list and get name and time and append
         //subject format subject.name>subject.time
         for (Subject subject : st.subjectList) {
@@ -484,7 +500,7 @@ public class Controller {
     }
 
     public void logOut(ActionEvent actionEvent) {
-        displayYoN("Exit program");
+        displayYoN("Are you sure you want to save?");
 
     }
 
