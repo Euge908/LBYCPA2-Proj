@@ -106,6 +106,7 @@ public class Controller {
 
 
 
+
         //add condition to check the time to avoid bugs
         //^ above will create erroneous time if smart ass uses it up
         //also simplify the table 
@@ -157,6 +158,8 @@ public class Controller {
             data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
             tempUnits = tempUnits + courseToBeAdded.getSubjectUnit();
+            //clear time combo
+            timeComboBox.getItems().clear();
             System.out.println("temp units is " + tempUnits);
 
         }else{
