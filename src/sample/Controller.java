@@ -21,6 +21,12 @@ import java.util.LinkedList;
 
 public class Controller {
 
+    /**
+     * temp storage for units for adding and deleting subjects
+     * convert this to student.currentUnits during enrollment
+     */
+    int tempUnits = 0;
+
     @FXML
     TextField courseTextField;
     @FXML
@@ -141,7 +147,8 @@ public class Controller {
         if(timeSlot.containsKey(course)){
             //check if max units is acheived
             //check if already enrolled
-            if (currentStudent.getCurrentUnits() + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
+
+            if (tempUnits + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
                 errorMessage.setContentText("Max Units Cannot Add anymore");
                 errorMessage.showAndWait();
                 return ;
@@ -159,6 +166,8 @@ public class Controller {
 
             data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
+            tempUnits = tempUnits + courseToBeAdded.getSubjectUnit();
+            System.out.println("temp units is " + tempUnits);
 
         }else{
             //if course input does not exist
@@ -214,6 +223,11 @@ public class Controller {
         }
 
     }
+
+    /** Uses alert object to display prompt
+     *
+     * @param display string to be displayed
+     */
     public void display(String display) {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
