@@ -11,9 +11,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../admin/adminView.fxml"));
         primaryStage.setTitle("Enrollment System");
         primaryStage.getIcons().add(new Image("file:assets/icon.png"));
+
+        String css = this.getClass().getResource("../CSS/effects.css").toExternalForm();
+        root.getStylesheets().add(css);
 
         primaryStage.setScene(new Scene(root, 1080, 720));
         primaryStage.show();
