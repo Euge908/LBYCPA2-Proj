@@ -75,7 +75,8 @@ public class Controller {
     public void initialize() {
         initializeTimeSlot();
 
-
+        currentUserNameLabel.setText(currentStudent.name);
+        currentUserEmailLabel.setText(currentStudent.email);
         timeComboBox.setOnAction(e -> {
             selectedTime = (String) timeComboBox.getSelectionModel().getSelectedItem();
             System.out.println(selectedTime);
@@ -93,6 +94,11 @@ public class Controller {
 
     public void addCourse(){
         String course = courseTextField.getText();
+
+        Subject courseToBeAdded = new Subject(course, selectedTime);
+
+
+
 
         //add condition to check the time to avoid bugs
         //^ above will create erroneous time if smart ass uses it up
@@ -118,9 +124,32 @@ public class Controller {
             }
         }
 
+
+
+
+
         if(timeSlot.containsKey(course)){
-            data.add(new Subject(course, selectedTime));
+            //check if max units is acheived
+            //check if already enrolled
+            if (currentStudent.getCurrentUnits() + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
+                errorMessage.setContentText("Max Units Cannot Add anymore");
+                errorMessage.showAndWait();
+                return ;
+
+            }
+
+            for(Subject x: subjects){
+                if(x.getStudentList().contains(x)){
+                    errorMessage.setContentText("Student Already Enrolled");
+                    errorMessage.showAndWait();
+                    return;
+                }
+            }
+
+
+            data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
+
         }else{
             //if course input does not exist
             errorMessage.setContentText("Course Input does not exist");
