@@ -11,6 +11,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.text.DecimalFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 import java.io.*;
@@ -23,6 +27,7 @@ public class Controller {
     public TableColumn unitRef;
     public TableColumn scheduleRef;
     public TableView refTable;
+    public TextArea feeText;
     /**
      * temp storage for units for adding and deleting subjects
      * convert this to student.currentUnits during enrollment
@@ -138,6 +143,45 @@ public class Controller {
 
 
 
+
+
+
+    }
+    /**
+     * Generates Tuition after enrollment
+     *
+     * @param st1 current student object
+     */
+    private void generateTuition(Student st1) {
+        LocalDate dt = LocalDate.now();
+
+        //multiply current units with multiplier
+//        double tuitionFee = st1.currentUnits* tuitionMultiplier;
+        double tuitionFee = 80746;
+        double misc = tuitionFee * ((float) 5234 / 68124);
+        double special = tuitionFee * ((float) 200 / 68124);
+        double development = tuitionFee * ((float) 2000 / 68124);
+        double idValid = tuitionFee * ((float) 46 / 68124);
+        double finalFee = tuitionFee + misc +special+development+idValid;
+
+        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        System.out.println(numberFormat.format(misc));
+
+        feeText.setText("FEES\t\t\t\t\tASSESSMENT"
+                + "\n\n" + "Tuition:\t\t\t\t" + tuitionFee
+                + "\n" + "Miscellaneous:\t\t\t" + (numberFormat.format(misc))
+                + "\n" + "Special Fees:\t\t\t" + (numberFormat.format(special))
+                + "\n" + "Development Fees:\t\t" + (numberFormat.format(development))
+                + "\n" + "ID Validation:\t\t\t" + (numberFormat.format(idValid))
+                + "\n\n\n" + "Deadline of Payment w/o Surcharge..................."+ dt.with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
+                + "\n" + "Deadline of Payment w/ Surcharge..................."+ dt.with(TemporalAdjusters.lastDayOfMonth())
+                +"\n" +"NOTE: Content is accurate only as of printing date and time. This is not a\n" +
+                "proof of official enrollment and final assessment of tuition and fees.\n" +
+                "Courses will be dropped automatically for unsettled payment.\n" +
+                "For DLSU internal use (payment purposes) only."
+                +"\n\n\n\n" +"ASSESSED AMOUNT:\t\t" +(numberFormat.format(finalFee))
+                +"\n" + "Other Fees:\t\t\t\t"+ "0.00"
+                +"\n" + "PLEASE PAY THIS AMOUNT:\t"+(numberFormat.format(finalFee)));
 
 
 
