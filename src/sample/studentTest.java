@@ -1,3 +1,4 @@
+
 package sample;
 
 import java.util.*;
@@ -8,12 +9,10 @@ class superNode {
 }
 
 
-
-
 public class studentTest {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Student st1 = new Student("felix", "11926171", 18);
+        Student st1 = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18);
 //        System.out.println("Enter your name");
 //        st1.setName(sc.nextLine());
 //        System.out.println(st1.name);
@@ -30,7 +29,6 @@ public class studentTest {
         System.out.println("Subject List");
         st1.DisplaySubjectList();
         st1.delete("fndckt");
-
 
 
         //after entering all details create the graph.
@@ -61,78 +59,78 @@ public class studentTest {
         } else if (subject.toLowerCase().contains("pro")) {
             return 2;
 
-        }else if (subject.toLowerCase().contains("diff")) {
+        } else if (subject.toLowerCase().contains("diff")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("dat")) {
+        } else if (subject.toLowerCase().contains("dat")) {
             return 1;
 
-        }else if (subject.toLowerCase().contains("dis")) {
+        } else if (subject.toLowerCase().contains("dis")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("fund")) {
+        } else if (subject.toLowerCase().contains("fund")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("num")) {
+        } else if (subject.toLowerCase().contains("num")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("sof")) {
+        } else if (subject.toLowerCase().contains("sof")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("dig")) {
+        } else if (subject.toLowerCase().contains("dig")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("log")) {
+        } else if (subject.toLowerCase().contains("log")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("oper")) {
+        } else if (subject.toLowerCase().contains("oper")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("mic")) {
+        } else if (subject.toLowerCase().contains("mic")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("re")) {
+        } else if (subject.toLowerCase().contains("re")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("fdc")) {
+        } else if (subject.toLowerCase().contains("fdc")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("com")) {
+        } else if (subject.toLowerCase().contains("com")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("emb")) {
+        } else if (subject.toLowerCase().contains("emb")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("lca")) {
+        } else if (subject.toLowerCase().contains("lca")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("mx")) {
+        } else if (subject.toLowerCase().contains("mx")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("cpe")) {
+        } else if (subject.toLowerCase().contains("cpe")) {
             return 2;
 
-        }else if (subject.toLowerCase().contains("och")) {
+        } else if (subject.toLowerCase().contains("och")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("lce")) {
+        } else if (subject.toLowerCase().contains("lce")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("emer")) {
+        } else if (subject.toLowerCase().contains("emer")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("con")) {
+        } else if (subject.toLowerCase().contains("con")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("ths")) {
+        } else if (subject.toLowerCase().contains("ths")) {
             return 1;
 
-        }else if (subject.toLowerCase().contains("ecn")) {
+        } else if (subject.toLowerCase().contains("ecn")) {
             return 3;
 
-        }else if (subject.toLowerCase().contains("lby")) {
+        } else if (subject.toLowerCase().contains("lby")) {
             return 1;
-        }else if (subject.toLowerCase().contains("lby")) {
+        } else if (subject.toLowerCase().contains("lby")) {
             return 1;
         }
         return -1;
@@ -140,3 +138,4 @@ public class studentTest {
 
 
 }
+

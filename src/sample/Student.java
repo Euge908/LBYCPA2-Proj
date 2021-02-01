@@ -1,3 +1,5 @@
+
+
 package sample;
 
 import java.util.HashMap;
@@ -12,6 +14,9 @@ public class Student {
     public final int tuitionMultiplier = 3604;
     String name;
     String idNumber;
+    String email;
+    String password;
+
     boolean enrollmentStatus; //not sure if this is still necessary
     double tuition;
     int currentUnits = 0;
@@ -21,8 +26,10 @@ public class Student {
 
 
     //constructor
-    Student(String name, String idNumber, int maxUnits) {
+    Student(String name,String email,String password, String idNumber, int maxUnits) {
         this.name = name;
+        this.email = email;
+        this.password = password;
         this.idNumber = idNumber;
         this.maxUnits = maxUnits;
     }
@@ -44,7 +51,7 @@ public class Student {
      *
      * @param subjectToBeEnrolled String for subject
      * @param timeToBeEnrolled    string time
-     * @param unit    unit count
+     * @param unit                unit count
      */
 
 
@@ -150,6 +157,7 @@ public class Student {
 
     /**
      * drop subject
+     *
      * @param subject
      */
     public void delete(String subject) {
@@ -162,15 +170,12 @@ public class Student {
             if (subject.equals(temp.name)) {
                 iterator.remove();
                 currentUnits = currentUnits - temp.subjectUnit;
-                tuition = currentUnits*tuitionMultiplier;
+                tuition = currentUnits * tuitionMultiplier;
                 System.out.println("Current unit is now " + currentUnits);
 
             }
 
         }
-
-
-
 
 
     }
