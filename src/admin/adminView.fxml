@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -32,12 +33,12 @@
          <children>
             <Pane prefHeight="76.0" prefWidth="209.0" />
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" text="John Doe">
+            <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" text="Admin">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="180.0" text="JohnDoe@dlsu.edu.ph" />
+            <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="180.0" text="admin@dlsu.edu.ph" />
          </children>
       </VBox>
    </left>
@@ -46,7 +47,7 @@
          <children>
             <TabPane prefHeight="611.0" prefWidth="842.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Students">
+                <Tab text="Classes">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="824.0">
                            <children>
@@ -54,7 +55,7 @@
                                  <children>
                                     <HBox prefHeight="38.0" prefWidth="830.0">
                                        <children>
-                                          <Label text="Search course:">
+                                          <Label text="View students">
                                              <font>
                                                 <Font size="24.0" />
                                              </font>
@@ -111,15 +112,17 @@
                                           <TextField fx:id="filterID" prefHeight="26.0" prefWidth="80.0" />
                                        </children>
                                     </HBox>
-                                    <TableView fx:id="studentsTable" prefHeight="322.0" prefWidth="830.0">
+                                    <TableView fx:id="studentsTable" prefHeight="322.0" prefWidth="758.0">
                                       <columns>
                                         <TableColumn fx:id="idCol" prefWidth="93.59999120235443" text="ID" />
                                         <TableColumn fx:id="nameCol" prefWidth="246.39995574951172" text="Name" />
                                           <TableColumn fx:id="unitsCol" prefWidth="76.79998779296875" text="Units" />
                                           <TableColumn fx:id="dayCol" prefWidth="71.20001220703125" text="Day" />
                                           <TableColumn fx:id="slotCol" prefWidth="108.79998779296875" text="Time Slot" />
-                                          <TableColumn prefWidth="137.60003662109375" text="Add/Remove" />
                                       </columns>
+                                       <VBox.margin>
+                                          <Insets left="50.0" right="50.0" />
+                                       </VBox.margin>
                                     </TableView>
                                     <Label fx:id="courseLabel" text="Course: " />
                                     <Label fx:id="studentsCountLabel" text="Number of students:" />
@@ -132,7 +135,74 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <VBox prefHeight="579.0" prefWidth="842.0" />
+                              <VBox prefHeight="579.0" prefWidth="842.0">
+                                 <children>
+                                    <Label text="View Course">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox prefHeight="39.0" prefWidth="842.0">
+                                       <children>
+                                          <ComboBox fx:id="courseComboBox" editable="true" prefWidth="150.0" />
+                                          <Button mnemonicParsing="false" onMousePressed="#selectCourse" text="Select">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin></Button>
+                                          <Button fx:id="d" mnemonicParsing="false" onMousePressed="#deleteCourse" text="Delete Course">
+                                             <HBox.margin>
+                                                <Insets left="50.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets top="5.0" />
+                                       </padding></HBox>
+                                    <HBox prefHeight="222.0" prefWidth="842.0">
+                                       <children>
+                                          <TableView fx:id="coursesTableView" prefHeight="200.0" prefWidth="200.0">
+                                            <columns>
+                                              <TableColumn fx:id="cSlotCol" prefWidth="196.80004274845123" text="Time Slot" />
+                                            </columns>
+                                          </TableView>
+                                          <VBox prefHeight="222.0" prefWidth="180.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Day" />
+                                                <TextField fx:id="cDayField" promptText="(ex. MW)" />
+                                                <Label text="Time Slot" />
+                                                <TextField fx:id="cSlotField" promptText="HH:mm-HH:mm" />
+                                                <Button mnemonicParsing="false" onMousePressed="#addSlot" prefHeight="26.0" prefWidth="180.0" text="Add" />
+                                                <Label text="remove selected from table:">
+                                                   <VBox.margin>
+                                                      <Insets top="25.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Button fx:id="removeSlotBtn" mnemonicParsing="false" onMousePressed="#removeSlot" prefHeight="26.0" prefWidth="181.0" text="Remove" />
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                             <padding>
+                                                <Insets top="5.0" />
+                                             </padding></VBox>
+                                       </children>
+                                    </HBox>
+                                    <Label text="Units:" />
+                                    <Label text="Add new course:">
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font></Label>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Course code:" />
+                                          <TextField fx:id="cAddCourseField" />
+                                          <Button mnemonicParsing="false" onMousePressed="#addCourse" text="add" />
+                                       </children>
+                                    </HBox>
+                                 </children></VBox>
                            </children></AnchorPane>
                     </content>
                   </Tab>
