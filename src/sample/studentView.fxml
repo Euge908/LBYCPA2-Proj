@@ -23,7 +23,10 @@
     <top>
         <VBox prefHeight="108.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
             <children>
-                <Pane prefHeight="151.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;" />
+                <Pane prefHeight="151.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;">
+               <children>
+                  <Button fx:id="logOutButton" disable="true" layoutX="987.0" layoutY="42.0" mnemonicParsing="false" onAction="#logOut" text="Log out" />
+               </children></Pane>
             </children>
         </VBox>
     </top>
@@ -75,17 +78,17 @@
                                                                 <Insets right="20.0" />
                                                             </HBox.margin>
                                                         </TextField>
+                                                        <Button fx:id="search" mnemonicParsing="false" onAction="#search" prefHeight="26.0" prefWidth="61.0" text="Search" />
                                                         <Label layoutX="260.0" layoutY="10.0" text="Time Schedule: ">
                                                             <HBox.margin>
                                                                 <Insets right="10.0" />
                                                             </HBox.margin>
                                                         </Label>
-                                                        <ComboBox fx:id="timeComboBox" prefHeight="25.0" prefWidth="61.0">
+                                                        <ComboBox fx:id="timeComboBox" prefHeight="26.0" prefWidth="169.0">
                                                             <HBox.margin>
                                                                 <Insets right="20.0" />
                                                             </HBox.margin>
                                                         </ComboBox>
-                                                        <Button fx:id="search" mnemonicParsing="false" onAction="#search" text="Search" />
                                                         <Button fx:id="addCourseButton1" mnemonicParsing="false" onAction="#addCourse" text="Add" />
                                                         <Button fx:id="deleteCourseButton" layoutX="260.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteCourse" text="Delete" />
                                                         <Button fx:id="enrollCourseButton" mnemonicParsing="false" onAction="#enrollCourse" text="Enroll Courses" />
