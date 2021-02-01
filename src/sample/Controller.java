@@ -368,6 +368,7 @@ public class Controller {
                 enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
+                //hello
 
                 return;
             }
