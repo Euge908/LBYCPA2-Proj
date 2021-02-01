@@ -16,15 +16,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.adminController">
    <top>
       <VBox prefHeight="108.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="151.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;">
+            <Pane prefHeight="88.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;">
                <children>
-                  <Button layoutX="987.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#Logout" text="Log out" />
+                  <Button fx:id="logoutBtn" layoutX="987.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#Logout" text="Log out" />
                </children></Pane>
          </children>
       </VBox>
@@ -55,6 +56,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="824.0">
                            <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#01ba8e" height="5.0" layoutX="22.0" layoutY="451.0" stroke="#01ba8e" strokeType="INSIDE" width="98.0" />
                               <VBox prefHeight="577.0" prefWidth="830.0" spacing="10.0">
                                  <children>
                                     <HBox prefHeight="38.0" prefWidth="830.0">
@@ -120,15 +122,22 @@
                                         <TableColumn fx:id="nameCol" prefWidth="246.39995574951172" text="Name" />
                                           <TableColumn fx:id="emailCol" prefWidth="180.0" text="E-mail" />
                                           <TableColumn fx:id="unitsCol" minWidth="0.0" prefWidth="80.00006103515625" text="Units" />
-                                          <TableColumn fx:id="slotCol" prefWidth="126.4000244140625" text="Time Slot" />
+                                          <TableColumn fx:id="slotCol" prefWidth="127.99996337890627" text="Time Slot" />
                                       </columns>
                                        <VBox.margin>
                                           <Insets left="50.0" right="50.0" />
                                        </VBox.margin>
                                     </TableView>
-                                    <Label fx:id="courseLabel" text="Course: " />
-                                    <Label fx:id="studentsCountLabel" text="Number of students:" />
+                                    <Label fx:id="courseLabel" text="Course: ">
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin></Label>
+                                    <Label fx:id="studentsCountLabel" text="Number of students:">
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin></Label>
                                  </children></VBox>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#01ba8e" height="5.0" layoutX="19.0" layoutY="477.0" stroke="#01ba8e" strokeType="INSIDE" width="151.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -139,12 +148,15 @@
                            <children>
                               <HBox prefHeight="583.0" prefWidth="842.0">
                                  <children>
-                                    <VBox prefHeight="583.0" prefWidth="472.0">
+                                    <VBox prefHeight="583.0" prefWidth="464.0">
                                        <children>
-                                          <Label text="View Course">
+                                          <Label text="View course">
                                              <font>
                                                 <Font size="26.0" />
                                              </font>
+                                             <VBox.margin>
+                                                <Insets top="15.0" />
+                                             </VBox.margin>
                                           </Label>
                                           <HBox prefHeight="39.0" prefWidth="842.0">
                                              <children>
@@ -166,9 +178,9 @@
                                           </HBox>
                                           <HBox prefHeight="222.0" prefWidth="842.0">
                                              <children>
-                                                <TableView fx:id="coursesTableView" prefHeight="200.0" prefWidth="200.0">
+                                                <TableView fx:id="coursesTableView" prefHeight="222.0" prefWidth="205.0">
                                                   <columns>
-                                                    <TableColumn fx:id="cSlotCol" prefWidth="127.20000344514847" text="Time Slot" />
+                                                    <TableColumn fx:id="cSlotCol" prefWidth="199.19998627901077" text="Time Slot" />
                                                   </columns>
                                                 </TableView>
                                                 <VBox prefHeight="222.0" prefWidth="180.0" spacing="5.0">
@@ -178,12 +190,12 @@
                                                       <Label text="Time Slot" />
                                                       <TextField fx:id="cSlotField" promptText="HH:mm-HH:mm" />
                                                       <Button mnemonicParsing="false" onMousePressed="#addSlot" prefHeight="26.0" prefWidth="180.0" text="Add" />
-                                                      <Label text="remove selected from table:">
+                                                      <Label text="Remove Time Slot:">
                                                          <VBox.margin>
                                                             <Insets top="25.0" />
                                                          </VBox.margin>
                                                       </Label>
-                                                      <Button fx:id="removeSlotBtn" mnemonicParsing="false" onMousePressed="#removeSlot" prefHeight="26.0" prefWidth="181.0" text="Remove" />
+                                                      <Button fx:id="removeSlotBtn" mnemonicParsing="false" onMousePressed="#removeSlot" prefHeight="26.0" prefWidth="181.0" text="Remove selected" />
                                                    </children>
                                                    <HBox.margin>
                                                       <Insets left="20.0" />
@@ -194,7 +206,10 @@
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <Label text="Units:" />
+                                          <Label fx:id="courseUnitsLabel" text="Units:">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin></Label>
                                           <Label text="Add new course:">
                                              <VBox.margin>
                                                 <Insets top="25.0" />
@@ -214,17 +229,6 @@
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
-                                       <padding>
-                                          <Insets right="25.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox prefHeight="583.0" prefWidth="525.0">
-                                       <children>
-                                          <HBox prefHeight="27.0" prefWidth="388.0" />
-                                       </children>
-                                       <padding>
-                                          <Insets left="25.0" />
-                                       </padding>
                                     </VBox>
                                  </children>
                                  <padding>
@@ -293,7 +297,13 @@
                     </content>
                   </Tab>
               </tabs>
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
             </TabPane>
          </children></AnchorPane>
    </center>
+   <bottom>
+      <Pane prefHeight="20.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

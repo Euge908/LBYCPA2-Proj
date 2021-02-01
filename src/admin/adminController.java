@@ -7,7 +7,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -25,11 +29,12 @@ import java.util.regex.Pattern;
 
 public class adminController {
 
-
+    public Button logoutBtn;
 
 
     /** course table variables */
     public TableView sSubjectsTableView;
+    public Label courseUnitsLabel;
     private ObservableList<Map.Entry<String, String>> subjectsData = FXCollections.observableArrayList();
     public TableColumn sCodeCol;
     public TableColumn sTimeCol;
@@ -163,6 +168,14 @@ public class adminController {
 
         studentsData.addAll(p6,p7,p8);
 
+        TableViewSettings(studentTableView);
+        TableViewSettings(classesTable);
+        TableViewSettings(coursesTableView);
+        TableViewSettings(sSubjectsTableView);
+
+
+
+
         //students table view
         StudentsTableFilterSettings();
     }
@@ -198,13 +211,11 @@ public class adminController {
                     ClassTablefilterSettings();
                     SortedList<Student> sortedData = new SortedList<>(filteredclass);
 
-
-                    courseLabel.setText("Course: "+courseSearchField.getText());
-                    studentsCountLabel.setText("Number of students: "+classData.size());
-
                     sortedData.comparatorProperty().bind(classesTable.comparatorProperty());
                     classesTable.setItems(sortedData);
                 }
+                courseLabel.setText("Course: "+courseSearchField.getText().toUpperCase());
+                studentsCountLabel.setText("Number of students: "+classData.size());
             }
             else{
                 display("Field is empty!");
@@ -262,6 +273,7 @@ public class adminController {
             }
 
             coursesTableView.setItems(coursesData);
+            courseUnitsLabel.setText("Units: "+String.valueOf(coursesData.get(coursesData.size()-1).getSubjectUnit()));
         }
         else {
             PopUp.display("No course found");
@@ -295,15 +307,15 @@ public class adminController {
                         coursesData.add(new Subject(course,cSlotField.getText()+","+day));
                     }
                     else{
-                        PopUp.display("Slot already present");
+                        display("Slot already present");
                     }
                 }
                 else {
-                    PopUp.display("Invalid format");
+                    display("Invalid format");
                 }
             }
             else{
-                PopUp.display("Empty fields");
+                display("Empty fields");
             }
         }
 
@@ -322,17 +334,23 @@ public class adminController {
         Subject subject = coursesTableView.getSelectionModel().getSelectedItem();
         coursesTableView.getItems().remove(subject);
 
-        for(Student s:studentList){
-            if(s.getSchedule().containsValue(subject.getTime())&& s.getSchedule().containsKey(subject.getName())){
-                s.deleteSchdule(subject.getName());
+        if(subject!=null) {
+
+            for (Student s : studentList) {
+                if (s.getSchedule().containsValue(subject.getTime()) && s.getSchedule().containsKey(subject.getName())) {
+                    s.deleteSchdule(subject.getName());
+                }
+            }
+
+            ObservableList<Subject> updated = coursesTableView.getItems();
+
+            timeSlot.get(course).clear();
+            for (int i = 0; i < updated.size(); i++) {
+                timeSlot.get(course).add(updated.get(i).getTime());
             }
         }
-
-        ObservableList<Subject> updated = coursesTableView.getItems();
-
-        timeSlot.get(course).clear();
-        for (int i = 0; i < updated.size(); i++) {
-            timeSlot.get(course).add(updated.get(i).getTime());
+        else{
+            display("No slot selected");
         }
 
 
@@ -362,6 +380,8 @@ public class adminController {
                 courseComboBox.getItems().add(cAddCourseField.getText());
                 courseComboBox.getSelectionModel().selectLast();
                 coursesData.clear();
+                Subject subj = new Subject(cAddCourseField.getText());
+                courseUnitsLabel.setText("Units: "+String.valueOf(subj.getSubjectUnit()));
             }
 
             else{
@@ -375,10 +395,11 @@ public class adminController {
     }
 
     public void deleteCourse(MouseEvent mouseEvent){
-        String c = courseComboBox.getValue().toString();
 
-        if(c.isEmpty()){
-            System.out.println("Empty combo box");
+        String c = (String) courseComboBox.getValue();
+
+        if(c == null){
+            display("Field is empty");
         }
         else{
             if(timeSlot.containsKey(c)){
@@ -393,6 +414,9 @@ public class adminController {
                     }
                 }
                 sSubjectsTableView.getItems().clear();
+            }
+            else{
+                display("Course not found");
             }
         }
     }
@@ -494,10 +518,6 @@ public class adminController {
     }
 
 
-    //log out function
-    public void Logout(MouseEvent mouseEvent) {
-    }
-
     //change names
     public void changeName(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
@@ -517,5 +537,49 @@ public class adminController {
     public void changePassword(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
         student.setPassword(cellEditEvent.getNewValue().toString());
+    }
+
+    public void TableViewSettings(TableView table){
+        table.setRowFactory(new Callback<TableView<Object>, TableRow<Object>>() {
+            @Override
+            public TableRow<Object> call(TableView<Object> tableView2) {
+                final TableRow<Object> row = new TableRow<>();
+                row.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        final int index = row.getIndex();
+                        if (index >= 0 && index < table.getItems().size() && table.getSelectionModel().isSelected(index)  ) {
+                            table.getSelectionModel().clearSelection();
+                            event.consume();
+                        }
+                    }
+                });
+                return row;
+            }
+        });
+    }
+
+
+    //log out function
+    public void Logout(MouseEvent mouseEvent) {
+        //open student view
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../sample/login.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Enrollment System");
+            stage.setScene(new Scene(root1));
+            stage.getIcons().add(new Image("file:assets/icon.png"));
+            stage.show();
+            //close login
+            Stage thisStage = (Stage) logoutBtn.getScene().getWindow();
+            thisStage.close();
+
+        }catch(Exception e){
+
+            System.out.println(e);
+            System.out.println("Cant load window");
+        }
     }
 }

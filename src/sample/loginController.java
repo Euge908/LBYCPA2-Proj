@@ -71,6 +71,7 @@ public class loginController {
                 //close login
                 Stage thisStage = (Stage) status.getScene().getWindow();
                 thisStage.close();
+
             }catch(Exception e){
 
                 System.out.println(e);
