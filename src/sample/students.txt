@@ -1,5 +1,5 @@
-Dave Galamgam|dave_galamgam@dlsu.edu.ph|pass1|11910607|FUNDCKT,8:00-10:00,MW/9:30-12:30,TH
-Felix|felix_montanez@dlsu.edu.ph|pass1|11926171|FUNDCKT,8:00-10:00,MW/9:30-12:30,TH
+Dave Galamgam|dave_galamgam@dlsu.edu.ph|pass1|11910607|18|FUNDCKT,8:00-10:00,MW/9:30-12:30,TH
+Felix|felix_montanez@dlsu.edu.ph|pass1|11926171|18|FUNDCKT,8:00-10:00,MW/9:30-12:30,TH
 John Doe|john_doe@dlsu_edu_ph|pass2|12011210|LBYCPEI/
 Lana Hamilton|lana_hamilton@dlsu.edu.ph|pass3|12048842
 Jack Morgan|jack_morgan@dlsu.edu.ph|pass4|11896939

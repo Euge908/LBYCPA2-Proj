@@ -1,4 +1,4 @@
 felix|11926171|0|18|phys>09:00-10:00,MW|subject2>07:00-9:00,MW|subject3>07:00-9:00,TH|
 felix|11926171|0|18|phys>09:00-10:00,MW|subject2>07:00-9:00,MW|subject3>07:00-9:00,TH|
 felix|felix@dlsu.edu.ph|pass1|11926171|0|18|phys>09:00-10:00,MW|subject2>07:00-9:00,MW|subject3>07:00-9:00,TH|
-felix|felix@dlsu.edu.ph|pass1|11926171|0|18|phys>09:00-10:00,MW|subject2>07:00-9:00,MW|subject3>07:00-9:00,TH|
+felix|felix@dlsu.edu.ph|pass1|11926171|0|18|phys>09:00-10:00,MW|subject3>07:00-9:00,TH|

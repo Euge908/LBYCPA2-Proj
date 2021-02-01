@@ -137,6 +137,9 @@ public class loginController {
                 System.out.println(index);
 
                 System.out.println(studentList.get(index));
+                source.studentData = studentList.get(index);
+                source.index = index;
+                System.out.println("student data is "+ source.studentData+"\n"+"index is" + source.index);
 
 
 
