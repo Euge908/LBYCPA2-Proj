@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.input.MouseEvent;
+import sample.Person;
 import sample.PopUp;
 import sample.Student;
 import sample.Subject;
@@ -31,7 +32,7 @@ public class adminController {
     public Label courseLabel;
     public Label studentsCountLabel;
     public ComboBox courseComboBox;
-    public TableView coursesTableView;
+    public TableView<Subject> coursesTableView;
     public TableColumn cSlotCol;
     public TextField cDayField;
     public TextField cSlotField;
@@ -69,8 +70,6 @@ public class adminController {
 
         courseComboBox.getItems().addAll(timeSlot.keySet());
         cSlotCol.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
-        coursesTableView.setEditable(true);
-        cSlotCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
 
 
@@ -81,8 +80,7 @@ public class adminController {
         dayCol.setCellValueFactory(new PropertyValueFactory<>("Day"));
         slotCol.setCellValueFactory(new PropertyValueFactory<>("Time"));
 
-        Student p0 = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18)
-         Student p1 = new sampleTable(119,"dave",24,"MW","8:00-10:00");
+        sampleTable p1 = new sampleTable(119,"dave",24,"MW","8:00-10:00");
         sampleTable p2 = new sampleTable(119,"wilton",21,"MT","9:00-10:15");
         sampleTable p3 = new sampleTable(149,"eugene",20,"TH","7:00-8:30");
         sampleTable p4 = new sampleTable(139,"john",11,"MT","8:00-11:00");
@@ -90,6 +88,8 @@ public class adminController {
 
         dataList.addAll(p1,p2,p3,p4,p5);
     }
+
+
 
     public void filterSettings(){
         //filters
@@ -155,10 +155,6 @@ public class adminController {
         String course = (String) courseComboBox.getValue();
 
 
-        //add condition to check the time to avoid bugs
-        //^ above will create erronous time if smart ass uses it up
-        //also simplify the table
-
         if(timeSlot.containsKey(course)){
             data.clear();
 
@@ -170,7 +166,7 @@ public class adminController {
             coursesTableView.setItems(data);
         }
         else {
-
+            PopUp.display("No course found");
             courseComboBox.getSelectionModel().clearSelection();
         }
     }
@@ -263,12 +259,15 @@ public class adminController {
                 timeSlot.put(cAddCourseField.getText(),new ArrayList<>());
                 courseComboBox.getItems().add(cAddCourseField.getText());
                 courseComboBox.getSelectionModel().selectLast();
+                data.clear();
             }
 
             else{
                 PopUp.display("course already present");
             }
         }
+
+        cAddCourseField.clear();
 
 
     }
@@ -284,6 +283,7 @@ public class adminController {
                 courseComboBox.getItems().remove(c);
                 courseComboBox.getSelectionModel().clearSelection();
                 timeSlot.remove(c);
+                data.clear();
             }
         }
     }
@@ -356,4 +356,5 @@ public class adminController {
         // matched the ReGex
         return m.matches();
     }
+
 }
