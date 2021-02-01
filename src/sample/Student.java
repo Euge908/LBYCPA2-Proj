@@ -20,7 +20,7 @@ public class Student {
     boolean enrollmentStatus; //not sure if this is still necessary
     double tuition;
     int currentUnits = 0;
-    int maxUnits;
+    int maxUnits = 21;
     HashMap<String, String> schedule = new HashMap<String, String>(); //key: subject, value: time
     LinkedList<Subject> subjectList = new LinkedList<Subject>(); //not sure if this is really necessary now
 
@@ -46,6 +46,51 @@ public class Student {
         this.tuition = tuition;
     }
 
+    void setEmail(String email) {
+        this.email = email;
+    }
+    
+    void setEnrollmentStatus(Boolean status){
+        this.enrollmentStatus = status;
+    }
+
+    public int getCurrentUnits(){
+        return this.currentUnits;
+    }
+
+    public int getMaxUnits(){
+        return this.maxUnits;
+    }
+
+    public LinkedList<Subject> getSubjectList(){
+        return this.subjectList;
+    }
+
+    public HashMap<String, String> getSchedule(){
+        return this.schedule;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getIdNumber(){
+        return this.idNumber;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public double getTuition() {
+        return this.tuition;
+    }
+
+    public Boolean getEnrollmentStatus(){
+        return this.enrollmentStatus;
+    }
+
+
     /**
      * adds subject to HashMap Schedule
      *
@@ -56,38 +101,17 @@ public class Student {
 
 
     void addSchedule(String subjectToBeEnrolled, String timeToBeEnrolled, int unit) {
-        //TODO: Time format is 0X:00-0Y:00,Day
-        int currentLowerBound = Integer.parseInt(timeToBeEnrolled.substring(0, 3) + timeToBeEnrolled.substring(4, 6));
-        int currentUpperBound = Integer.parseInt(timeToBeEnrolled.substring(6, 8) + timeToBeEnrolled.substring(9, 11));
-        String currentDay = timeToBeEnrolled.substring(timeToBeEnrolled.lastIndexOf(","));
-        //check if there is a time conflict
 
-        for (String pastTimeSched : schedule.values()) {
-            int pastLowerBound = Integer.parseInt(pastTimeSched.substring(0, 3) + pastTimeSched.substring(4, 6));
-            int pastUpperBound = Integer.parseInt(pastTimeSched.substring(6, 8) + pastTimeSched.substring(9, 11));
-            String pastDay = pastTimeSched.substring(pastTimeSched.lastIndexOf(","));
-            //if there is a time and day intersection: quit
-            if ((currentLowerBound <= pastUpperBound || currentUpperBound >= pastLowerBound) && (!pastDay.equals(currentDay))) {
-                return;
-            }
-        }
+        //just adds the schedule
+        schedule.put(subjectToBeEnrolled, timeToBeEnrolled);
+        currentUnits = currentUnits + unit;
+        tuition = currentUnits*tuitionMultiplier;
 
-        if (maxUnits <= currentUnits + unit) {
-            System.out.println("Maxed units reached!");
-        } else if (schedule.containsKey(subjectToBeEnrolled)) {
-            //checks if student already enrolled
-            System.out.println("Subject already enrolled");
-        } else {
-            schedule.put(subjectToBeEnrolled, timeToBeEnrolled);
-            currentUnits = currentUnits + unit;
-            tuition = currentUnits * tuitionMultiplier;
+        //add subject to linkedList
+        subjectList.add(new Subject(subjectToBeEnrolled, timeToBeEnrolled));
+        //add student to student list of Subject
+        addStudentToSubject();
 
-            //add subject to linkedList
-            subjectList.add(new Subject(subjectToBeEnrolled, unit, timeToBeEnrolled));
-            //add student to student list of Subject
-
-            addStudentToSubject();
-        }
 
     }
 
