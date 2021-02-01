@@ -23,6 +23,7 @@ import java.util.LinkedList;
 
 public class Controller {
 
+
     public TableColumn courseCodeRef;
     public TableColumn unitRef;
     public TableColumn scheduleRef;
@@ -95,6 +96,8 @@ public class Controller {
 
 
     }
+
+
 
 
     public void initialize() {
@@ -415,6 +418,7 @@ public class Controller {
 
 
     }
+
 
 
 
