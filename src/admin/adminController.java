@@ -16,6 +16,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -23,6 +25,9 @@ import sample.PopUp;
 import sample.Subject;
 import sample.Student;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,10 +36,16 @@ public class adminController {
 
     public Button logoutBtn;
 
+    //to be passed data
+    List<Student> studentList = new ArrayList<>();
+    private HashMap<String, List<String>> timeSlot = new HashMap<>();
+
+
 
     /** course table variables */
     public TableView sSubjectsTableView;
     public Label courseUnitsLabel;
+    public Label name;
     private ObservableList<Map.Entry<String, String>> subjectsData = FXCollections.observableArrayList();
     public TableColumn sCodeCol;
     public TableColumn sTimeCol;
@@ -60,8 +71,8 @@ public class adminController {
 
     /** view courses variables */
 
-    private HashMap<String, List<String>> timeSlot = new HashMap<>(); //replace this na lang
-    private LinkedList<Subject> subjects = new LinkedList<>();
+
+
     private ObservableList<Subject> coursesData = FXCollections.observableArrayList();
 
     public Label courseLabel;
@@ -78,8 +89,6 @@ public class adminController {
     /** view classes variables */
     private final ObservableList<Student> classData = FXCollections.observableArrayList();
     FilteredList<Student> filteredclass = new FilteredList<>(classData, b -> true);
-
-    List<Student> studentList = new ArrayList<>();
 
     public TableView classesTable;
     public TableColumn idCol;
@@ -103,6 +112,20 @@ public class adminController {
 
     public void initialize(){
         initializeTimeSlot();
+
+        courseSearchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER)  {
+                    try {
+                        courseSearch();
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         //table view for students tab
         studentTableView.setEditable(true);
@@ -194,6 +217,10 @@ public class adminController {
     }
 
     public void searchCourse(MouseEvent mouseEvent) {
+        courseSearch();
+    }
+
+    private void courseSearch(){
         String lookup = courseSearchField.getText();
         if(timeSlot.containsKey(lookup)){
             if(!lookup.isEmpty()){
@@ -283,44 +310,55 @@ public class adminController {
 
     //add slot
     public void addSlot(MouseEvent mouseEvent) {
+        String course = (String) courseComboBox.getValue();
+        if(course!=null){
+            if(timeSlot.containsKey(courseComboBox.getValue().toString())){
+                if(!(cDayField.getText().trim().isEmpty() || cSlotField.getText().trim().isEmpty())){
 
-        if(timeSlot.containsKey(courseComboBox.getValue().toString())){
-            if(!(cDayField.getText().trim().isEmpty() || cSlotField.getText().trim().isEmpty())){
-                String course = (String) courseComboBox.getValue();
+                    if(isValidTime(cSlotField.getText()) && isValidDay(cDayField.getText().toLowerCase())) {
+                        if(isValidRange(cSlotField.getText())){
+                            char[] pat = "mtwhfs".toCharArray();
+                            String day = sortByPattern(cDayField.getText().toLowerCase().toCharArray(),pat);
+                            String time = cSlotField.getText()+","+day;
 
-                if(isValidTime(cSlotField.getText()) && isValidDay(cDayField.getText().toLowerCase())) {
+                            Boolean valid = true;
+                            for(String s:timeSlot.get(courseComboBox.getValue().toString())){
+                                if(s.equalsIgnoreCase(time)){
+                                    valid = false;
+                                }
+                            }
 
-                    char[] pat = "mtwhfs".toCharArray();
-                    String day = sortByPattern(cDayField.getText().toLowerCase().toCharArray(),pat);
-                    String time = cSlotField.getText()+","+day;
-
-                    Boolean valid = true;
-                    for(String s:timeSlot.get(courseComboBox.getValue().toString())){
-                        if(s.equalsIgnoreCase(time)){
-                            valid = false;
+                            /**valid add slot */
+                            if(valid){
+                                timeSlot.get(courseComboBox.getValue()).add(cSlotField.getText()+","+day);
+                                coursesData.add(new Subject(course,cSlotField.getText()+","+day));
+                            }
+                            else{
+                                display("Slot is already present");
+                            }
                         }
-                    }
+                        else{
+                            display("Invalid range (Earlier time - Later time");
+                        }
 
-                    /**valid add slot */
-                    if(valid){
-                        timeSlot.get(courseComboBox.getValue()).add(cSlotField.getText()+","+day);
-                        coursesData.add(new Subject(course,cSlotField.getText()+","+day));
                     }
-                    else{
-                        display("Slot already present");
+                    else {
+                        display("Use 24 hr format / Day of the week abbreviations");
                     }
                 }
-                else {
-                    display("Invalid format");
+                else{
+                    display("Field is empty");
                 }
             }
-            else{
-                display("Empty fields");
+            else {
+                display("No selected course");
             }
+            cDayField.clear();
+            cSlotField.clear();
         }
-
-        cDayField.clear();
-        cSlotField.clear();
+        else {
+            display("No selected course");
+        }
 
     }
 
@@ -437,22 +475,16 @@ public class adminController {
         return true;
     }
 
+    //functions to check time input
     static String sortByPattern(char[] str, char[] pat)
     {
-        // Create a count array stor
-        // count of characters in str.
+
         int count[] = new int[26];
 
-        // Count number of occurrences of
-        // each character in str.
         for (int i = 0; i < str.length; i++) {
             count[str[i] - 'a']++;
         }
 
-        // Traverse the pattern and print every characters
-        // same number of times as it appears in str. This
-        // loop takes O(m + n) time where m is length of
-        // pattern and n is length of str.
         int index = 0;
         for (int i = 0; i < pat.length; i++) {
             for (int j = 0; j < count[pat[i] - 'a']; j++) {
@@ -478,16 +510,32 @@ public class adminController {
             return false;
         }
 
-        // Pattern class contains matcher() method
-        // to find matching between given time
-        // and regular expression.
         Matcher m = p.matcher(time);
         System.out.println(m.matches());
 
-
-        // Return if the time
-        // matched the ReGex
         return m.matches();
+    }
+
+    public static boolean isValidRange(String time){
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        String[] sched = time.split("-");
+
+        Date date = new Date();
+        Date date1 = new Date();
+
+        try {
+            date = format.parse(sched[0]);
+            date1 = format.parse(sched[1]);
+        }catch (ParseException e){
+            throw new IllegalArgumentException(e.getMessage(),e);
+        }
+
+        if(date.after(date1))
+        {
+            return false;
+        }else{
+            return true;
+        }
     }
 
 
@@ -509,11 +557,17 @@ public class adminController {
 
     //check subjects of student
     public void checkStudent(MouseEvent mouseEvent) {
+        if(studentTableView.getSelectionModel().getSelectedItem() != null) {
 
-        Student student = studentTableView.getSelectionModel().getSelectedItem();
-        HashMap<String,String> map = student.getSchedule();
-        subjectsData = FXCollections.observableArrayList(map.entrySet());
-        sSubjectsTableView.setItems(subjectsData);
+            Student student = studentTableView.getSelectionModel().getSelectedItem();
+            HashMap<String, String> map = student.getSchedule();
+            subjectsData = FXCollections.observableArrayList(map.entrySet());
+            sSubjectsTableView.setItems(subjectsData);
+            name.setText(student.getName());
+        }
+        else{
+            display("No selected student");
+        }
 
     }
 
@@ -522,6 +576,7 @@ public class adminController {
     public void changeName(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
         student.setName(cellEditEvent.getNewValue().toString());
+        name.setText(student.getName());
     }
 
     public void changeId(TableColumn.CellEditEvent cellEditEvent) {

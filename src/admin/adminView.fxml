@@ -9,7 +9,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -267,27 +266,24 @@
                                         <TableColumn fx:id="sIDCol" onEditCommit="#changeId" prefWidth="91.199951171875" text="ID" />
                                           <TableColumn fx:id="sUnitsCol" prefWidth="75.0" text="Units" />
                                           <TableColumn fx:id="sEmailCol" onEditCommit="#changeEmail" prefWidth="291.1999816894531" text="E-mail" />
-                                          <TableColumn fx:id="sPasswordCol" onEditCommit="#changePassword" prefWidth="127.99991455078123" text="Password" />
+                                          <TableColumn fx:id="sPasswordCol" onEditCommit="#changePassword" prefWidth="117.59991455078125" text="Password" />
                                       </columns>
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
                                     </TableView>
                                     <AnchorPane prefHeight="277.0" prefWidth="810.0">
                                        <children>
-                                          <ImageView fitHeight="135.0" fitWidth="150.0" layoutX="64.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../sample/placeholderProfilePic.jpg" />
-                                             </image>
-                                          </ImageView>
-                                          <Label layoutX="321.0" layoutY="20.0" text="Subjects:" />
+                                          <Label layoutX="288.0" layoutY="20.0" text="Subjects:" />
                                           <Button layoutX="22.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#checkStudent" text="Check subjects of selected row" />
-                                          <TableView fx:id="sSubjectsTableView" layoutX="321.0" layoutY="39.0" prefHeight="200.0" prefWidth="388.0">
+                                          <TableView fx:id="sSubjectsTableView" layoutX="288.0" layoutY="42.0" prefHeight="200.0" prefWidth="388.0">
                                             <columns>
                                               <TableColumn fx:id="sCodeCol" prefWidth="197.5999755859375" text="Course Code" />
                                               <TableColumn fx:id="sTimeCol" prefWidth="189.60006713867188" text="Time Slot" />
                                             </columns>
                                           </TableView>
-                                          <TextField layoutX="49.0" layoutY="235.0" prefHeight="26.0" prefWidth="101.0" promptText="change picture" />
-                                          <Label layoutX="117.0" layoutY="190.0" text="John" />
-                                          <Button layoutX="157.0" layoutY="235.0" mnemonicParsing="false" text="change" />
+                                          <Label layoutX="22.0" layoutY="67.0" text="Student:" />
+                                          <Label fx:id="name" layoutX="73.0" layoutY="67.0" prefHeight="18.0" prefWidth="159.0" />
                                        </children>
                                     </AnchorPane>
                                  </children>

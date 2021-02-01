@@ -27,12 +27,12 @@ public class Subject {
 
 
     public String getName(){
-        return name;
+        return name.toUpperCase();
     }
 
 
     public String getTime(){
-        return time;
+        return time.toUpperCase();
     }
 
     public LinkedList<String[]>getStudentList(){
