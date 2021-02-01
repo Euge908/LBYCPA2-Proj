@@ -1,12 +1,10 @@
 package sample;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -109,7 +107,7 @@ public class Controller {
         Image image = new Image(new FileInputStream("assets/icon.png"));
         logo.setImage(image);
 
-//        initializeStudentData();
+        initializeStudentData();
 
 
         initializeTimeSlot();
@@ -212,7 +210,7 @@ public class Controller {
         enrolledCourseCodesTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
         enrolledUnitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         enrolledScheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
-        enrolledSlotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+//        enrolledSlotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
 
     }
 
@@ -359,10 +357,13 @@ public class Controller {
 
     public void deleteCourse() {
         String course = courseTextField.getText();
-        System.out.println(course);
+
+
 
         for (Subject a : data) {
-            if (a.getName().equals(course)) {
+            System.out.println(a.getName() +" vs " + course);
+            if (a.getName().toLowerCase().equals(course)) {
+                System.out.println(true);
                 data.remove(a);
                 enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;

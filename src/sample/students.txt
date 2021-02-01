@@ -1,2 +1,2 @@
 Dave|dave_galamgam@dlsu.edu.ph|pass1|11910607|18
-Felix|felix_montanez@dlsu.edu.ph|pass1|11926171|18
+Felix|felix_montanez@dlsu.edu.ph|pass1|11926171|18|8|caleng2>15:15-17:45,MW|lbych1a>14:30-17:30,W|engchem>07:30-09:00,MW|lbycpa2>09:15-12:15,W

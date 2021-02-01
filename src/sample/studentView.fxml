@@ -136,7 +136,6 @@
                                                         <TableColumn fx:id="enrolledCourseCodesTableColumn" prefWidth="85.60002291202545" text="Course Code" />
                                                         <TableColumn fx:id="enrolledUnitsTableColumn" prefWidth="339.99996185302734" text="Units" />
                                                         <TableColumn fx:id="enrolledScheduleTableColumn" prefWidth="75.0" text="Schedule" />
-                                          <TableColumn fx:id="enrolledSlotsTableColumn" prefWidth="75.0" text="Slots" />
                                                     </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
