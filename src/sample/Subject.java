@@ -6,18 +6,20 @@ public class Subject {
     public String name;
     public int subjectUnit;
     public String time;
+    public int dummyValue;
 
     public LinkedList<Student> studentList = new LinkedList<>();
 
 
 
     //Constructor
-    Subject(String name, String time) {
+    public Subject(String name, String time) {
         this.name = name;
         this.time = time;
         getSubjectUnit();
 
     }
+
 
     public String getName(){
         return name;
@@ -32,8 +34,8 @@ public class Subject {
         return this.studentList;
     }
 
-    public void addStudent(){
-
+    public void addStudent(Student student){
+        studentList.add(student);
     }
 
     public int getSubjectUnit() {
@@ -127,6 +129,8 @@ public class Subject {
         return subjectUnit;
     }
 
-
+    public int getStudentCount(){
+        return this.studentList.size();
+    }
 
 }

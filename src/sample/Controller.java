@@ -36,7 +36,7 @@ public class Controller {
     @FXML
     Label currentUserNameLabel, currentUserEmailLabel;
 
-    String selectedTime; //remove this
+    String selectedTime;
 
 
     private HashMap<String, String[]> timeSlot = new HashMap<>(); //replace this na lang
@@ -61,11 +61,21 @@ public class Controller {
         int pastUpperBound = Integer.parseInt(time2.substring(6, 8)+ time2.substring(9, 11));
         String pastDay = time2.substring(time2.lastIndexOf(","));
 
-        if(!(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound) && currentDay.equals(pastDay)){
+
+        //Bug: still need to fix especially T TH
+        //M T W H F
+        // TH
+
+
+
+        if(!(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound)){
+            if(currentDay.equals("T") && pastDay.equals("TH") || currentDay.equals("TH") && pastDay.equals("T") ){
+                return false;
+            }
             return true;
-        }else{
-            return false;
         }
+        return false;
+
 
     }
 
@@ -158,6 +168,24 @@ public class Controller {
 
     public void enrollCourse(){
 
+        if(data.size()==0){
+            //add something first before enrolling
+
+        }
+
+
+        for(Subject x: data){
+            Student dummy = currentStudent;
+
+
+
+            //add student to course
+            //increment student count
+            //increment course and unit count(assumed na there isn't a function for that)
+            //increments
+            //then add course to student
+            //currentStudent.
+        }
 
     }
 
