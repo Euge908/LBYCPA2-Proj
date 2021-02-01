@@ -8,7 +8,7 @@ public class Subject {
     public String time;
     public int dummyValue;
 
-    public LinkedList<Student> studentList = new LinkedList<>();
+    public LinkedList<String[]> studentList = new LinkedList<>();
 
 
 
@@ -30,11 +30,11 @@ public class Subject {
         return time;
     }
 
-    public LinkedList<Student>getStudentList(){
+    public LinkedList<String[]>getStudentList(){
         return this.studentList;
     }
 
-    public void addStudent(Student student){
+    public void addStudent(String[] student){
         studentList.add(student);
     }
 

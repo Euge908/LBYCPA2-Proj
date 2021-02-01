@@ -35,8 +35,9 @@ public class Controller {
     TableView enrollCoursesTable, enrolledCoursesTable;
 
     @FXML
-    TableColumn courseCodeTableColumn, nameTableColumn, unitsTableColumn,
-            scheduleTableColumn, slotsTableColumn;
+    TableColumn courseCodeTableColumn, unitsTableColumn,
+            scheduleTableColumn, slotsTableColumn, enrolledCourseCodesTableColumn,
+            enrolledUnitsTableColumn, enrolledScheduleTableColumn, enrolledSlotsTableColumn;
 
     @FXML
     ComboBox timeComboBox;
@@ -55,6 +56,7 @@ public class Controller {
 
     private ObservableList<Subject> data = FXCollections.observableArrayList();
 
+    private Alert errorMessage = new Alert(Alert.AlertType.WARNING);
 
 
     public static boolean isTimeConflict(String time1, String time2){
@@ -70,18 +72,12 @@ public class Controller {
         String pastDay = time2.substring(time2.lastIndexOf(","));
 
 
-        //Bug: still need to fix especially T TH
-        //M T W H F
-        // TH
-
-
-
-        if(!(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound)){
-            if(currentDay.equals("T") && pastDay.equals("TH") || currentDay.equals("TH") && pastDay.equals("T") ){
-                return false;
-            }
-            return true;
+        if(currentDay.equals(pastDay) &&(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound)){
+            return false;
+        }else if(currentDay.equals("T") && pastDay.equals("TH") || currentDay.equals("TH") && pastDay.equals("T") ){
+            return false;
         }
+
         return false;
 
 
@@ -90,6 +86,9 @@ public class Controller {
 
     public void initialize() {
         initializeTimeSlot();
+
+        errorMessage.setHeaderText(null);
+        errorMessage.setTitle("Error Message");
 
         currentUserNameLabel.setText(currentStudent.name);
         currentUserEmailLabel.setText(currentStudent.email);
@@ -100,11 +99,15 @@ public class Controller {
         });
 
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
-
         unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         scheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
         slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
 
+
+        enrolledCourseCodesTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
+        enrolledUnitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
+        enrolledScheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
+        enrolledSlotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
 
     }
 
@@ -119,12 +122,7 @@ public class Controller {
 
         //add condition to check the time to avoid bugs
         //^ above will create erroneous time if smart ass uses it up
-        //also simplify the table 
-
-        Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-        errorMessage.setHeaderText(null);
-        errorMessage.setTitle("Error Message");
-
+        //also simplify the table
 
 
         for(Subject x: data){
@@ -184,13 +182,18 @@ public class Controller {
 
         if(data.size()==0){
             //add something first before enrolling
-
+            errorMessage.setContentText("Add something first");
+            errorMessage.showAndWait();
         }
 
+        //set the table values of enrolled courses
+        enrollCoursesTable.getItems().clear();
+        enrolledCoursesTable.setItems(data);
+
+        //set the
 
         for(Subject x: data){
-            Student dummy = currentStudent;
-
+            currentStudent.addSubject(x);
 
 
             //add student to course
@@ -254,8 +257,6 @@ public class Controller {
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
                 enrollCoursesTable.setItems(data);
-
-
                 return;
             }
         }
