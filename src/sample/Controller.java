@@ -28,6 +28,7 @@ public class Controller {
     public TableColumn scheduleRef;
     public TableView refTable;
     public TextArea feeText;
+    final int tuitionMultiplier = 3604;
     /**
      * temp storage for units for adding and deleting subjects
      * convert this to student.currentUnits during enrollment
@@ -155,9 +156,9 @@ public class Controller {
     private void generateTuition(Student st1) {
         LocalDate dt = LocalDate.now();
 
-        //multiply current units with multiplier
-//        double tuitionFee = st1.currentUnits* tuitionMultiplier;
-        double tuitionFee = 80746;
+       // multiply current units with multiplier
+        double tuitionFee = st1.currentUnits* tuitionMultiplier;
+
         double misc = tuitionFee * ((float) 5234 / 68124);
         double special = tuitionFee * ((float) 200 / 68124);
         double development = tuitionFee * ((float) 2000 / 68124);
