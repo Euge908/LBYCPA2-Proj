@@ -64,7 +64,7 @@ public class Controller {
 
     //dummy student
     private Student currentStudent = new Student("afag", "felix@dlsu.edu.ph", "pass1", "119106606", 18);
-//        private Student currentStudent;
+    //        private Student currentStudent;
     private ObservableList<Subject> data = FXCollections.observableArrayList();
     private ObservableList<Subject> ref = FXCollections.observableArrayList();
 
@@ -131,7 +131,12 @@ public class Controller {
         scheduleRef.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
 
 
-        initializeStudentData();
+
+
+
+
+
+
 
 
     }
@@ -142,14 +147,37 @@ public class Controller {
     private void initializeStudentData() {
         String[] studentValues = source.studentData.split("\\|");
         currentStudent.name = studentValues[0];
-        currentStudent.email= studentValues[1];
+        currentStudent.email = studentValues[1];
         currentStudent.password = studentValues[2];
         currentStudent.idNumber = studentValues[3];
         currentStudent.maxUnits = Integer.parseInt(studentValues[4]);
 
+        //check if student has subjects  if size is larger than 5
+        if (studentValues.length > 5) {
+//            logOutButton.setDisable(false);
+            for (int i = 5; i < studentValues.length; i++) {
+                String[] temp = studentValues[i].split(">");
+                System.out.println("subject: " + temp[0] + "time:" + temp[1]);
+
+
+                data.add(new Subject(temp[0].toLowerCase(),temp[1].toLowerCase()));
+                currentStudent.currentUnits = currentStudent.currentUnits + new Subject(temp[0], temp[1]).getSubjectUnit();
+                System.out.println(currentStudent.currentUnits);
+            }
 
 
 
+
+//        //set the table values of enrolled courses
+            enrolledCoursesTable.setItems(data);
+
+
+
+
+
+            generateTuition(currentStudent);
+
+        }
 
 
     }
@@ -267,6 +295,7 @@ public class Controller {
             //currentStudent.
         }
 
+
         generateTuition(currentStudent);
 
     }
@@ -351,7 +380,7 @@ public class Controller {
      *
      * @param st current student object
      */
-    void saveToFile(Student st) {
+    void saveToFile(Student st) throws IOException {
         //array to store the csv string
         //FORMAT: name,idNum,currentUnits,maxUnits,subjects...
         ArrayList<String> data = new ArrayList<String>();
@@ -359,7 +388,6 @@ public class Controller {
         data.add(st.email);
         data.add(st.password);
         data.add(st.idNumber);
-        data.add(String.valueOf(st.currentUnits));
         data.add(String.valueOf(st.maxUnits));
         //loop thorough linked list and get name and time and append
         //subject format subject.name>subject.time
@@ -373,34 +401,43 @@ public class Controller {
             sb.append(s);
             sb.append("|");
         }
+        if(sb.charAt(sb.length()-1) == '|'){
+            sb.deleteCharAt(sb.length()-1);
+        }
+
 
         System.out.println(sb.toString());
         System.out.println("appended to list");
-        appendStrToFile("src/sample/test.txt", sb.toString());
+        source.txtFile.set(source.index, sb.toString());
+        appendStrToFile("src/sample/students.txt",source.txtFile);
 
 
     }
 
     /**
      * Takes string and appends to txt file
-     *
-     * @param path filename path for text file
-     * @param str  data in string format
+     *  @param path filename path for text file
+     * @param arr  data in string format
      */
-    static void appendStrToFile(String path, String str) {
-        try {
-
-            File file = new File(path);
-            FileWriter fr = new FileWriter(file, true);
-            BufferedWriter br = new BufferedWriter(fr);
-            PrintWriter writer = new PrintWriter(br);
-            writer.println(str);
-            writer.close();
-
-
-        } catch (IOException i) {
-            i.printStackTrace();
+    static void appendStrToFile(String path, ArrayList<String> arr) throws IOException {
+//        try {
+//
+//            File file = new File(path);
+//            FileWriter fr = new FileWriter(file, false);
+//            BufferedWriter br = new BufferedWriter(fr);
+//            PrintWriter writer = new PrintWriter(br);
+//            writer.println(str);
+//            writer.close();
+//
+//
+//        } catch (IOException i) {
+//            i.printStackTrace();
+//        }
+        FileWriter writer = new FileWriter(path);
+        for(String str: arr) {
+            writer.write(str + System.lineSeparator());
         }
+        writer.close();
         System.exit(0);
 
 
@@ -447,7 +484,7 @@ public class Controller {
     }
 
     public void logOut(ActionEvent actionEvent) {
-    displayYoN("Exit program");
+        displayYoN("Exit program");
 
     }
 
@@ -461,15 +498,19 @@ public class Controller {
         // Get the Stage.
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("file:assets/icon.png")); // To add an icon
-        
-        
+
+
         alert.getButtonTypes().setAll(okButton, noButton);
         alert.showAndWait().ifPresent(type -> {
             if (type == okButton) {
                 System.out.println("enter");
                 display("Thank you for using the program!!");
-                saveToFile(currentStudent);
-            } else  {
+                try {
+                    saveToFile(currentStudent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
                 System.out.println("wrong");
             }
         });
