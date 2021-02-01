@@ -129,6 +129,7 @@ public class Controller {
      * creates course code tab
      */
     private void initializeCourseCodeTab() {
+        generateTuition(currentStudent);
         //loop through hashmap and make subjects and add them to refTable
         Iterator it = timeSlot.entrySet().iterator();
         while (it.hasNext()) {
@@ -157,7 +158,8 @@ public class Controller {
         LocalDate dt = LocalDate.now();
 
        // multiply current units with multiplier
-        double tuitionFee = st1.currentUnits* tuitionMultiplier;
+//        double tuitionFee = st1.currentUnits* tuitionMultiplier;
+        double tuitionFee = 80758;
 
         double misc = tuitionFee * ((float) 5234 / 68124);
         double special = tuitionFee * ((float) 200 / 68124);
