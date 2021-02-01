@@ -120,8 +120,8 @@ public class Subject {
         }else if (name.toLowerCase().contains("ecn")) {
             this.subjectUnit =  3;
 
-        }else if (name.toLowerCase().contains("lby")) {
-            this.subjectUnit =  1;
+        }else if (name.toLowerCase().contains("cal")) {
+            this.subjectUnit =  3;
         }else if (name.toLowerCase().contains("lby")) {
             this.subjectUnit =  1;
         }
