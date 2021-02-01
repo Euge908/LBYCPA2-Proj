@@ -91,62 +91,81 @@ public class Student {
     }
 
 
-    /**
-     * adds subject to HashMap Schedule
-     *
-     * @param subjectToBeEnrolled String for subject
-     * @param timeToBeEnrolled    string time
-     * @param unit                unit count
-     */
 
-
-    void addSchedule(String subjectToBeEnrolled, String timeToBeEnrolled, int unit) {
-
-        //just adds the schedule
-        schedule.put(subjectToBeEnrolled, timeToBeEnrolled);
-        currentUnits = currentUnits + unit;
-        tuition = currentUnits*tuitionMultiplier;
-
-        //add subject to linkedList
-        subjectList.add(new Subject(subjectToBeEnrolled, timeToBeEnrolled));
-        //add student to student list of Subject
-        addStudentToSubject();
-
-
+    private void addStudentToCourse(Subject course){
+        //adds the student to the course object
+        course.addStudent(new String[]{name, idNumber});
     }
 
-    /**
-     * After adding subject to subject list
-     * each subject will add student to student list
-     */
-    private void addStudentToSubject() {
-        //this function adds the student who enrolled to the subject object
-
-        //loop trough subject list and check if student is there
-        System.out.println("Subject list size is " + subjectList.size());
-
-        for (int i = 0; i < subjectList.size(); i++) {
-            System.out.println("Current subject is " + subjectList.get(i).name);
-            //if student list for subject is empty
-            //automatically add student
-            if (subjectList.get(i).studentList.size() == 0) {
-                subjectList.get(i).studentList.add(this);
-            } else {
-                //check if the subject already has student
-                for (int j = 0; j < subjectList.get(i).studentList.size(); j++) {
-                    //if true add return null
-                    if (subjectList.get(i).studentList.get(j).name.equals(name)) {
-                        System.out.print("");
-
-                    }
-                    //if not in student list add student object
-                    else {
-                        subjectList.get(i).studentList.add(this);
-                    }
-                }
-            }
-        }
+    private void addCourseToStudent(Subject course){
+        //adds the course to the student object
+        schedule.put(course.getName(), course.getTime());
     }
+
+    public void addSubject(Subject course){
+        addStudentToCourse(course);
+        addCourseToStudent(course);
+        System.out.println(course.getName() + "-"+ course.getTime()+ " <-> " + name + "-" + idNumber);
+    }
+
+//
+//    /**
+//     * adds subject to HashMap Schedule
+//     *
+//     * @param subjectToBeEnrolled String for subject
+//     * @param timeToBeEnrolled    string time
+//     * @param unit                unit count
+//     */
+//
+//
+//
+//    public void addSchedule(String subjectToBeEnrolled, String timeToBeEnrolled, int unit) {
+//
+//        //just adds the schedule
+//        schedule.put(subjectToBeEnrolled, timeToBeEnrolled);
+//        currentUnits = currentUnits + unit;
+//        tuition = currentUnits*tuitionMultiplier;
+//
+//        //add subject to linkedList
+//        subjectList.add(new Subject(subjectToBeEnrolled, timeToBeEnrolled));
+//        //add student to student list of Subject
+//        addStudentToSubject();
+//
+//
+//    }
+//
+//    /**
+//     * After adding subject to subject list
+//     * each subject will add student to student list
+//     */
+//    private void addStudentToSubject() {
+//        //this function adds the student who enrolled to the subject object
+//
+//        //loop trough subject list and check if student is there
+//        System.out.println("Subject list size is " + subjectList.size());
+//
+//        for (int i = 0; i < subjectList.size(); i++) {
+//            System.out.println("Current subject is " + subjectList.get(i).name);
+//            //if student list for subject is empty
+//            //automatically add student
+//            if (subjectList.get(i).studentList.size() == 0) {
+//                subjectList.get(i).studentList.add(this);
+//            } else {
+//                //check if the subject already has student
+//                for (int j = 0; j < subjectList.get(i).studentList.size(); j++) {
+//                    //if true add return null
+//                    if (subjectList.get(i).studentList.get(j).name.equals(name)) {
+//                        System.out.print("");
+//
+//                    }
+//                    //if not in student list add student object
+//                    else {
+//                        subjectList.get(i).studentList.add(this);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     void showUnits() {
         System.out.println(currentUnits);
@@ -167,17 +186,17 @@ public class Student {
 
     }
 
-    void DisplaySubjectList() {
-        for (int i = 0; i < subjectList.size(); i++) {
-            System.out.println(subjectList.get(i).name);
-            //display student list
-            System.out.println("Number of students in subject is " + subjectList.get(i).studentList.size());
-            for (int j = 0; j < subjectList.get(i).studentList.size(); j++) {
-                System.out.println(subjectList.get(i).studentList.get(j).name);
-            }
-
-        }
-    }
+//    void DisplaySubjectList() {
+//        for (int i = 0; i < subjectList.size(); i++) {
+//            System.out.println(subjectList.get(i).name);
+//            //display student list
+//            System.out.println("Number of students in subject is " + subjectList.get(i).studentList.size());
+//            for (int j = 0; j < subjectList.get(i).studentList.size(); j++) {
+//                System.out.println(subjectList.get(i).studentList.get(j).name);
+//            }
+//
+//        }
+//    }
 
     /**
      * drop subject

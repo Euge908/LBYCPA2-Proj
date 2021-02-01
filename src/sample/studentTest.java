@@ -22,13 +22,13 @@ public class studentTest {
 //        System.out.println("Enter max units");
 //        st1.setMaxUnits(sc.nextInt());
 //        System.out.println("max units is "+ st1.maxUnits);
-
-        st1.addSchedule("fndckt", "08:00-10:00,M", checkUnits("fndckt"));
-        st1.addSchedule("caleng2", "08:00-10:00,T", checkUnits("caleng2"));
-        st1.addSchedule("engphy", "08:00-10:00,W", checkUnits("engphy"));
-        st1.showSchedule();
-        System.out.println("Subject List");
-        st1.DisplaySubjectList();
+//
+//        st1.addSchedule("fndckt", "08:00-10:00,M", checkUnits("fndckt"));
+//        st1.addSchedule("caleng2", "08:00-10:00,T", checkUnits("caleng2"));
+//        st1.addSchedule("engphy", "08:00-10:00,W", checkUnits("engphy"));
+//        st1.showSchedule();
+//        System.out.println("Subject List");
+//        st1.DisplaySubjectList();
         st1.delete("fndckt");
 
 
