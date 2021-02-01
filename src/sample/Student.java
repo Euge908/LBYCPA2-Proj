@@ -14,6 +14,9 @@ public class Student {
     public final int tuitionMultiplier = 3604;
     String name;
     String idNumber;
+    String email;
+    String password;
+
     boolean enrollmentStatus; //not sure if this is still necessary
     double tuition;
     int currentUnits = 0;
@@ -23,8 +26,10 @@ public class Student {
 
 
     //constructor
-    Student(String name, String idNumber, int maxUnits) {
+    Student(String name,String email,String password, String idNumber, int maxUnits) {
         this.name = name;
+        this.email = email;
+        this.password = password;
         this.idNumber = idNumber;
         this.maxUnits = maxUnits;
     }

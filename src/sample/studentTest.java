@@ -13,7 +13,7 @@ class superNode {
 public class studentTest {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Student st1 = new Student("felix", "11926171", 18);
+        Student st1 = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18);
 //        System.out.println("Enter your name");
 //        st1.setName(sc.nextLine());
 //        System.out.println(st1.name);
