@@ -24,9 +24,13 @@ public class Student {
     HashMap<String, String> schedule = new HashMap<String, String>(); //key: subject, value: time
     LinkedList<Subject> subjectList = new LinkedList<Subject>(); //not sure if this is really necessary now
 
+    //used by admin
+    //used for getting specific slot
+    String slot;
+
 
     //constructor
-    Student(String name,String email,String password, String idNumber, int maxUnits) {
+    public Student(String name, String email, String password, String idNumber, int maxUnits) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -34,23 +38,25 @@ public class Student {
         this.maxUnits = maxUnits;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    void setIdNumber(String idNumber) {
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
 
-    void setTuition(double tuition) {
+    public void setTuition(double tuition) {
         this.tuition = tuition;
     }
 
-    void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
-    
-    void setEnrollmentStatus(Boolean status){
+
+    public void setPassword(String pass) { this.password = pass;}
+
+    public void setEnrollmentStatus(Boolean status){
         this.enrollmentStatus = status;
     }
 
@@ -70,6 +76,12 @@ public class Student {
         return this.schedule;
     }
 
+    public void deleteSchdule(String subj){
+        if(schedule.containsKey(subj)){
+            schedule.remove(subj);
+        }
+    }
+
     public String getName(){
         return this.name;
     }
@@ -82,6 +94,10 @@ public class Student {
         return this.email;
     }
 
+    public String getPassword(){
+        return this.password;
+    }
+
     public double getTuition() {
         return this.tuition;
     }
@@ -90,7 +106,30 @@ public class Student {
         return this.enrollmentStatus;
     }
 
+    public void setSlot(String subj) {
+        slot = schedule.get(subj);
+    }
 
+    public String getTime(){
+        return slot;
+    }
+
+    /**
+     * adds subject to HashMap Schedule
+     *
+     * @param subjectToBeEnrolled String for subject
+     * @param timeToBeEnrolled    string time
+     * @param unit                unit count
+     */
+
+
+    public void addSchedule(String subjectToBeEnrolled, String timeToBeEnrolled, int unit) {
+
+        //just adds the schedule
+        schedule.put(subjectToBeEnrolled, timeToBeEnrolled);
+        currentUnits = currentUnits + unit;
+        tuition = currentUnits * tuitionMultiplier;
+    }
 
     private void addStudentToCourse(Subject course){
         //adds the student to the course object

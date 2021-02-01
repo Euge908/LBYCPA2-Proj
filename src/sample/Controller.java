@@ -262,6 +262,7 @@ public class Controller {
             String[] availableSched = timeSlot.get(course);
             for(String sched: availableSched){
                 timeComboBox.getItems().add(sched);
+
             }
 
             //if not found
