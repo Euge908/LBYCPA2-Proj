@@ -18,12 +18,13 @@ import java.io.IOException;
 
 public class loginController {
 
+
     @FXML
     public PasswordField password;
     public TextField username;
     public Label status;
-
-    public void initialize(){
+    public int dummyData = 10;
+    public void initialize() throws IOException {
 
         //option to press enter to login
         //after password input

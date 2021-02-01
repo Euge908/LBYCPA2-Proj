@@ -11,6 +11,7 @@ public class Student {
     //TODO: Time format is 0X:00-0Y:00
 
 
+
     public final int tuitionMultiplier = 3604;
     String name;
     String idNumber;
@@ -105,6 +106,7 @@ public class Student {
     public void addSubject(Subject course){
         addStudentToCourse(course);
         addCourseToStudent(course);
+        subjectList.add(course);
         System.out.println(course.getName() + "-"+ course.getTime()+ " <-> " + name + "-" + idNumber);
     }
 
