@@ -11,30 +11,10 @@ class superNode {
 
 
 public class studentTest {
+
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Student st1 = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18);
-//        System.out.println("Enter your name");
-//        st1.setName(sc.nextLine());
-//        System.out.println(st1.name);
-//        System.out.println("Enter your ID number");
-//        st1.setName(sc.nextLine());
-//        System.out.println("Enter max units");
-//        st1.setMaxUnits(sc.nextInt());
-//        System.out.println("max units is "+ st1.maxUnits);
-//
-//        st1.addSchedule("fndckt", "08:00-10:00,M", checkUnits("fndckt"));
-//        st1.addSchedule("caleng2", "08:00-10:00,T", checkUnits("caleng2"));
-//        st1.addSchedule("engphy", "08:00-10:00,W", checkUnits("engphy"));
-//        st1.showSchedule();
-//        System.out.println("Subject List");
-//        st1.DisplaySubjectList();
-        st1.delete("fndckt");
 
-
-        //after entering all details create the graph.
-
-//        graph g= new graph(st1);
 
 
     }

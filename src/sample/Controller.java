@@ -62,7 +62,7 @@ public class Controller {
     private Alert errorMessage = new Alert(Alert.AlertType.WARNING);
 
 
-    public static boolean isTimeConflict(String time1, String time2){
+    public boolean isTimeConflict(String time1, String time2){
         //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
 
         int currentLowerBound = Integer.parseInt(time1.substring(0, 2)+time1.substring(3, 5));
@@ -74,14 +74,19 @@ public class Controller {
         int pastUpperBound = Integer.parseInt(time2.substring(6, 8)+ time2.substring(9, 11));
         String pastDay = time2.substring(time2.lastIndexOf(","));
 
+//
+//        System.out.println(currentLowerBound + "," + currentUpperBound);
+//        System.out.println((currentDay.contains(pastDay) || pastDay.contains(currentDay)));
+//        System.out.println((currentUpperBound<=pastLowerBound || pastUpperBound<=currentLowerBound));
+//        System.out.println(pastLowerBound + "," + pastUpperBound);
 
-        if(currentDay.equals(pastDay) &&(currentUpperBound<pastLowerBound || pastUpperBound<currentLowerBound)){
-            return false;
-        }else if(currentDay.equals("T") && pastDay.equals("TH") || currentDay.equals("TH") && pastDay.equals("T") ){
-            return false;
+        //if the days are the same and there is time intersection
+        if(currentDay.contains(pastDay) || pastDay.contains(currentDay)){
+            if(currentLowerBound>pastUpperBound || currentUpperBound<pastLowerBound){
+                return false;
+            }
         }
-
-        return false;
+        return true;
 
 
     }
