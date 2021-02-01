@@ -144,6 +144,7 @@ public class Student {
     public void addSubject(Subject course){
         addStudentToCourse(course);
         addCourseToStudent(course);
+        subjectList.add(course);
         System.out.println(course.getName() + "-"+ course.getTime()+ " <-> " + name + "-" + idNumber);
     }
 
