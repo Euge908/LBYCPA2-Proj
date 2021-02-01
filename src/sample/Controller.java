@@ -90,7 +90,7 @@ public class Controller {
         });
 
         courseCodeTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
-        nameTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
+
         unitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         scheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
         slotsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
