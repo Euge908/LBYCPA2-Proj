@@ -7,7 +7,6 @@
 .button:hover {
     -fx-background-color: darkcyan;
     -fx-text-fill: beige;
-    -fx-cursor: hand;
 }
 
 .button:pressed {
