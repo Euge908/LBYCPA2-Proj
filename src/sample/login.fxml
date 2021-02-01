@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: E5F1EF;" stylesheets="@../login/effects.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.loginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: E5F1EF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.loginController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#292d38" height="469.0" layoutX="353.0" layoutY="125.0" stroke="BLACK" strokeType="INSIDE" width="374.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#01ba8e" height="95.0" layoutX="353.0" layoutY="125.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="374.0" />
@@ -23,7 +23,7 @@
             <Font name="Verdana" size="18.0" />
          </font>
       </Label>
-      <Button id="button" layoutX="443.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#Login" prefHeight="47.0" prefWidth="195.0" style="-fx-background-color: #01ba8e;" text="Login" textFill="WHITE">
+      <Button layoutX="443.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#Login" prefHeight="47.0" prefWidth="195.0" style="-fx-background-color: #01ba8e;" text="Login" textFill="WHITE">
          <font>
             <Font name="Franklin Gothic Medium" size="18.0" />
          </font>

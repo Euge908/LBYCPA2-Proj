@@ -11,7 +11,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.time.LocalTime;
 import java.util.*;
 
 import java.io.*;
@@ -66,14 +65,14 @@ public class Controller {
     public boolean isTimeConflict(String time1, String time2){
         //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
 
+        int currentLowerBound = Integer.parseInt(time1.substring(0, 2)+time1.substring(3, 5));
+        int currentUpperBound = Integer.parseInt(time1.substring(6, 8)+time1.substring(9, 11));
         String currentDay = time1.substring(time1.lastIndexOf(","));
+
+        //check if there is a time conflict
+        int pastLowerBound = Integer.parseInt(time2.substring(0, 2)+ time2.substring(3, 5));
+        int pastUpperBound = Integer.parseInt(time2.substring(6, 8)+ time2.substring(9, 11));
         String pastDay = time2.substring(time2.lastIndexOf(","));
-
-        LocalTime startA = LocalTime.of(Integer.parseInt(time1.substring(0, 2)), Integer.parseInt(time1.substring(3, 5)));
-        LocalTime stopA = LocalTime.of(Integer.parseInt(time1.substring(6, 8)), Integer.parseInt(time1.substring(9, 11)));
-
-        LocalTime startB = LocalTime.of(Integer.parseInt(time2.substring(0, 2)), Integer.parseInt(time2.substring(3, 5)));
-        LocalTime stopB = LocalTime.of(Integer.parseInt(time2.substring(6, 8)), Integer.parseInt(time2.substring(9, 11)));
 
 //
 //        System.out.println(currentLowerBound + "," + currentUpperBound);
@@ -83,11 +82,11 @@ public class Controller {
 
         //if the days are the same and there is time intersection
         if(currentDay.contains(pastDay) || pastDay.contains(currentDay)){
-            if ( startA.isBefore( stopB )  &&  stopA.isAfter( startB ) ){
-                return true;
+            if(currentLowerBound>pastUpperBound || currentUpperBound<pastLowerBound){
+                return false;
             }
         }
-        return false;
+        return true;
 
 
     }
@@ -228,8 +227,8 @@ public class Controller {
         }
 
         //set the table values of enrolled courses
+        enrollCoursesTable.getItems().clear();
         enrolledCoursesTable.setItems(data);
-        enrollCoursesTable.setItems(null);
 
         //set the
 
