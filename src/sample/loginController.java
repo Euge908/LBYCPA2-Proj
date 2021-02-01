@@ -14,7 +14,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class loginController {
 
@@ -46,7 +50,62 @@ public class loginController {
         signIn();
     }
 
+    /**
+     * stores  test.txt file to an array and returns array
+     *
+     * @return Array of CSV
+     */
+    public static ArrayList<String> storeArray() {
+        BufferedReader bufReader = null;
+        try {
+            bufReader = new BufferedReader(new FileReader("src/sample/test.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ArrayList<String> pokeList = new ArrayList<>();
+        String line = null;
+        try {
+            line = bufReader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (line != null) {
+            pokeList.add(line);
+            try {
+                line = bufReader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            bufReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pokeList;
+
+    }
+
+
+
+
+
     public void signIn() throws IOException {
+        //gets txt file and stores into an array
+        ArrayList<String> studentList = storeArray();
+        ArrayList<String> users = new ArrayList<String>();
+        ArrayList<String> pass = new ArrayList<String>();
+
+        for (int i=0; i<studentList.size();i++){
+            //temp array will be each individual line from text file
+            String[] tempArray = studentList.get(i).split("\\|");
+            pass.add(tempArray[2]);
+            users.add(tempArray[3]);
+        }
+        System.out.println(users);
+        System.out.println(pass);
+
+
         if(username.getText().equals("user") && password.getText().equals("pass")){
             status.setText("Success");
 
