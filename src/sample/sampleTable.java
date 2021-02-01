@@ -1,4 +1,4 @@
-package admin;
+package sample;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,7 +10,7 @@ public class sampleTable {
     private final SimpleStringProperty day;
     private final SimpleStringProperty time;
 
-    sampleTable(Integer id, String name, Integer units, String day, String time) {
+    public sampleTable(Integer id, String name, Integer units, String day, String time) {
         this.courseid = new SimpleIntegerProperty(id);
         this.Name = new SimpleStringProperty(name);
         this.units = new SimpleIntegerProperty(units);

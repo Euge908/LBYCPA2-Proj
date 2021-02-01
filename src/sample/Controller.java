@@ -219,7 +219,6 @@ public class Controller {
     }
 
     public void enrollCourse(){
-
         if(data.size()==0){
             //add something first before enrolling
             errorMessage.setContentText("Add something first");
@@ -243,6 +242,7 @@ public class Controller {
             //then add course to student
             //currentStudent.
         }
+        saveToText(currentStudent, currentStudent.subjectList);
 
     }
 

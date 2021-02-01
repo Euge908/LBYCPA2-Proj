@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import sample.PopUp;
 import sample.Subject;
+import sample.sampleTable;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
 public class adminController {
 
     /** view courses variables */
+
 
     private HashMap<String, List<String>> timeSlot = new HashMap<>(); //replace this na lang
     private LinkedList<Subject> subjects = new LinkedList<>();
