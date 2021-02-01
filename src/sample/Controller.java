@@ -38,6 +38,8 @@ public class Controller {
         //FORMAT: name,idNum,currentUnits,maxUnits,subjects...
         ArrayList<String> data = new ArrayList<String>();
         data.add(st.name);
+        data.add(st.email);
+        data.add(st.password);
         data.add(st.idNumber);
         data.add(String.valueOf(st.currentUnits));
         data.add(String.valueOf(st.maxUnits));
