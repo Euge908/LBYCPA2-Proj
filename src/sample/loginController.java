@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -65,6 +66,7 @@ public class loginController {
                 Stage stage = new Stage();
                 stage.setTitle("Student View");
                 stage.setScene(new Scene(root1));
+                stage.getIcons().add(new Image("file:assets/icon.png"));
                 stage.show();
                 //close login
                 Stage thisStage = (Stage) status.getScene().getWindow();

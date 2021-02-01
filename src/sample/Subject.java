@@ -12,7 +12,7 @@ public class Subject {
 
 
     //Constructor
-    Subject(String name, String time) {
+    public Subject(String name, String time) {
         this.name = name;
         this.time = time;
         getSubjectUnit();

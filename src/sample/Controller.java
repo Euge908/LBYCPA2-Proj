@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -149,8 +151,24 @@ public class Controller {
                 timeComboBox.getItems().add(sched);
             }
 
+            //if not found
+        }else{
+        display("Subject not Found!!");
         }
 
+    }
+    public void display(String display) {
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+
+
+        alert.setContentText(display);
+
+        // Get the Stage.
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:assets/icon.png")); // To add an icon
+        alert.showAndWait();
     }
 
     public void deleteCourse(){
