@@ -28,6 +28,14 @@ public class Subject {
         return time;
     }
 
+    public LinkedList<Student>getStudentList(){
+        return this.studentList;
+    }
+
+    public void addStudent(){
+
+    }
+
     public int getSubjectUnit() {
 
         this.subjectUnit = 0;
