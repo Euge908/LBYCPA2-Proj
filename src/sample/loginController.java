@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,6 +70,8 @@ public class loginController {
                 Stage thisStage = (Stage) status.getScene().getWindow();
                 thisStage.close();
             }catch(Exception e){
+
+                System.out.println(e);
                 System.out.println("Cant load window");
             }
 
