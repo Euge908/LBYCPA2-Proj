@@ -23,19 +23,23 @@ public class scratch {
 //        String[] typeArray = studentList.get(3).split(" ");
 
         //gets txt file and stores into an array
-        ArrayList<String> studentList = storeArray();
-        ArrayList<String> users = new ArrayList<String>();
-        ArrayList<String> pass = new ArrayList<String>();
-
-        for (int i=0; i<studentList.size();i++){
-            //temp array will be each individual line from text file
-            String[] tempArray = studentList.get(i).split("\\|");
-            pass.add(tempArray[2]);
-            users.add(tempArray[3]);
-        }
+//        ArrayList<String> studentList = storeArray();
+//        ArrayList<String> users = new ArrayList<String>();
+//        ArrayList<String> pass = new ArrayList<String>();
+//
+//        for (int i=0; i<studentList.size();i++){
+//            //temp array will be each individual line from text file
+//            String[] tempArray = studentList.get(i).split("\\|");
+//
+//            pass.add(tempArray[2]);
+//            users.add(tempArray[3]);
+//        }
 //        System.out.println(users);
 //        System.out.println(pass);
-        System.out.println(studentList);
+//        String temp = "temp";
+//
+//        System.out.println(pass.contains("pass1"));
+////        System.out.println(studentList);
 
 
 

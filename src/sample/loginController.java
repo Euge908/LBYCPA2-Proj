@@ -58,7 +58,7 @@ public class loginController {
     public static ArrayList<String> storeArray() {
         BufferedReader bufReader = null;
         try {
-            bufReader = new BufferedReader(new FileReader("src/sample/test.txt"));
+            bufReader = new BufferedReader(new FileReader("src/sample/students.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -91,40 +91,16 @@ public class loginController {
 
 
     public void signIn() throws IOException {
-        //gets txt file and stores into an array
-        ArrayList<String> studentList = storeArray();
-        ArrayList<String> users = new ArrayList<String>();
-        ArrayList<String> pass = new ArrayList<String>();
-
-        for (int i=0; i<studentList.size();i++){
-            //temp array will be each individual line from text file
-            String[] tempArray = studentList.get(i).split("\\|");
-            pass.add(tempArray[2]);
-            users.add(tempArray[3]);
-        }
-        System.out.println(users);
-        System.out.println(pass);
-
-
-        if(username.getText().equals("user") && password.getText().equals("pass")){
+        if(username.getText().equals("admin") && password.getText().equals("pass1")){
             status.setText("Success");
 
-            /*if(T instance of student){
-                    load student view fxml (pass matched student)
-              } else{
-                    load admin view fxml
-                    pass matched admin
-                }
-             */
-
-
-            //open student view
+            //open admin view
             try {
 
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../sample/studentView.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../admin/adminView.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
-                stage.setTitle("Student View");
+                stage.setTitle("Admin View");
                 stage.setScene(new Scene(root1));
                 stage.getIcons().add(new Image("file:assets/icon.png"));
                 stage.show();
@@ -136,15 +112,67 @@ public class loginController {
                 System.out.println(e);
                 System.out.println("Cant load window");
             }
-
-
-
         }
         else{
-            status.setText("Failed login");
-            username.clear();
-            password.clear();
+            //gets txt file and stores into an array
+            ArrayList<String> studentList = storeArray();
+            ArrayList<String> users = new ArrayList<String>();
+            ArrayList<String> pass = new ArrayList<String>();
+
+            //loop and get all passwords and users
+            for (int i=0; i<studentList.size();i++){
+                //temp array will be each individual line from text file
+                String[] tempArray = studentList.get(i).split("\\|");
+
+                pass.add(tempArray[2]);
+                users.add(tempArray[3]);
+            }
+            System.out.println(users);
+            System.out.println(pass);
+            //check if user in user and pass is pass
+            if(users.contains(username.getText()) && pass.contains(password.getText())){
+                status.setText("Success");
+
+                //get the index of user
+                int index = users.indexOf(username.getText());
+                System.out.println(index);
+
+                System.out.println(studentList.get(index));
+
+
+
+
+
+
+                //open student view
+                try {
+
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../sample/studentView.fxml"));
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Student View");
+                    stage.setScene(new Scene(root1));
+                    stage.getIcons().add(new Image("file:assets/icon.png"));
+                    stage.show();
+                    //close login
+                    Stage thisStage = (Stage) status.getScene().getWindow();
+                    thisStage.close();
+                }catch(Exception e){
+
+                    System.out.println(e);
+                    System.out.println("Cant load window");
+                }
+
+
+
+            }
+            else{
+                status.setText("Failed login");
+                username.clear();
+                password.clear();
+            }
         }
+
     }
 
     /** text limit option */
