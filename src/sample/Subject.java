@@ -30,6 +30,7 @@ public class Subject {
 
     public int getSubjectUnit() {
 
+        this.subjectUnit = 0;
 
         if (name.toLowerCase().contains("ge")) {
             this.subjectUnit =  3;
@@ -114,8 +115,7 @@ public class Subject {
         }else if (name.toLowerCase().contains("lby")) {
             this.subjectUnit =  1;
         }
-        
-        this.subjectUnit = 0;
+
         return subjectUnit;
     }
 
