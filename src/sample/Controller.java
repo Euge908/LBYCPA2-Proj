@@ -369,8 +369,10 @@ public class Controller {
         for (Subject a : data) {
             System.out.println(a.getName() +" vs " + course);
             if (a.getName().toLowerCase().equals(course)) {
+
                 System.out.println(true);
                 data.remove(a);
+                display("Removed " + course);
                 enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
