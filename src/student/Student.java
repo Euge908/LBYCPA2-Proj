@@ -91,6 +91,8 @@ public class Student {
         return this.maxUnits;
     }
 
+    public String getMax() {return String.valueOf(this.maxUnits);}
+
     public LinkedList<Subject> getSubjectList(){
         return this.subjectList;
     }
@@ -238,7 +240,7 @@ public class Student {
         System.out.println(currentUnits);
     }
 
-    void setMaxUnits(int maxUnits) {
+    public void setMaxUnits(int maxUnits) {
         this.maxUnits = maxUnits;
     }
 
