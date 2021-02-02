@@ -20,14 +20,19 @@ public class Subject {
 
     }
 
+    public Subject(String name) {
+        this.name = name;
+        getSubjectUnit();
+    }
+
 
     public String getName(){
-        return name;
+        return name.toUpperCase();
     }
 
 
     public String getTime(){
-        return time;
+        return time.toUpperCase();
     }
 
     public LinkedList<String[]>getStudentList(){
@@ -120,8 +125,8 @@ public class Subject {
         }else if (name.toLowerCase().contains("ecn")) {
             this.subjectUnit =  3;
 
-        }else if (name.toLowerCase().contains("lby")) {
-            this.subjectUnit =  1;
+        }else if (name.toLowerCase().contains("cal")) {
+            this.subjectUnit =  3;
         }else if (name.toLowerCase().contains("lby")) {
             this.subjectUnit =  1;
         }
