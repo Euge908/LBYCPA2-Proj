@@ -1,4 +1,4 @@
-package sample;
+package student;
 
 import java.util.LinkedList;
 
@@ -6,6 +6,7 @@ public class Subject {
     public String name;
     public int subjectUnit;
     public String time;
+    public int dummyValue;
 
     public LinkedList<String[]> studentList = new LinkedList<>();
 

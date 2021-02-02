@@ -1,15 +1,22 @@
-package sample;
+package student;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -23,8 +30,13 @@ import java.util.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import javafx.scene.shape.Rectangle;
+import login.FileHandler;
 
-public class Controller {
+public class studentController {
+
+    public FileHandler database = new FileHandler();
 
     public TableColumn courseCodeRef;
     public TableColumn unitRef;
@@ -35,6 +47,9 @@ public class Controller {
     public Button logOutButton;
     public Text welcomeTxt;
     public ImageView logo;
+
+    public Button backToLoginBtn;
+    public Rectangle studentImage;
     /**
      * temp storage for units for adding and deleting subjects
      * convert this to student.currentUnits during enrollment
@@ -62,11 +77,11 @@ public class Controller {
     String selectedTime;
 
 
-    private HashMap<String, String[]> timeSlot = new HashMap<>(); //replace this na lang
+    private HashMap<String, List<String>> timeSlot = new HashMap<>(); //replace this na lang
     private LinkedList<Subject> subjects = new LinkedList<>();
 
     //dummy student
-    private Student currentStudent = new Student("afag", "felix@dlsu.edu.ph", "pass1", "119106606", 18);
+    public Student currentStudent = new Student("John Doe", "john_doe@dlsu.edu.ph", "password", "119106606", 18);
     //        private Student currentStudent;
     private ObservableList<Subject> data = FXCollections.observableArrayList();
     private ObservableList<Subject> ref = FXCollections.observableArrayList();
@@ -99,27 +114,23 @@ public class Controller {
             }
         }
         return false;
-
-
     }
 
-
     public void initialize() throws FileNotFoundException {
+        timeSlot = database.openCourseList();
+
+
         Image image = new Image(new FileInputStream("assets/icon.png"));
         logo.setImage(image);
 
-        initializeStudentData();
 
-
-        initializeTimeSlot();
         initializeCourseCodeTab();
 
 
         errorMessage.setHeaderText(null);
         errorMessage.setTitle("Error Message");
 
-        currentUserNameLabel.setText(currentStudent.name);
-        currentUserEmailLabel.setText(currentStudent.email);
+
         timeComboBox.setOnAction(e -> {
             selectedTime = (String) timeComboBox.getSelectionModel().getSelectedItem();
             System.out.println(selectedTime);
@@ -151,43 +162,38 @@ public class Controller {
      * initializes student data
      */
     private void initializeStudentData() {
-        String[] studentValues = source.studentData.split("\\|");
-        currentStudent.name = studentValues[0];
+        currentUserNameLabel.setText(currentStudent.name);
+        currentUserEmailLabel.setText(currentStudent.email);
+
+        Image temp = new Image("file:assets/" + currentStudent.pic);
+
+        //if there is no error
+        if(!temp.isError()) {
+
+            Image image = temp;
+            studentImage.setFill(new ImagePattern(image));
+        }
+
+        //notify if error
+        else{
+            display("File might be:\nmissing/invalid/unsupported/not in assets folder");
+        }
+
         welcomeTxt.setText("Welcome " + currentStudent.name + " to your dashboard!");
-        currentStudent.email = studentValues[1];
-        currentStudent.password = studentValues[2];
-        currentStudent.idNumber = studentValues[3];
-        currentStudent.maxUnits = Integer.parseInt(studentValues[4]);
+        System.out.println(currentStudent.getName());
 
+
+        tempUnits = currentStudent.currentUnits;
         //check if student has subjects  if size is larger than 5
-        if (studentValues.length > 5) {
-            currentStudent.currentUnits =  Integer.parseInt(studentValues[5]);
-            tempUnits = currentStudent.currentUnits;
-//            logOutButton.setDisable(false);
-            for (int i = 6; i < studentValues.length; i++) {
-                String[] temp = studentValues[i].split(">");
-                System.out.println("subject: " + temp[0] + "time:" + temp[1]);
-
-
-                data.add(new Subject(temp[0].toLowerCase(),temp[1].toLowerCase()));
-            }
-            System.out.println(currentStudent.currentUnits);
-
-
-
-
-//        //set the table values of enrolled courses
-            enrolledCoursesTable.setItems(data);
-
-
-
-
-
-            generateTuition(currentStudent);
+        for(Map.Entry<String,String> slot:currentStudent.getSchedule().entrySet()){
+            data.add(new Subject(slot.getKey(),slot.getValue()));
+            currentStudent.currentUnits = currentStudent.currentUnits + new Subject(slot.getKey(), slot.getValue()).getSubjectUnit();
 
         }
 
-
+        //set the table values of enrolled courses
+        enrolledCoursesTable.setItems(data);
+        generateTuition(currentStudent);
     }
 
     /**
@@ -195,21 +201,17 @@ public class Controller {
      */
     private void initializeCourseCodeTab() {
         //loop through hashmap and make subjects and add them to refTable
+
         Iterator it = timeSlot.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             System.out.println(pair.getKey() + " = " + pair.getValue());
             StringBuffer sb = new StringBuffer();
 
-            ref.add(new Subject(String.valueOf(pair.getKey()), Arrays.toString(timeSlot.get(String.valueOf(pair.getKey())))));
+            ref.add(new Subject(String.valueOf(pair.getKey()), timeSlot.get(String.valueOf(pair.getKey())).toString()));
             refTable.setItems(ref);
 
         }
-
-
-
-
-
 
 
         enrolledCourseCodesTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
@@ -219,10 +221,11 @@ public class Controller {
 
     }
 
-    //TODO: addCourse() and enrollCourse() has enroll conflict
     public void addCourse() {
-        String course = courseTextField.getText().strip().toLowerCase();
+        String course = courseTextField.getText().toLowerCase();
+
         Subject courseToBeAdded = new Subject(course, selectedTime);
+
 
         //add condition to check the time to avoid bugs
         //^ above will create erroneous time if smart ass uses it up
@@ -230,8 +233,6 @@ public class Controller {
 
 
         for (Subject x : data) {
-            System.out.println(course + " == "+ x.getName());
-            System.out.print(x.name);
             if (x.getName().equals(course)) {
                 //if user already added the course in table
                 errorMessage.setContentText("Course already added to table");
@@ -239,7 +240,7 @@ public class Controller {
                 return;
             } else if (isTimeConflict(x.getTime(), selectedTime)) {
                 //if one of the courses in the table has a time conflict
-                errorMessage.setContentText("Time conflict detected/ Course was already enrolled");
+                errorMessage.setContentText("Time conflict detected");
                 errorMessage.showAndWait();
                 return;
             }
@@ -257,8 +258,8 @@ public class Controller {
 
             }
 
-            for (Subject x: currentStudent.getSubjectList()) {
-                if (x.getStudentList().contains(course)) {
+            for (Subject x : subjects) {
+                if (x.getStudentList().contains(x)) {
                     errorMessage.setContentText("Student Already Enrolled");
                     errorMessage.showAndWait();
                     return;
@@ -317,7 +318,7 @@ public class Controller {
     }
 
     public void search() {
-        String course = courseTextField.getText();
+        String course = courseTextField.getText().toLowerCase();
 
         //ComboBox dayComboBox, timeComboBox;
 
@@ -328,7 +329,7 @@ public class Controller {
         //still doesn't check if student already enrolled in course
         //still allows multiple classes to work
         if (timeSlot.containsKey(course)) {
-            String[] availableSched = timeSlot.get(course);
+            List<String> availableSched = timeSlot.get(course);
             for (String sched : availableSched) {
                 timeComboBox.getItems().add(sched);
                 timeComboBox.getSelectionModel().selectFirst();
@@ -369,10 +370,8 @@ public class Controller {
         for (Subject a : data) {
             System.out.println(a.getName() +" vs " + course);
             if (a.getName().toLowerCase().equals(course)) {
-
                 System.out.println(true);
                 data.remove(a);
-                display("Removed " + course);
                 enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
@@ -386,89 +385,6 @@ public class Controller {
     }
 
 
-    private void initializeTimeSlot() {
-        timeSlot.put("caleng2", new String[]{"14:15-17:45,TH", "15:15-17:45,MW"});
-        timeSlot.put("engchem", new String[]{"07:30-09:00,TH", "09:15-10:45,TH", "07:30-09:00,MW"});
-        timeSlot.put("lbych1a", new String[]{"09:15-12:15,T", "14:30-17:30,W", "14:30-17:30,T"});
-        timeSlot.put("lclsone", new String[]{"07:30-09:30,M", "10:30-12:00,F", "16:30-18:30,W"});
-        timeSlot.put("geethic", new String[]{"14:30-16:00,TH", "12:45-14:15,MW", "07:30-09:00,MW"});
-        timeSlot.put("datsral", new String[]{"14:30-15:30,M", "14:15-15:15,T", "16:15-17:15,M"});
-        timeSlot.put("discrmt", new String[]{"12:45-14:15,MW", "11:00-12:30,TH", "09:15-10:45,TH"});
-        timeSlot.put("fndckt", new String[]{"16:15-17:45,MW", "11:00-12:30,TH", "14:30-16:00,MW"});
-        timeSlot.put("lbycpa2", new String[]{"09:15-12:15,W", "09:15-12:15,M", "14:30-17:30,H"});
-        timeSlot.put("lbyec2m", new String[]{"09:15-12:15,M", "09:15-12:15,W", "14:30-17:30,T"});
-        ///new changes
-    }
-
-    /**
-     * takes student and subjects linked list and appends it to text file
-     *
-     * @param st current student object
-     */
-    void saveToFile(Student st) throws IOException {
-        //array to store the csv string
-        //FORMAT: name,idNum,currentUnits,maxUnits,subjects...
-        ArrayList<String> data = new ArrayList<String>();
-        data.add(st.name);
-        data.add(st.email);
-        data.add(st.password);
-        data.add(st.idNumber);
-        data.add(String.valueOf(st.maxUnits));
-        data.add(String.valueOf(st.currentUnits));
-        //loop thorough linked list and get name and time and append
-        //subject format subject.name>subject.time
-        for (Subject subject : st.subjectList) {
-            data.add(subject.name + ">" + subject.time);
-        }
-
-        ///convert  array to string and add | delimiter
-        StringBuilder sb = new StringBuilder();
-        for (String s : data) {
-            sb.append(s);
-            sb.append("|");
-        }
-        if(sb.charAt(sb.length()-1) == '|'){
-            sb.deleteCharAt(sb.length()-1);
-        }
-
-
-        System.out.println(sb.toString());
-        System.out.println("appended to list");
-        source.txtFile.set(source.index, sb.toString());
-        appendStrToFile("src/sample/students.txt",source.txtFile);
-
-
-    }
-
-    /**
-     * Takes string and appends to txt file
-     *  @param path filename path for text file
-     * @param arr  data in string format
-     */
-    static void appendStrToFile(String path, ArrayList<String> arr) throws IOException {
-//        try {
-//
-//            File file = new File(path);
-//            FileWriter fr = new FileWriter(file, false);
-//            BufferedWriter br = new BufferedWriter(fr);
-//            PrintWriter writer = new PrintWriter(br);
-//            writer.println(str);
-//            writer.close();
-//
-//
-//        } catch (IOException i) {
-//            i.printStackTrace();
-//        }
-        FileWriter writer = new FileWriter(path);
-        for(String str: arr) {
-            writer.write(str + System.lineSeparator());
-        }
-        writer.close();
-        System.exit(0);
-
-
-    }
-
     /**
      * Generates Tuition after enrollment
      *
@@ -479,7 +395,7 @@ public class Controller {
 
 //         multiply current units with multiplier
         double tuitionFee = st1.currentUnits * tuitionMultiplier;
-        System.out.println("\n\nCurrent Units: "+st1.currentUnits+"\n\n");
+
 
         double misc = tuitionFee * ((float) 5234 / 68124);
         double special = tuitionFee * ((float) 200 / 68124);
@@ -498,7 +414,7 @@ public class Controller {
                 + "\n" + "ID Validation:\t\t\t" + (numberFormat.format(idValid))
                 + "\n\n\n" + "Deadline of Payment w/o Surcharge..................." + dt.with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
                 + "\n" + "Deadline of Payment w/ Surcharge..................." + dt.with(TemporalAdjusters.lastDayOfMonth())
-                + "\n" + "NOTE: Content is accurate only as of printing date and time. This is not a\n" +
+                + "\n\n" + "NOTE: Content is accurate only as of printing date and time. This is not a\n" +
                 "proof of official enrollment and final assessment of tuition and fees.\n" +
                 "Courses will be dropped automatically for unsettled payment.\n" +
                 "For DLSU internal use (payment purposes) only."
@@ -532,15 +448,52 @@ public class Controller {
                 System.out.println("enter");
                 display("Thank you for using the program!!");
                 try {
-                    saveToFile(currentStudent);
-                } catch (IOException e) {
+                    save();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
                 System.out.println("wrong");
             }
         });
+    }
 
+    public void save(){
+        List<Student> students = database.openStudentsList();
+        for(Student s: students){
+            if(currentStudent.getIdNumber().equalsIgnoreCase(s.getIdNumber()) && currentStudent.getPassword().equalsIgnoreCase(s.getPassword())){
+                students.set(students.indexOf(s),currentStudent);
+            }
+        }
+        database.writeStudentList(students);
+    }
 
+    public void setActive(Student student){
+        this.currentStudent = student;
+        System.out.println("I went here"+ currentStudent.getName());
+        initializeStudentData();
+    }
+
+    public void backToLogin(ActionEvent actionEvent) {
+        save();
+        //open student view
+        FXMLLoader Loader = new FXMLLoader(getClass().getResource("../login/login.fxml"));
+        try {
+            Loader.load();
+            Parent root1 = (Parent) Loader.getRoot();
+            Stage stage = new Stage();
+            stage.setTitle("Enrollment System");
+            stage.setScene(new Scene(root1));
+            stage.getIcons().add(new Image("file:assets/icon.png"));
+            stage.show();
+
+            //close login
+            Stage thisStage = (Stage) backToLoginBtn.getScene().getWindow();
+            thisStage.close();
+
+        } catch (IOException e) {
+            System.out.println(e);
+            System.out.println("Cant load window");
+        }
     }
 }
