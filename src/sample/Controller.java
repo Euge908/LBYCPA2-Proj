@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -169,9 +170,8 @@ public class Controller {
 
 
                 data.add(new Subject(temp[0].toLowerCase(),temp[1].toLowerCase()));
-                currentStudent.currentUnits = currentStudent.currentUnits + new Subject(temp[0], temp[1]).getSubjectUnit();
-                System.out.println(currentStudent.currentUnits);
             }
+            System.out.println(currentStudent.currentUnits);
 
 
 
@@ -207,6 +207,11 @@ public class Controller {
         }
 
 
+
+
+
+
+
         enrolledCourseCodesTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
         enrolledUnitsTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         enrolledScheduleTableColumn.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
@@ -214,11 +219,10 @@ public class Controller {
 
     }
 
+    //TODO: addCourse() and enrollCourse() has enroll conflict
     public void addCourse() {
-        String course = courseTextField.getText();
-
+        String course = courseTextField.getText().strip().toLowerCase();
         Subject courseToBeAdded = new Subject(course, selectedTime);
-
 
         //add condition to check the time to avoid bugs
         //^ above will create erroneous time if smart ass uses it up
@@ -226,6 +230,8 @@ public class Controller {
 
 
         for (Subject x : data) {
+            System.out.println(course + " == "+ x.getName());
+            System.out.print(x.name);
             if (x.getName().equals(course)) {
                 //if user already added the course in table
                 errorMessage.setContentText("Course already added to table");
@@ -233,7 +239,7 @@ public class Controller {
                 return;
             } else if (isTimeConflict(x.getTime(), selectedTime)) {
                 //if one of the courses in the table has a time conflict
-                errorMessage.setContentText("Time conflict detected");
+                errorMessage.setContentText("Time conflict detected/ Course was already enrolled");
                 errorMessage.showAndWait();
                 return;
             }
@@ -251,8 +257,8 @@ public class Controller {
 
             }
 
-            for (Subject x : subjects) {
-                if (x.getStudentList().contains(x)) {
+            for (Subject x: currentStudent.getSubjectList()) {
+                if (x.getStudentList().contains(course)) {
                     errorMessage.setContentText("Student Already Enrolled");
                     errorMessage.showAndWait();
                     return;
@@ -471,7 +477,7 @@ public class Controller {
 
 //         multiply current units with multiplier
         double tuitionFee = st1.currentUnits * tuitionMultiplier;
-
+        System.out.println("\n\nCurrent Units: "+st1.currentUnits+"\n\n");
 
         double misc = tuitionFee * ((float) 5234 / 68124);
         double special = tuitionFee * ((float) 200 / 68124);
