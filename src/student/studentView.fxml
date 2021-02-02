@@ -17,26 +17,31 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" stylesheets="@../css/effects.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="student.studentController">
     <top>
         <VBox prefHeight="108.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
             <children>
-                <Pane prefHeight="151.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;">
+                <Pane prefHeight="94.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;">
                <children>
-                  <Button fx:id="logOutButton" disable="true" layoutX="987.0" layoutY="42.0" mnemonicParsing="false" onAction="#logOut" text="Save" />
-                  <Text fx:id="welcomeTxt" layoutX="306.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to your dashoard">
+                  <Button fx:id="logOutButton" disable="true" layoutX="980.0" layoutY="54.0" mnemonicParsing="false" onAction="#logOut" text="Save and Exit" />
+                  <Text fx:id="welcomeTxt" layoutX="132.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to your dashoard" textAlignment="CENTER" wrappingWidth="829.6381988525391">
                      <font>
-                        <Font size="39.0" />
+                        <Font size="30.0" />
                      </font>
                   </Text>
-                  <ImageView fx:id="logo" fitHeight="96.0" fitWidth="106.0" layoutX="34.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="logo" fitHeight="78.0" fitWidth="93.0" layoutX="34.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../assets/icon.png" />
                      </image>
                   </ImageView>
+                  <Button fx:id="backToLoginBtn" layoutX="999.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToLogin" text="Log out" />
                </children></Pane>
             </children>
         </VBox>
@@ -48,10 +53,24 @@
             </padding>
             <children>
                 <Pane prefHeight="76.0" prefWidth="209.0" />
-                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@placeholderProfilePic.jpg" />
-               </image></ImageView>
+            <Rectangle fx:id="studentImage" arcHeight="25.0" arcWidth="5.0" fill="#f2f5f8" height="159.0" strokeType="INSIDE" strokeWidth="5.0" width="167.0">
+               <stroke>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.06534600257873535" green="0.6657894849777222" blue="0.15541252493858337" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+            </Rectangle>
                 <Label fx:id="currentUserNameLabel" alignment="BASELINE_CENTER" contentDisplay="CENTER" text="John Doe">
                     <font>
                         <Font size="18.0" />
@@ -79,7 +98,7 @@
                                                 </Label>
                                                 <HBox prefHeight="40.0" prefWidth="830.0">
                                                     <children>
-                                                        <Label text="Course Name:">
+                                                        <Label text="Course code">
                                                             <HBox.margin>
                                                                 <Insets right="10.0" />
                                                             </HBox.margin>
@@ -92,7 +111,7 @@
                                                         <Button fx:id="search" mnemonicParsing="false" onAction="#search" prefHeight="26.0" prefWidth="61.0" text="Search" />
                                                         <Label layoutX="260.0" layoutY="10.0" text="Time Schedule: ">
                                                             <HBox.margin>
-                                                                <Insets right="10.0" />
+                                                                <Insets left="5.0" right="10.0" />
                                                             </HBox.margin>
                                                         </Label>
                                                         <ComboBox fx:id="timeComboBox" prefHeight="26.0" prefWidth="169.0">
@@ -101,8 +120,14 @@
                                                             </HBox.margin>
                                                         </ComboBox>
                                                         <Button fx:id="addCourseButton1" mnemonicParsing="false" onAction="#addCourse" text="Add" />
-                                                        <Button fx:id="deleteCourseButton" layoutX="260.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteCourse" text="Delete" />
-                                                        <Button fx:id="enrollCourseButton" mnemonicParsing="false" onAction="#enrollCourse" text="Enroll Courses" />
+                                                        <Button fx:id="deleteCourseButton" layoutX="260.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteCourse" text="Delete">
+                                             <HBox.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </HBox.margin></Button>
+                                                        <Button fx:id="enrollCourseButton" mnemonicParsing="false" onAction="#enrollCourse" text="Enroll Courses">
+                                             <HBox.margin>
+                                                <Insets left="25.0" />
+                                             </HBox.margin></Button>
                                                     </children>
                                                 </HBox>
                                                 <TableView fx:id="enrollCoursesTable" prefHeight="469.0" prefWidth="830.0">
@@ -179,4 +204,7 @@
                 </TabPane>
             </children></AnchorPane>
     </center>
+   <bottom>
+      <Pane prefHeight="20.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

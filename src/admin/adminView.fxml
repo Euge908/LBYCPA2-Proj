@@ -15,14 +15,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.adminController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: white;" stylesheets="@../css/effects.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.adminController">
    <top>
       <VBox prefHeight="108.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="88.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;">
+            <Pane prefHeight="94.0" prefWidth="1080.0" style="-fx-background-color: #01BA8E;">
                <children>
                   <Button fx:id="logoutBtn" layoutX="987.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#Logout" text="Log out" />
                </children></Pane>
@@ -258,15 +261,26 @@
                                                 <Insets left="5.0" />
                                              </HBox.margin>
                                           </TextField>
+                                          <Label text="E-mail:">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="sMailFilter">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
                                        </children>
                                     </HBox>
                                     <TableView fx:id="studentTableView" prefHeight="208.0" prefWidth="810.0">
                                       <columns>
-                                        <TableColumn fx:id="sNameCol" onEditCommit="#changeName" prefWidth="223.2000217437744" text="Name" />
-                                        <TableColumn fx:id="sIDCol" onEditCommit="#changeId" prefWidth="91.199951171875" text="ID" />
-                                          <TableColumn fx:id="sUnitsCol" prefWidth="75.0" text="Units" />
-                                          <TableColumn fx:id="sEmailCol" onEditCommit="#changeEmail" prefWidth="291.1999816894531" text="E-mail" />
-                                          <TableColumn fx:id="sPasswordCol" onEditCommit="#changePassword" prefWidth="117.59991455078125" text="Password" />
+                                        <TableColumn fx:id="sNameCol" onEditCommit="#changeName" prefWidth="177.5999698638916" text="Name" />
+                                        <TableColumn fx:id="sIDCol" onEditCommit="#changeId" prefWidth="110.4000244140625" text="ID" />
+                                          <TableColumn fx:id="sUnitsCol" prefWidth="78.39996337890625" text="Units" />
+                                          <TableColumn fx:id="sMaxUnitsCol" onEditCommit="#changeMax" prefWidth="70.4000244140625" text="Max. Units" />
+                                          <TableColumn fx:id="sEmailCol" onEditCommit="#changeEmail" prefWidth="236.80001831054688" text="E-mail" />
+                                          <TableColumn fx:id="sPasswordCol" onEditCommit="#changePassword" prefWidth="130.39996337890625" text="Password" />
                                       </columns>
                                        <VBox.margin>
                                           <Insets right="10.0" />
@@ -274,16 +288,45 @@
                                     </TableView>
                                     <AnchorPane prefHeight="277.0" prefWidth="810.0">
                                        <children>
-                                          <Label layoutX="288.0" layoutY="20.0" text="Subjects:" />
-                                          <Button layoutX="22.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#checkStudent" text="Check subjects of selected row" />
-                                          <TableView fx:id="sSubjectsTableView" layoutX="288.0" layoutY="42.0" prefHeight="200.0" prefWidth="388.0">
+                                          <Label layoutX="302.0" layoutY="44.0" text="Subjects:" />
+                                          <Button layoutX="19.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#checkStudent" prefHeight="27.0" prefWidth="127.0" text="Check Selected row" />
+                                          <TableView fx:id="sSubjectsTableView" layoutX="302.0" layoutY="64.0" prefHeight="200.0" prefWidth="246.0">
                                             <columns>
-                                              <TableColumn fx:id="sCodeCol" prefWidth="197.5999755859375" text="Course Code" />
-                                              <TableColumn fx:id="sTimeCol" prefWidth="189.60006713867188" text="Time Slot" />
+                                              <TableColumn fx:id="sCodeCol" prefWidth="137.5999755859375" text="Course Code" />
+                                              <TableColumn fx:id="sTimeCol" prefWidth="121.60000610351562" text="Time Slot" />
                                             </columns>
                                           </TableView>
                                           <Label layoutX="22.0" layoutY="67.0" text="Student:" />
-                                          <Label fx:id="name" layoutX="73.0" layoutY="67.0" prefHeight="18.0" prefWidth="159.0" />
+                                          <Rectangle fx:id="studentImage" arcHeight="5.0" arcWidth="5.0" fill="#e4e6e8" height="98.0" layoutX="108.0" layoutY="53.0" strokeType="INSIDE" strokeWidth="4.0" width="110.0">
+                                             <stroke>
+                                                <LinearGradient endX="1.0" endY="1.0">
+                                                   <stops>
+                                                      <Stop>
+                                                         <color>
+                                                            <Color red="0.04879999905824661" green="0.6100000143051147" blue="0.2815820872783661" />
+                                                         </color>
+                                                      </Stop>
+                                                      <Stop offset="1.0">
+                                                         <color>
+                                                            <Color red="1.0" green="1.0" blue="1.0" />
+                                                         </color>
+                                                      </Stop>
+                                                   </stops>
+                                                </LinearGradient>
+                                             </stroke>
+                                          </Rectangle>
+                                          <TextField fx:id="imageLinkField" layoutX="28.0" layoutY="227.0" prefHeight="26.0" prefWidth="117.0" promptText="image file" />
+                                          <Button fx:id="changeImgBtn" layoutX="154.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#changeImg" prefHeight="27.0" prefWidth="114.0" text="Change Picture" />
+                                          <Label layoutX="629.0" layoutY="21.0" text="Register a student:" />
+                                          <TextField fx:id="newName" layoutX="629.0" layoutY="43.0" promptText="name" />
+                                          <TextField fx:id="newEmail" layoutX="629.0" layoutY="76.0" promptText="email" />
+                                          <TextField fx:id="newId" layoutX="629.0" layoutY="113.0" promptText="id" />
+                                          <TextField fx:id="newPass" layoutX="629.0" layoutY="151.0" promptText="password" />
+                                          <Button fx:id="newStudentBtn" layoutX="728.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#registerStudent" text="Register" />
+                                          <Label fx:id="name" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="155.0" prefHeight="18.0" prefWidth="191.0" text="Name" textAlignment="CENTER" wrapText="true" />
+                                          <Label fx:id="idnum" alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="175.0" prefHeight="18.0" prefWidth="192.0" text="ID" textAlignment="CENTER" wrapText="true" />
+                                          <Label fx:id="email" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="195.0" prefHeight="18.0" prefWidth="192.0" text="E-mail" textAlignment="CENTER" wrapText="true" />
+                                          <Button layoutX="176.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#deleteStudent" prefHeight="22.0" prefWidth="106.0" text="Delete Selected" />
                                        </children>
                                     </AnchorPane>
                                  </children>
