@@ -261,15 +261,26 @@
                                                 <Insets left="5.0" />
                                              </HBox.margin>
                                           </TextField>
+                                          <Label text="E-mail:">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="sMailFilter">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </TextField>
                                        </children>
                                     </HBox>
                                     <TableView fx:id="studentTableView" prefHeight="208.0" prefWidth="810.0">
                                       <columns>
-                                        <TableColumn fx:id="sNameCol" onEditCommit="#changeName" prefWidth="223.2000217437744" text="Name" />
-                                        <TableColumn fx:id="sIDCol" onEditCommit="#changeId" prefWidth="91.199951171875" text="ID" />
-                                          <TableColumn fx:id="sUnitsCol" prefWidth="75.0" text="Units" />
-                                          <TableColumn fx:id="sEmailCol" onEditCommit="#changeEmail" prefWidth="291.1999816894531" text="E-mail" />
-                                          <TableColumn fx:id="sPasswordCol" onEditCommit="#changePassword" prefWidth="117.59991455078125" text="Password" />
+                                        <TableColumn fx:id="sNameCol" onEditCommit="#changeName" prefWidth="177.5999698638916" text="Name" />
+                                        <TableColumn fx:id="sIDCol" onEditCommit="#changeId" prefWidth="110.4000244140625" text="ID" />
+                                          <TableColumn fx:id="sUnitsCol" prefWidth="78.39996337890625" text="Units" />
+                                          <TableColumn fx:id="sMaxUnitsCol" onEditCommit="#changeMax" prefWidth="70.4000244140625" text="Max. Units" />
+                                          <TableColumn fx:id="sEmailCol" onEditCommit="#changeEmail" prefWidth="236.80001831054688" text="E-mail" />
+                                          <TableColumn fx:id="sPasswordCol" onEditCommit="#changePassword" prefWidth="130.39996337890625" text="Password" />
                                       </columns>
                                        <VBox.margin>
                                           <Insets right="10.0" />
@@ -277,9 +288,9 @@
                                     </TableView>
                                     <AnchorPane prefHeight="277.0" prefWidth="810.0">
                                        <children>
-                                          <Label layoutX="288.0" layoutY="20.0" text="Subjects:" />
-                                          <Button layoutX="19.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#checkStudent" text="Check subjects of selected row" />
-                                          <TableView fx:id="sSubjectsTableView" layoutX="288.0" layoutY="42.0" prefHeight="200.0" prefWidth="246.0">
+                                          <Label layoutX="302.0" layoutY="44.0" text="Subjects:" />
+                                          <Button layoutX="19.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#checkStudent" prefHeight="27.0" prefWidth="127.0" text="Check Selected row" />
+                                          <TableView fx:id="sSubjectsTableView" layoutX="302.0" layoutY="64.0" prefHeight="200.0" prefWidth="246.0">
                                             <columns>
                                               <TableColumn fx:id="sCodeCol" prefWidth="137.5999755859375" text="Course Code" />
                                               <TableColumn fx:id="sTimeCol" prefWidth="121.60000610351562" text="Time Slot" />
@@ -315,6 +326,7 @@
                                           <Label fx:id="name" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="155.0" prefHeight="18.0" prefWidth="191.0" text="Name" textAlignment="CENTER" wrapText="true" />
                                           <Label fx:id="idnum" alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="175.0" prefHeight="18.0" prefWidth="192.0" text="ID" textAlignment="CENTER" wrapText="true" />
                                           <Label fx:id="email" alignment="CENTER" contentDisplay="CENTER" layoutX="68.0" layoutY="195.0" prefHeight="18.0" prefWidth="192.0" text="E-mail" textAlignment="CENTER" wrapText="true" />
+                                          <Button layoutX="176.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#deleteStudent" prefHeight="22.0" prefWidth="106.0" text="Delete Selected" />
                                        </children>
                                     </AnchorPane>
                                  </children>

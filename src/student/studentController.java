@@ -266,7 +266,6 @@ public class studentController {
                 }
             }
 
-
             data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
             tempUnits = tempUnits + courseToBeAdded.getSubjectUnit();
@@ -372,6 +371,7 @@ public class studentController {
             if (a.getName().toLowerCase().equals(course)) {
                 System.out.println(true);
                 data.remove(a);
+                display("Removed "+course);
                 enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
@@ -395,6 +395,7 @@ public class studentController {
 
 //         multiply current units with multiplier
         double tuitionFee = st1.currentUnits * tuitionMultiplier;
+        System.out.println(st1.currentUnits+"ss");
 
 
         double misc = tuitionFee * ((float) 5234 / 68124);

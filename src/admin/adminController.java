@@ -44,6 +44,8 @@ public class adminController {
     public Rectangle studentImage;
     public Label idnum;
     public Label email;
+    public TextField sMailFilter;
+
 
     //to be passed data
     List<Student> studentList = new ArrayList<>();
@@ -70,7 +72,7 @@ public class adminController {
     public TableColumn sNameCol;
     public TableColumn sEmailCol;
     public TableColumn sPasswordCol;
-
+    public TableColumn sMaxUnitsCol;
     public TableColumn sUnitsCol;
     public TableColumn sIDCol;
     public TextField sIDfilter;
@@ -145,12 +147,14 @@ public class adminController {
         sEmailCol.setCellFactory(TextFieldTableCell.forTableColumn());
         sPasswordCol.setCellFactory(TextFieldTableCell.forTableColumn());
         sIDCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        sMaxUnitsCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
         sNameCol.setCellValueFactory(new PropertyValueFactory<Student, String>("Name"));
         sEmailCol.setCellValueFactory(new PropertyValueFactory<Student, String>("Email"));
         sPasswordCol.setCellValueFactory(new PropertyValueFactory<Student, String>("Password"));
         sIDCol.setCellValueFactory(new PropertyValueFactory<Student, String>("IdNumber"));
         sUnitsCol.setCellValueFactory(new PropertyValueFactory<Student, String>("CurrentUnits"));
+        sMaxUnitsCol.setCellValueFactory(new PropertyValueFactory<Student,String>("Max"));
 
         sCodeCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
 
@@ -350,22 +354,54 @@ public class adminController {
 
 
         Subject subject = coursesTableView.getSelectionModel().getSelectedItem();
-        coursesTableView.getItems().remove(subject);
 
         if(subject!=null) {
 
-            for (Student s : studentList) {
+            int i = 0;
+            for(Student s:studentList){
                 if (s.getSchedule().containsValue(subject.getTime()) && s.getSchedule().containsKey(subject.getName())) {
-                    s.deleteSchdule(subject.getName());
+                    i++;
                 }
             }
 
-            ObservableList<Subject> updated = coursesTableView.getItems();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Remove Slot? This can't be undone");
+            alert.setContentText("course "+course+" has "+i+" students");
+            ButtonType okButton = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
+            ButtonType noButton = new ButtonType("Cancel", ButtonBar.ButtonData.NO);
 
-            timeSlot.get(course).clear();
-            for (int i = 0; i < updated.size(); i++) {
-                timeSlot.get(course).add(updated.get(i).getTime());
-            }
+            // Get the Stage.
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("file:assets/icon.png")); // To add an icon
+
+            alert.getButtonTypes().setAll(okButton, noButton);
+            alert.showAndWait().ifPresent(type -> {
+                if (type == okButton) {
+                    display("Slot Deleted!");
+                    coursesTableView.getItems().remove(subject);
+
+                    for (Student s : studentList) {
+                        if (s.getSchedule().containsValue(subject.getTime()) && s.getSchedule().containsKey(subject.getName())) {
+                            s.deleteSchdule(subject.getName());
+                        }
+                    }
+
+                    ObservableList<Subject> updated = coursesTableView.getItems();
+
+                    timeSlot.get(course).clear();
+                    for (int j = 0; j < updated.size(); j++) {
+                        timeSlot.get(course).add(updated.get(j).getTime());
+                    }
+
+                } else {
+                    System.out.println("wrong");
+                }
+            });
+
+
+
+
+
         }
         else{
             display("No slot selected");
@@ -421,18 +457,46 @@ public class adminController {
         }
         else{
             if(timeSlot.containsKey(c)){
-                courseComboBox.getItems().remove(c);
-                courseComboBox.getSelectionModel().clearSelection();
-                timeSlot.remove(c);
-                System.out.println(timeSlot);
-                coursesData.clear();
-
+                int i = 0;
                 for(Student s:studentList){
                     if(s.getSchedule().containsKey(c)){
-                        s.deleteSchdule(c);
+                        i++;
                     }
                 }
-                sSubjectsTableView.getItems().clear();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Delete course? This can't be undone");
+                alert.setContentText("course "+c+" has "+i+" students");
+                ButtonType okButton = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("Cancel", ButtonBar.ButtonData.NO);
+
+                // Get the Stage.
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image("file:assets/icon.png")); // To add an icon
+
+                alert.getButtonTypes().setAll(okButton, noButton);
+                alert.showAndWait().ifPresent(type -> {
+                    if (type == okButton) {
+                        display("Course Deleted!");
+
+                        courseComboBox.getItems().remove(c);
+                        courseComboBox.getSelectionModel().clearSelection();
+                        timeSlot.remove(c);
+                        System.out.println(timeSlot);
+                        coursesData.clear();
+
+                        for(Student s:studentList){
+                            if(s.getSchedule().containsKey(c)){
+                                s.deleteSchdule(c);
+                            }
+                        }
+                        sSubjectsTableView.getItems().clear();
+
+                    } else {
+                        System.out.println("wrong");
+                    }
+                });
+
             }
             else{
                 display("Course not found");
@@ -526,8 +590,9 @@ public class adminController {
         //filters
         filteredStudents.predicateProperty().bind(Bindings.createObjectBinding(()-> s  ->
                         s.getName().toLowerCase().contains(sNameFilter.getText().toLowerCase())
-                                && s.getIdNumber().toLowerCase().contains(sIDfilter.getText().toLowerCase()),
-                sNameFilter.textProperty(), sIDfilter.textProperty()
+                                && s.getIdNumber().toLowerCase().contains(sIDfilter.getText().toLowerCase())
+                        && s.getEmail().contains(sMailFilter.getText().toLowerCase()),
+                sNameFilter.textProperty(), sIDfilter.textProperty(),sMailFilter.textProperty()
                 )
         );
         SortedList<Student> sortedData = new SortedList<>(filteredStudents);
@@ -635,6 +700,21 @@ public class adminController {
             studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
             display("Email for each student must be unique");
         }
+    }
+
+    public void changeMax(TableColumn.CellEditEvent cellEditEvent) {
+        Student student =  studentTableView.getSelectionModel().getSelectedItem();
+
+        try{
+            int value = Integer.parseInt(cellEditEvent.getNewValue().toString());
+            student.setMaxUnits(value);
+        }
+        catch (Exception e){
+            display("Invalid input");
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+        }
+
     }
 
     public void TableViewSettings(TableView table){
@@ -768,5 +848,39 @@ public class adminController {
         }
 
 
+    }
+
+
+
+
+    public void deleteStudent(MouseEvent mouseEvent) {
+        Student student =  studentTableView.getSelectionModel().getSelectedItem();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Are you sure? This can't be undone");
+        alert.setContentText("Deleting student "+student.getName()+" ("+student.getIdNumber()+")");
+        ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+        // Get the Stage.
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:assets/icon.png")); // To add an icon
+
+        alert.getButtonTypes().setAll(okButton, noButton);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == okButton) {
+                display("Student deleted!");
+                try {
+                    studentsData.remove(student);
+                    studentTableView.setItems(studentsData);
+                    studentList.remove(student);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("wrong");
+            }
+        });
     }
 }
