@@ -222,7 +222,7 @@ public class studentController {
     }
 
     public void addCourse() {
-        String course = courseTextField.getText().toLowerCase();
+        String course = courseTextField.getText().toUpperCase();
 
         Subject courseToBeAdded = new Subject(course, selectedTime);
 
@@ -318,7 +318,7 @@ public class studentController {
     }
 
     public void search() {
-        String course = courseTextField.getText().toLowerCase();
+        String course = courseTextField.getText().toUpperCase();
 
         //ComboBox dayComboBox, timeComboBox;
 
