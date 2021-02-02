@@ -1,4 +1,4 @@
-Dave Johnson|dave_galamgam@dlsu.edu.ph|pass1|11910607|lebron.jpg|0|18
+Dave Johnson|dave_galamgam@dlsu.edu.ph|pass1|11910607|lebron.jpg|0|18|ENGCHEM>07:30-09:00,MW|CALENG2>14:15-17:45,TH
 John Doe|john_doe@dlsu_edu_ph|pass2|12011210|jokic.jpg|0|0
 Lana Hamilton|lana_hamilton@dlsu.edu.ph|pass3|12048842|placeHolderProfilePic.jpg|0|0
 Jack Morgan|jack_morgan@dlsu.edu.ph|pass4|11896939|placeHolderProfilePic.jpg|0|0
