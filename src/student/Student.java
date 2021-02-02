@@ -17,7 +17,7 @@ public class Student {
     public String idNumber;
     public String email;
     public String password;
-    public String pic = "placeholderProfilePic.jpg";
+    public String pic = "images/placeholderProfilePic.jpg";
 
     boolean enrollmentStatus; //not sure if this is still necessary
     double tuition;
@@ -40,7 +40,7 @@ public class Student {
         this.password = password;
         this.idNumber = idNumber;
         this.maxUnits = maxUnits;
-        this.pic = "placeholderProfilePic.jpg";
+        this.pic = "images/placeholderProfilePic.jpg";
     }
 
     //constructor

@@ -196,8 +196,6 @@ public class adminController {
         TableViewSettings(sSubjectsTableView);
 
 
-
-
         //students table view
         StudentsTableFilterSettings();
     }
@@ -274,21 +272,26 @@ public class adminController {
     public void selectCourse(MouseEvent mouseEvent) {
         String course = (String) courseComboBox.getValue();
 
-        course.toUpperCase();
-        if(timeSlot.containsKey(course)){
-            coursesData.clear();
+        if(!course.trim().isEmpty()) {
+
+            course.toUpperCase();
+            if (timeSlot.containsKey(course)) {
+                coursesData.clear();
 
 
-            for(String slot: timeSlot.get(course)){
-                coursesData.add(new Subject(course,slot));
+                for (String slot : timeSlot.get(course)) {
+                    coursesData.add(new Subject(course, slot));
+                }
+
+                coursesTableView.setItems(coursesData);
+                courseUnitsLabel.setText("Units: " + String.valueOf(coursesData.get(coursesData.size() - 1).getSubjectUnit()));
+            } else {
+                display("No course found");
+                courseComboBox.getSelectionModel().clearSelection();
             }
-
-            coursesTableView.setItems(coursesData);
-            courseUnitsLabel.setText("Units: "+String.valueOf(coursesData.get(coursesData.size()-1).getSubjectUnit()));
         }
         else {
-            display("No course found");
-            courseComboBox.getSelectionModel().clearSelection();
+            display("No course selected!");
         }
     }
 
@@ -345,8 +348,6 @@ public class adminController {
         }
 
     }
-
-
 
     //remove a slot from the table
     public void removeSlot(MouseEvent mouseEvent) {
@@ -615,7 +616,7 @@ public class adminController {
             idnum.setText(student.getIdNumber());
             email.setText(student.getEmail());
 
-            Image temp = new Image("file:assets/" + student.getPic());
+            Image temp = new Image("file:assets/pictures" + student.getPic());
 
             //if there is no error
             if(!temp.isError()) {
@@ -788,6 +789,7 @@ public class adminController {
                 }
             }
 
+
             if (valid) {
                 Student newStudent = new Student(s,e,p,id,0);
                 studentList.add(newStudent);
@@ -797,6 +799,15 @@ public class adminController {
 
                 for(Student ss:studentList){
                     System.out.println(ss.getIdNumber());
+                }
+                name.setText("name");
+                email.setText("E-mail");
+                idnum.setText("Id number");
+                Image temp = new Image("file:assets/pictures" + "placeholderProfilePic.jpg");
+
+                //if there is no error
+                if (!temp.isError()) {
+                    studentImage.setFill(new ImagePattern(temp));
                 }
 
                 display("Successfully registered a student");
@@ -810,6 +821,8 @@ public class adminController {
 
     }
 
+
+
     /** return field is empty */
     private Boolean isEmpty(TextField choice){
         if (choice.getText() == null || choice.getText().trim().isEmpty()) {
@@ -822,28 +835,30 @@ public class adminController {
 
     public void changeImg(MouseEvent mouseEvent) {
 
-        String link = imageLinkField.getText();
-        if(link.isEmpty()){
-            display("Field is empty!");
-        }
-        else{
-            Image temp = new Image("file:assets/" + link);
+        if(name.getText().equalsIgnoreCase("name")) {
 
-            //if there is no error
-            if(!temp.isError()) {
-                studentImage.setFill(new ImagePattern(temp));
-                for(Student s:studentList){
-                    if(name.getText().equalsIgnoreCase(s.getName())) {
-                        if (email.getText().equalsIgnoreCase(s.getEmail()) && idnum.getText().equalsIgnoreCase(s.getIdNumber())) {
-                            s.setPic(link);
+            String link = imageLinkField.getText();
+            if (link.isEmpty()) {
+                display("Field is empty!");
+            } else {
+                Image temp = new Image("file:assets/pictures" + link);
+
+                //if there is no error
+                if (!temp.isError()) {
+                    studentImage.setFill(new ImagePattern(temp));
+                    for (Student s : studentList) {
+                        if (name.getText().equalsIgnoreCase(s.getName())) {
+                            if (email.getText().equalsIgnoreCase(s.getEmail()) && idnum.getText().equalsIgnoreCase(s.getIdNumber())) {
+                                s.setPic(link);
+                            }
                         }
                     }
                 }
-            }
 
-            //notify if error
-            else{
-                display("File might be:\nmissing/invalid/unsupported/not in assets folder");
+                //notify if error
+                else {
+                    display("File might be:\nmissing/invalid/unsupported/not in assets folder");
+                }
             }
         }
 
@@ -874,6 +889,17 @@ public class adminController {
                     studentsData.remove(student);
                     studentTableView.setItems(studentsData);
                     studentList.remove(student);
+
+                    name.setText("name");
+                    email.setText("E-mail");
+                    idnum.setText("Id number");
+                    Image temp = new Image("file:assets/pictures" + "placeholderProfilePic.jpg");
+
+                    //if there is no error
+                    if (!temp.isError()) {
+                        studentImage.setFill(new ImagePattern(temp));
+                    }
+
 
                 } catch (Exception e) {
                     e.printStackTrace();

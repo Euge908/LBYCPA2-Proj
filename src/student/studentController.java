@@ -166,7 +166,7 @@ public class studentController {
         currentUserNameLabel.setText(currentStudent.name);
         currentUserEmailLabel.setText(currentStudent.email);
 
-        Image temp = new Image("file:assets/" + currentStudent.pic);
+        Image temp = new Image("file:assets/pictures/" + currentStudent.pic);
 
         //if there is no error
         if(!temp.isError()) {
@@ -177,7 +177,8 @@ public class studentController {
 
         //notify if error
         else{
-            display("File might be:\nmissing/invalid/unsupported/not in assets folder");
+            System.out.println("w");
+            display("File might be:\nmissing/invalid/unsupported/not in assets/pictures/ folder");
         }
 
         welcomeTxt.setText("Welcome " + currentStudent.name + " to your dashboard!");

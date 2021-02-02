@@ -113,6 +113,8 @@ public class loginController {
 
                 } catch (Exception e) {
                     System.out.println(e);
+                    e.printStackTrace();
+                    System.out.println("hello");
                     System.out.println("Cant load window");
                 }
             }
