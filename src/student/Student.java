@@ -1,6 +1,6 @@
 
 
-package sample;
+package student;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,21 +12,24 @@ public class Student {
 
 
     public final int tuitionMultiplier = 3604;
-    String name;
-    String idNumber;
-    String email;
-    String password;
+    public String name;
+    public String idNumber;
+    public String email;
+    public String password;
+    public String pic = "placeholderProfilePic.jpg";
 
     boolean enrollmentStatus; //not sure if this is still necessary
     double tuition;
-    int currentUnits = 0;
-    int maxUnits = 21;
+    public int currentUnits = 0;
+    public int maxUnits = 21;
     HashMap<String, String> schedule = new HashMap<String, String>(); //key: subject, value: time
     LinkedList<Subject> subjectList = new LinkedList<Subject>(); //not sure if this is really necessary now
 
     //used by admin
     //used for getting specific slot
     String slot;
+
+    public Student(){}
 
 
     //constructor
@@ -36,6 +39,17 @@ public class Student {
         this.password = password;
         this.idNumber = idNumber;
         this.maxUnits = maxUnits;
+        this.pic = "placeholderProfilePic.jpg";
+    }
+
+    //constructor
+    public Student(String name, String email, String password, String idNumber, String pic, int currentUnits,int maxUnits) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.idNumber = idNumber;
+        this.maxUnits = maxUnits;
+        this.pic = pic;
     }
 
     public void setName(String name) {
@@ -56,8 +70,16 @@ public class Student {
 
     public void setPassword(String pass) { this.password = pass;}
 
+    public void setPic(String pic){
+        this.pic = pic;
+    }
+
     public void setEnrollmentStatus(Boolean status){
         this.enrollmentStatus = status;
+    }
+
+    public String getPic(){
+        return this.pic;
     }
 
     public int getCurrentUnits(){
@@ -129,6 +151,10 @@ public class Student {
         schedule.put(subjectToBeEnrolled, timeToBeEnrolled);
         currentUnits = currentUnits + unit;
         tuition = currentUnits * tuitionMultiplier;
+    }
+
+    public void setSchedule(HashMap<String, String> subjects){
+        this.schedule = subjects;
     }
 
     private void addStudentToCourse(Subject course){

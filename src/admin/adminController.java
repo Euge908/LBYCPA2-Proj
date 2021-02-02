@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,13 +18,13 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import sample.PopUp;
-import sample.Subject;
-import sample.Student;
+import login.FileHandler;
+import student.*;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -35,6 +34,16 @@ import java.util.regex.Pattern;
 public class adminController {
 
     public Button logoutBtn;
+    public TextField imageLinkField;
+    public Button changeImgBtn;
+    public TextField newName;
+    public TextField newEmail;
+    public TextField newId;
+    public TextField newPass;
+    public Button newStudentBtn;
+    public Rectangle studentImage;
+    public Label idnum;
+    public Label email;
 
     //to be passed data
     List<Student> studentList = new ArrayList<>();
@@ -101,17 +110,20 @@ public class adminController {
     public TextField filterID;
     public TextField filterName;
     public TextField filterTime;
-    public TextField filterDay;
+
 
 
     public Button courseSearchBtn;
     public TextField courseSearchField;
 
+    public FileHandler database;
+
 
 
 
     public void initialize(){
-        initializeTimeSlot();
+        timeSlot = database.openCourseList();
+        studentList = database.openStudentsList();
 
         courseSearchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -173,25 +185,8 @@ public class adminController {
         slotCol.setCellValueFactory(new PropertyValueFactory<Student,String>("Time"));
 
 
-        /** sample data */
+        studentsData.addAll(studentList);
 
-        Student p7 = new Student("eugene", "eugene@dlsu.edu.ph","pass2","119106607", 11);
-        Student p6 = new Student("felix", "felix@dlsu.edu.ph","pass1","119106606", 18);
-        Student p8 = new Student("jason", "jason@dlsu.edu.ph","pass1","119106606", 18);
-
-        p6.addSchedule("caleng2","08:00-10:00,MW",3);
-        p8.addSchedule("caleng2","09:00-11:00,M",3);
-        p6.addSchedule("caleng3","08:00-10:00,W",3);
-        p7.addSchedule("caleng2","08:00-10:00,W",3);
-        studentList.add(p6);
-        studentList.add(p7);
-        studentList.add(p8);
-
-
-
-        studentsData.addAll(p6,p7,p8);
-
-        TableViewSettings(studentTableView);
         TableViewSettings(classesTable);
         TableViewSettings(coursesTableView);
         TableViewSettings(sSubjectsTableView);
@@ -221,35 +216,34 @@ public class adminController {
     }
 
     private void courseSearch(){
-        String lookup = courseSearchField.getText();
-        if(timeSlot.containsKey(lookup)){
-            if(!lookup.isEmpty()){
+
+        if(!(courseSearchField.getText() == null || courseSearchField.getText().trim().isEmpty())) {
+            String lookup = courseSearchField.getText().toUpperCase();
+            if (timeSlot.containsKey(lookup)) {
                 int i = 0;
                 classData.clear();
-                for(Student s:studentList){
-                    if(s.getSchedule().containsKey(lookup)){
+                for (Student s : studentList) {
+                    if (s.getSchedule().containsKey(lookup)) {
                         s.setSlot(lookup);
                         classData.add(s);
                         i++;
                     }
                 }
 
-                if(i>0){
+                if (i > 0) {
                     ClassTablefilterSettings();
                     SortedList<Student> sortedData = new SortedList<>(filteredclass);
 
                     sortedData.comparatorProperty().bind(classesTable.comparatorProperty());
                     classesTable.setItems(sortedData);
                 }
-                courseLabel.setText("Course: "+courseSearchField.getText().toUpperCase());
-                studentsCountLabel.setText("Number of students: "+classData.size());
+                courseLabel.setText("Course: " + courseSearchField.getText().toUpperCase());
+                studentsCountLabel.setText("Number of students: " + classData.size());
+            } else {
+                display("course not found");
             }
-            else{
-                display("Field is empty!");
-            }
-        }
-        else{
-            display("course not found");
+        }else {
+            display("field is empty");
         }
 
     }
@@ -270,27 +264,13 @@ public class adminController {
 
     /** courses tab section */
 
-    private void initializeTimeSlot() {
-
-        timeSlot.put("caleng2", new ArrayList<>(Arrays.asList("14:15-17:45,TH", "15:15-17:45,MW","08:00-10:00,MW")));
-        timeSlot.put("engchem", new ArrayList<>(Arrays.asList("07:30-09:00,TH", "09:15-10:45,TH", "07:30-09:00,MW")));
-        timeSlot.put("lbych1a", new ArrayList<>(Arrays.asList("09:15-12:15,T", "14:30-17:30,W", "14:30-17:30,T")));
-        timeSlot.put("lclsone", new ArrayList<>(Arrays.asList("07:30-9:30,M", "10:30-12:00,F", "16:30-18:30,W")));
-        timeSlot.put("geethic", new ArrayList<>(Arrays.asList("14:30-16:00,TH", "12:45-14:15,MW", "07:30-09:00,MW")));
-        timeSlot.put("datsral", new ArrayList<>(Arrays.asList("14:30-15:30,M", "16:15-15:15,T", "16:15-17:15,M")));
-        timeSlot.put("discrmt", new ArrayList<>(Arrays.asList("12:45-14:15,MW", "11:00-12:30,TH", "09:15-10:45,TH")));
-        timeSlot.put("fndckt", new ArrayList<>(Arrays.asList("16:15-17:45,MW", "11:00-12:30,TH", "14:30-16:00,MW")));
-        timeSlot.put("lbycpa2", new ArrayList<>(Arrays.asList("09:15-12:15,W", "09:15-12:15,M", "14:30-17:30,H")));
-        timeSlot.put("lbyec2m", new ArrayList<>(Arrays.asList("09:15-12:15,M", "09:15-12:15,W", "14:30-17:30,T")));
-        ///new changes
-    }
 
 
     //select course to show
     public void selectCourse(MouseEvent mouseEvent) {
         String course = (String) courseComboBox.getValue();
 
-
+        course.toUpperCase();
         if(timeSlot.containsKey(course)){
             coursesData.clear();
 
@@ -303,7 +283,7 @@ public class adminController {
             courseUnitsLabel.setText("Units: "+String.valueOf(coursesData.get(coursesData.size()-1).getSubjectUnit()));
         }
         else {
-            PopUp.display("No course found");
+            display("No course found");
             courseComboBox.getSelectionModel().clearSelection();
         }
     }
@@ -405,7 +385,7 @@ public class adminController {
         Boolean flag = false;
 
         if(cAddCourseField.getText().trim().isEmpty()){
-            PopUp.display("empty field!");
+            display("empty field!");
         }else{
             for(String course:timeSlot.keySet()){
                 if(course.equalsIgnoreCase(cAddCourseField.getText())){
@@ -423,7 +403,7 @@ public class adminController {
             }
 
             else{
-                PopUp.display("course already present");
+                display("course already present");
             }
         }
 
@@ -444,6 +424,7 @@ public class adminController {
                 courseComboBox.getItems().remove(c);
                 courseComboBox.getSelectionModel().clearSelection();
                 timeSlot.remove(c);
+                System.out.println(timeSlot);
                 coursesData.clear();
 
                 for(Student s:studentList){
@@ -561,9 +542,23 @@ public class adminController {
 
             Student student = studentTableView.getSelectionModel().getSelectedItem();
             HashMap<String, String> map = student.getSchedule();
+
             subjectsData = FXCollections.observableArrayList(map.entrySet());
             sSubjectsTableView.setItems(subjectsData);
+
             name.setText(student.getName());
+            idnum.setText(student.getIdNumber());
+            email.setText(student.getEmail());
+
+            Image temp = new Image("file:assets/" + student.getPic());
+
+            //if there is no error
+            if(!temp.isError()) {
+                studentImage.setFill(new ImagePattern(temp));
+            }
+            else{
+                System.out.println("file missing/invalid/unsupported/not in assets");
+            }
         }
         else{
             display("No selected student");
@@ -576,22 +571,70 @@ public class adminController {
     public void changeName(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
         student.setName(cellEditEvent.getNewValue().toString());
-        name.setText(student.getName());
     }
 
     public void changeId(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
-        student.setIdNumber(cellEditEvent.getNewValue().toString());
+        Boolean valid = true;
+        for(Student s:studentList){
+            if(s.getIdNumber().equalsIgnoreCase(student.getIdNumber())){
+                valid = false;
+                break;
+            }
+        }
+
+        if(valid){
+            student.setIdNumber(cellEditEvent.getNewValue().toString());
+        }
+        else{
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+            display("ID number must be unique for each student");
+        }
+
+
+
     }
 
     public void changeEmail(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
-        student.setEmail(cellEditEvent.getNewValue().toString());
+        Boolean valid = true;
+        for(Student s:studentList){
+            if(s.getEmail().equalsIgnoreCase(student.getEmail())){
+                valid = false;
+                break;
+            }
+        }
+
+        if(valid){
+            student.setEmail(cellEditEvent.getNewValue().toString());
+        }
+        else{
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+            display("Email for each student must be unique");
+        }
+
     }
 
     public void changePassword(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
-        student.setPassword(cellEditEvent.getNewValue().toString());
+        Boolean valid = true;
+        for(Student s:studentList){
+            if(s.getPassword().equalsIgnoreCase(student.getPassword())){
+                valid = false;
+                break;
+            }
+        }
+
+        if(valid){
+            student.setPassword(cellEditEvent.getNewValue().toString());
+        }
+        else{
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+            studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+            display("Email for each student must be unique");
+        }
     }
 
     public void TableViewSettings(TableView table){
@@ -620,7 +663,10 @@ public class adminController {
         //open student view
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../sample/login.fxml"));
+            database.writeStudentList(studentList);
+            database.writeCourseList(timeSlot);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../login/login.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Enrollment System");
@@ -636,5 +682,91 @@ public class adminController {
             System.out.println(e);
             System.out.println("Cant load window");
         }
+    }
+
+    public void registerStudent(MouseEvent mouseEvent) {
+        Boolean valid = true;
+        String errors = new String();
+        if(!(isEmpty(newName)||isEmpty(newEmail)||isEmpty(newPass)||isEmpty(newId))) {
+            String s = newName.getText();
+            String e = newEmail.getText();
+            String p = newPass.getText();
+            String id = newId.getText();
+
+            for (Student st : studentList) {
+                if (e.equalsIgnoreCase(st.getEmail())) {
+                    errors += "(E-mail)";
+                    valid = false;
+                }
+                if (id.equalsIgnoreCase(st.getIdNumber())) {
+                    errors += "(Password)";
+                    valid = false;
+                }
+
+                if (!valid) {
+                    break;
+                }
+            }
+
+            if (valid) {
+                Student newStudent = new Student(s,e,p,id,0);
+                studentList.add(newStudent);
+                studentsData.setAll(studentList);
+                studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+                studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+
+                for(Student ss:studentList){
+                    System.out.println(ss.getIdNumber());
+                }
+
+                display("Successfully registered a student");
+            } else {
+                display(errors + " must be unique");
+            }
+        }
+        else{
+            display("A field is empty!");
+        }
+
+    }
+
+    /** return field is empty */
+    private Boolean isEmpty(TextField choice){
+        if (choice.getText() == null || choice.getText().trim().isEmpty()) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void changeImg(MouseEvent mouseEvent) {
+
+        String link = imageLinkField.getText();
+        if(link.isEmpty()){
+            display("Field is empty!");
+        }
+        else{
+            Image temp = new Image("file:assets/" + link);
+
+            //if there is no error
+            if(!temp.isError()) {
+                studentImage.setFill(new ImagePattern(temp));
+                for(Student s:studentList){
+                    if(name.getText().equalsIgnoreCase(s.getName())) {
+                        if (email.getText().equalsIgnoreCase(s.getEmail()) && idnum.getText().equalsIgnoreCase(s.getIdNumber())) {
+                            s.setPic(link);
+                        }
+                    }
+                }
+            }
+
+            //notify if error
+            else{
+                display("File might be:\nmissing/invalid/unsupported/not in assets folder");
+            }
+        }
+
+
     }
 }

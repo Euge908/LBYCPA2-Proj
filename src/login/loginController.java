@@ -1,4 +1,4 @@
-package sample;
+package login;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,11 +14,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
+import student.*;
 
 public class loginController {
 
@@ -26,6 +24,9 @@ public class loginController {
     public PasswordField password;
     public TextField username;
     public Label status;
+
+    public List<Student> students = new ArrayList<>();
+    public FileHandler data = new FileHandler();
 
     public void initialize(){
 
@@ -43,55 +44,20 @@ public class loginController {
                 }
             }
         });
+
+        students = data.openStudentsList();
     }
 
     public void Login(MouseEvent mouseEvent) throws IOException {
         signIn();
     }
 
-    /**
-     * stores  test.txt file to an array and returns array
-     *
-     * @return Array of CSV
-     */
-    public static ArrayList<String> storeArray() {
-        BufferedReader bufReader = null;
-        try {
-            bufReader = new BufferedReader(new FileReader("src/sample/students.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        ArrayList<String> pokeList = new ArrayList<>();
-        String line = null;
-        try {
-            line = bufReader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        while (line != null) {
-            pokeList.add(line);
-            try {
-                line = bufReader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            bufReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return pokeList;
-
-    }
-
-
-
-
-
     public void signIn() throws IOException {
-        if(username.getText().equals("admin") && password.getText().equals("pass1")){
+        Boolean success = false;
+
+        if (username.getText().equals("admin") && password.getText().equals("pass1")) {
             status.setText("Success");
+            success = true;
 
             //open admin view
             try {
@@ -107,78 +73,59 @@ public class loginController {
                 Stage thisStage = (Stage) status.getScene().getWindow();
                 thisStage.close();
 
-            }catch(Exception e){
+            } catch (Exception e) {
 
                 System.out.println(e);
                 System.out.println("Cant load window");
             }
-        }
-        else{
-            //gets txt file and stores into an array
-            ArrayList<String> studentList = storeArray();
-            ArrayList<String> users = new ArrayList<String>();
-            ArrayList<String> pass = new ArrayList<String>();
+        } else{
+
+            Student active = new Student();
 
             //loop and get all passwords and users
-            for (int i=0; i<studentList.size();i++){
-                //temp array will be each individual line from text file
-                String[] tempArray = studentList.get(i).split("\\|");
-
-                pass.add(tempArray[2]);
-                users.add(tempArray[3]);
+            for (Student s : students) {
+                if (username.getText().equals(s.getIdNumber()) && password.getText().equals(s.getPassword())) {
+                    active = s;
+                    success = true;
+                    break;
+                }
             }
-            System.out.println(users);
-            System.out.println(pass);
-            //check if user in user and pass is pass
-            if(users.contains(username.getText()) && pass.contains(password.getText())){
-                status.setText("Success");
 
-                //get the index of user
-                int index = users.indexOf(username.getText());
-                System.out.println(index);
-
-                System.out.println(studentList.get(index));
-                source.studentData = studentList.get(index);
-                source.index = index;
-                System.out.println("student data is "+ source.studentData+"\n"+"index is" + source.index);
-                source.txtFile = studentList;
-                System.out.println(studentList);
-
-
-
-
-
-
+            if(success){
                 //open student view
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../student/studentView.fxml"));
                 try {
-
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../sample/studentView.fxml"));
                     Parent root1 = (Parent) fxmlLoader.load();
+
+                    studentController studentView = fxmlLoader.getController();
+                    System.out.println(active.getName());
+                    studentView.setActive(active);
+
                     Stage stage = new Stage();
                     stage.setTitle("Student View");
                     stage.setScene(new Scene(root1));
                     stage.getIcons().add(new Image("file:assets/icon.png"));
                     stage.show();
+
                     //close login
                     Stage thisStage = (Stage) status.getScene().getWindow();
                     thisStage.close();
-                }catch(Exception e){
 
+                } catch (Exception e) {
                     System.out.println(e);
                     System.out.println("Cant load window");
                 }
-
-
-
             }
-            else{
-                status.setText("Failed login");
-                username.clear();
-                password.clear();
-            }
+
         }
 
+        if(!success){
+            status.setText("Failed login");
+            username.clear();
+            password.clear();
+        }
     }
+
 
     /** text limit option */
     public static void textLimit(final TextField tf, final int max) {
@@ -188,8 +135,5 @@ public class loginController {
             tf.positionCaret(pos);
         }
     }
-
-
-
 
 }
