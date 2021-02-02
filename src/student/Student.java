@@ -11,6 +11,7 @@ public class Student {
     //TODO: Time format is 0X:00-0Y:00
 
 
+
     public final int tuitionMultiplier = 3604;
     public String name;
     public String idNumber;

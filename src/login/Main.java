@@ -13,6 +13,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         primaryStage.setTitle("Enrollment System");
+
+
         primaryStage.getIcons().add(new Image("file:assets/icon.png"));
 
         String css = this.getClass().getResource("../CSS/effects.css").toExternalForm();

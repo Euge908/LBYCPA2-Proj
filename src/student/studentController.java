@@ -1,5 +1,6 @@
 package student;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -221,6 +222,7 @@ public class studentController {
 
     }
 
+    //TODO: addCourse() and enrollCourse() has enroll conflict
     public void addCourse() {
         String course = courseTextField.getText().toUpperCase();
 
@@ -233,6 +235,8 @@ public class studentController {
 
 
         for (Subject x : data) {
+            System.out.println(course + " == "+ x.getName());
+            System.out.print(x.name);
             if (x.getName().equals(course)) {
                 //if user already added the course in table
                 errorMessage.setContentText("Course already added to table");
@@ -240,7 +244,7 @@ public class studentController {
                 return;
             } else if (isTimeConflict(x.getTime(), selectedTime)) {
                 //if one of the courses in the table has a time conflict
-                errorMessage.setContentText("Time conflict detected");
+                errorMessage.setContentText("Time conflict detected/ Course was already enrolled");
                 errorMessage.showAndWait();
                 return;
             }
@@ -258,13 +262,14 @@ public class studentController {
 
             }
 
-            for (Subject x : subjects) {
-                if (x.getStudentList().contains(x)) {
+            for (Subject x: currentStudent.getSubjectList()) {
+                if (x.getStudentList().contains(course)) {
                     errorMessage.setContentText("Student Already Enrolled");
                     errorMessage.showAndWait();
                     return;
                 }
             }
+
 
             data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
@@ -369,9 +374,10 @@ public class studentController {
         for (Subject a : data) {
             System.out.println(a.getName() +" vs " + course);
             if (a.getName().toLowerCase().equals(course)) {
+
                 System.out.println(true);
                 data.remove(a);
-                display("Removed "+course);
+                display("Removed " + course);
                 enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
@@ -395,8 +401,7 @@ public class studentController {
 
 //         multiply current units with multiplier
         double tuitionFee = st1.currentUnits * tuitionMultiplier;
-        System.out.println(st1.currentUnits+"ss");
-
+        System.out.println("\n\nCurrent Units: "+st1.currentUnits+"\n\n");
 
         double misc = tuitionFee * ((float) 5234 / 68124);
         double special = tuitionFee * ((float) 200 / 68124);
