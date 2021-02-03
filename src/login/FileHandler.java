@@ -50,14 +50,17 @@ public class FileHandler {
                 //and add to graph
                 List<String> profile = Arrays.asList(read.nextLine().split("\\|"));
                 HashMap<String,String> subjects = new HashMap<>();
+                LinkedList<Subject> subjectLinkedList = new LinkedList<Subject>();
 
                 Student student = new Student(profile.get(0),profile.get(1),profile.get(2),profile.get(3),profile.get(4),Integer.parseInt(profile.get(5)), Integer.parseInt(profile.get(6)));
                 for(int i = 7;i<profile.size();i++){
                     String[] subj = profile.get(i).split(">");
                     subjects.put(subj[0],subj[1]);
+                    student.addSubject(new Subject(subj[0],subj[1]));
                 }
                 student.setSchedule(subjects);
                 students.add(student);
+
             }
             read.close();
         }
