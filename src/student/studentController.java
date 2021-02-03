@@ -1,5 +1,6 @@
 package student;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,6 +48,7 @@ public class studentController {
     public Button logOutButton;
     public Text welcomeTxt;
     public ImageView logo;
+    boolean enteredSearch;
 
     public Button backToLoginBtn;
     public Rectangle studentImage;
@@ -222,7 +224,20 @@ public class studentController {
 
     }
 
+    //TODO: addCourse() and enrollCourse() has enroll conflict
     public void addCourse() {
+
+        System.out.println("timebox count is " + timeComboBox.getItems().size());
+        if(timeComboBox.getItems().size() ==0){
+            display("Enter time schedule first");
+            return;
+        }
+
+
+
+
+        System.out.println("seclected time is "+ selectedTime);
+
         String course = courseTextField.getText().toUpperCase();
 
         Subject courseToBeAdded = new Subject(course, selectedTime);
@@ -233,16 +248,21 @@ public class studentController {
         //also simplify the table
 
 
+
         for (Subject x : data) {
+            System.out.println(course + " == "+ x.getName());
+            System.out.print(x.name);
             if (x.getName().equals(course)) {
                 //if user already added the course in table
                 errorMessage.setContentText("Course already added to table");
                 errorMessage.showAndWait();
+                timeComboBox.getItems().clear();
                 return;
             } else if (isTimeConflict(x.getTime(), selectedTime)) {
                 //if one of the courses in the table has a time conflict
-                errorMessage.setContentText("Time conflict detected");
+                errorMessage.setContentText("Time conflict detected/ Course was already enrolled");
                 errorMessage.showAndWait();
+                timeComboBox.getItems().clear();
                 return;
             }
         }
@@ -255,23 +275,27 @@ public class studentController {
             if (tempUnits + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
                 errorMessage.setContentText("Max Units Cannot Add anymore");
                 errorMessage.showAndWait();
+                timeComboBox.getItems().clear();
                 return;
 
             }
 
-            for (Subject x : subjects) {
-                if (x.getStudentList().contains(x)) {
+            for (Subject x: currentStudent.getSubjectList()) {
+                if (x.getStudentList().contains(course)) {
                     errorMessage.setContentText("Student Already Enrolled");
                     errorMessage.showAndWait();
+                    timeComboBox.getItems().clear();
                     return;
                 }
             }
 
+            //if successful add
             data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
             tempUnits = tempUnits + courseToBeAdded.getSubjectUnit();
             //clear time combo
             timeComboBox.getItems().clear();
+            enteredSearch = false;
             System.out.println("temp units is " + tempUnits);
 
         } else {
@@ -318,6 +342,7 @@ public class studentController {
     }
 
     public void search() {
+        enteredSearch = true;
         String course = courseTextField.getText().toUpperCase();
 
         //ComboBox dayComboBox, timeComboBox;
@@ -363,6 +388,7 @@ public class studentController {
     }
 
     public void deleteCourse() {
+        timeComboBox.getItems().clear();
         String course = courseTextField.getText();
 
 
@@ -370,9 +396,11 @@ public class studentController {
         for (Subject a : data) {
             System.out.println(a.getName() +" vs " + course);
             if (a.getName().toLowerCase().equals(course)) {
+
+
                 System.out.println(true);
                 data.remove(a);
-                display("Removed "+course);
+                display("Removed " + course);
                 enrollCoursesTable.setItems(data);
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
@@ -396,8 +424,7 @@ public class studentController {
 
 //         multiply current units with multiplier
         double tuitionFee = st1.currentUnits * tuitionMultiplier;
-        System.out.println(st1.currentUnits+"ss");
-
+        System.out.println("\n\nCurrent Units: "+st1.currentUnits+"\n\n");
 
         double misc = tuitionFee * ((float) 5234 / 68124);
         double special = tuitionFee * ((float) 200 / 68124);
