@@ -489,6 +489,8 @@ public class studentController {
                 System.out.println("enter");
                 display("Thank you for using the program!!");
                 try {
+
+                    //exit if saveing
                     save();
                     System.exit(0);
                 } catch (Exception e) {
