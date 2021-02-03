@@ -1,6 +1,6 @@
 Dave Johnson|dave_Johnson@dlsu.edu.ph|pass1|11910607|placeholderProfilePic.jpg|0|18
 John Doe|john_doe@dlsu_edu_ph|pass2|12011210|placeHolderProfilePic.jpg|0|18
-Lana Hamilton|lana_hamilton@dlsu.edu.ph|pass3|12048842|placeHolderProfilePic.jpg|-3|18|LBYEC2M>14:30-17:30,T|CALENG2>15:15-17:45,MW|FNDCKT>11:00-12:30,TH|DISCRMT>12:45-14:15,MW
+Lana Hamilton|lana_hamilton@dlsu.edu.ph|pass3|12048842|placeHolderProfilePic.jpg|3|18|CALENG2>14:15-17:45,TH
 Jack Morgan|jack_morgan@dlsu.edu.ph|pass4|11896939|placeHolderProfilePic.jpg|0|18
 Eddy Farrell|eddy_farrell@dlsu.edu.ph|pass5|12061776|placeHolderProfilePic.jpg|0|18
 Roman Dixon|roman_dixon@dlsu.edu.ph|pass6|11712370|placeHolderProfilePic.jpg|0|18
