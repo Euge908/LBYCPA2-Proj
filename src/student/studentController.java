@@ -47,6 +47,7 @@ public class studentController {
     public Button logOutButton;
     public Text welcomeTxt;
     public ImageView logo;
+    boolean enteredSearch;
 
     public Button backToLoginBtn;
     public Rectangle studentImage;
@@ -92,8 +93,11 @@ public class studentController {
     public boolean isTimeConflict(String time1, String time2) {
         //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
 
-        String currentDay = time1.substring(time1.lastIndexOf(","));
-        String pastDay = time2.substring(time2.lastIndexOf(","));
+        String currentDay = time1.substring(time1.lastIndexOf(",")+1);
+        String pastDay = time2.substring(time2.lastIndexOf(",")+1);
+
+        System.out.println("\n"+currentDay);
+        System.out.println(pastDay);
 
         LocalTime startA = LocalTime.of(Integer.parseInt(time1.substring(0, 2)), Integer.parseInt(time1.substring(3, 5)));
         LocalTime stopA = LocalTime.of(Integer.parseInt(time1.substring(6, 8)), Integer.parseInt(time1.substring(9, 11)));
@@ -106,6 +110,8 @@ public class studentController {
 //        System.out.println((currentDay.contains(pastDay) || pastDay.contains(currentDay)));
 //        System.out.println((currentUpperBound<=pastLowerBound || pastUpperBound<=currentLowerBound));
 //        System.out.println(pastLowerBound + "," + pastUpperBound);
+        
+
 
         //if the days are the same and there is time intersection
         if (currentDay.contains(pastDay) || pastDay.contains(currentDay)) {
@@ -224,6 +230,18 @@ public class studentController {
 
     //TODO: addCourse() and enrollCourse() has enroll conflict
     public void addCourse() {
+
+        System.out.println("timebox count is " + timeComboBox.getItems().size());
+        if(timeComboBox.getItems().size() ==0){
+            display("Enter time schedule first");
+            return;
+        }
+
+
+
+
+        System.out.println("seclected time is "+ selectedTime);
+
         String course = courseTextField.getText().toUpperCase();
 
         Subject courseToBeAdded = new Subject(course, selectedTime);
@@ -234,6 +252,7 @@ public class studentController {
         //also simplify the table
 
 
+
         for (Subject x : data) {
             System.out.println(course + " == "+ x.getName());
             System.out.print(x.name);
@@ -241,11 +260,13 @@ public class studentController {
                 //if user already added the course in table
                 errorMessage.setContentText("Course already added to table");
                 errorMessage.showAndWait();
+                timeComboBox.getItems().clear();
                 return;
             } else if (isTimeConflict(x.getTime(), selectedTime)) {
                 //if one of the courses in the table has a time conflict
                 errorMessage.setContentText("Time conflict detected/ Course was already enrolled");
                 errorMessage.showAndWait();
+                timeComboBox.getItems().clear();
                 return;
             }
         }
@@ -258,6 +279,7 @@ public class studentController {
             if (tempUnits + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
                 errorMessage.setContentText("Max Units Cannot Add anymore");
                 errorMessage.showAndWait();
+                timeComboBox.getItems().clear();
                 return;
 
             }
@@ -266,16 +288,18 @@ public class studentController {
                 if (x.getStudentList().contains(course)) {
                     errorMessage.setContentText("Student Already Enrolled");
                     errorMessage.showAndWait();
+                    timeComboBox.getItems().clear();
                     return;
                 }
             }
 
-
+            //if successful add
             data.add(courseToBeAdded);
             enrollCoursesTable.setItems(data);
             tempUnits = tempUnits + courseToBeAdded.getSubjectUnit();
             //clear time combo
             timeComboBox.getItems().clear();
+            enteredSearch = false;
             System.out.println("temp units is " + tempUnits);
 
         } else {
@@ -322,6 +346,7 @@ public class studentController {
     }
 
     public void search() {
+        enteredSearch = true;
         String course = courseTextField.getText().toUpperCase();
 
         //ComboBox dayComboBox, timeComboBox;
@@ -334,10 +359,14 @@ public class studentController {
         //still allows multiple classes to work
         if (timeSlot.containsKey(course)) {
             List<String> availableSched = timeSlot.get(course);
-            for (String sched : availableSched) {
-                timeComboBox.getItems().add(sched);
-                timeComboBox.getSelectionModel().selectFirst();
-
+            if(!availableSched.isEmpty()){
+                for (String sched : availableSched) {
+                    timeComboBox.getItems().add(sched);
+                    timeComboBox.getSelectionModel().selectFirst();
+                }
+            }
+            else{
+                display("Sorry, No time slots yet for the course");
             }
 
             //if not found
@@ -367,13 +396,15 @@ public class studentController {
     }
 
     public void deleteCourse() {
+        timeComboBox.getItems().clear();
         String course = courseTextField.getText();
 
 
 
         for (Subject a : data) {
             System.out.println(a.getName() +" vs " + course);
-            if (a.getName().toLowerCase().equals(course)) {
+            if (a.getName().toUpperCase().equals(course)) {
+
 
                 System.out.println(true);
                 data.remove(a);

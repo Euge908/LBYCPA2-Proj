@@ -275,6 +275,7 @@ public class adminController {
         if(!course.trim().isEmpty()) {
 
             course.toUpperCase();
+            course.toUpperCase();
             if (timeSlot.containsKey(course)) {
                 coursesData.clear();
 
@@ -284,7 +285,7 @@ public class adminController {
                 }
 
                 coursesTableView.setItems(coursesData);
-                courseUnitsLabel.setText("Units: " + String.valueOf(coursesData.get(coursesData.size() - 1).getSubjectUnit()));
+                courseUnitsLabel.setText("Units: " + String.valueOf(new Subject(course).getSubjectUnit()));
             } else {
                 display("No course found");
                 courseComboBox.getSelectionModel().clearSelection();
@@ -424,23 +425,28 @@ public class adminController {
         if(cAddCourseField.getText().trim().isEmpty()){
             display("empty field!");
         }else{
-            for(String course:timeSlot.keySet()){
-                if(course.equalsIgnoreCase(cAddCourseField.getText())){
-                    flag = true;
+
+            if(!(cAddCourseField.getText().length()>7 || cAddCourseField.getText().length()<7)) {
+                for (String course : timeSlot.keySet()) {
+                    if (course.equalsIgnoreCase(cAddCourseField.getText())) {
+                        flag = true;
+                    }
+                }
+
+                if (!flag) {
+                    String course = cAddCourseField.getText().toUpperCase();
+                    timeSlot.put(course, new ArrayList<>());
+                    courseComboBox.getItems().add(course);
+                    courseComboBox.getSelectionModel().selectLast();
+                    coursesData.clear();
+                    Subject subj = new Subject(course);
+                    courseUnitsLabel.setText("Units: " + String.valueOf(subj.getSubjectUnit()));
+                } else {
+                    display("course already present");
                 }
             }
-
-            if(!flag){
-                timeSlot.put(cAddCourseField.getText(),new ArrayList<>());
-                courseComboBox.getItems().add(cAddCourseField.getText());
-                courseComboBox.getSelectionModel().selectLast();
-                coursesData.clear();
-                Subject subj = new Subject(cAddCourseField.getText());
-                courseUnitsLabel.setText("Units: "+String.valueOf(subj.getSubjectUnit()));
-            }
-
             else{
-                display("course already present");
+                display("Invalid course code (7 characters)");
             }
         }
 
@@ -485,6 +491,7 @@ public class adminController {
                         timeSlot.remove(c);
                         System.out.println(timeSlot);
                         coursesData.clear();
+                        courseUnitsLabel.setText("Units: ");
 
                         for(Student s:studentList){
                             if(s.getSchedule().containsKey(c)){
