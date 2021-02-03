@@ -409,13 +409,8 @@ public class adminController {
             display("No slot selected");
         }
 
-
-
-
-
         sSubjectsTableView.getItems().clear();
         coursesTableView.getSelectionModel().clearSelection();
-
     }
 
     //add a course
@@ -513,19 +508,23 @@ public class adminController {
     }
 
     public static boolean isValidDay(String s){
+        Boolean flag = true;
+
         if(s.length()>2){
             return false;
         }
+
         else{
-
-            String valid = "mtwhfs";
-            for(char d: s.toLowerCase().toCharArray()){
-                System.out.println(valid.indexOf(d));
-
-                if(valid.indexOf(d) == -1) return false;
+            String[] valid = {"M","T","W","H","F","S","MW","TH","WM","HT"};
+            for(String v:valid){
+                if(s.trim().toLowerCase().equalsIgnoreCase(v.toLowerCase())){
+                    flag = true;
+                    break;
+                }
             }
         }
-        return true;
+
+        return flag;
     }
 
     //functions to check time input
