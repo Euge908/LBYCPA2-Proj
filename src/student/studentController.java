@@ -94,8 +94,11 @@ public class studentController {
     public boolean isTimeConflict(String time1, String time2) {
         //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
 
-        String currentDay = time1.substring(time1.lastIndexOf(","));
-        String pastDay = time2.substring(time2.lastIndexOf(","));
+        String currentDay = time1.substring(time1.lastIndexOf(",")+1);
+        String pastDay = time2.substring(time2.lastIndexOf(",")+1);
+
+        System.out.println("\n"+currentDay);
+        System.out.println(pastDay);
 
         LocalTime startA = LocalTime.of(Integer.parseInt(time1.substring(0, 2)), Integer.parseInt(time1.substring(3, 5)));
         LocalTime stopA = LocalTime.of(Integer.parseInt(time1.substring(6, 8)), Integer.parseInt(time1.substring(9, 11)));
