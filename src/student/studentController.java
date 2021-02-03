@@ -195,7 +195,7 @@ public class studentController {
         //check if student has subjects  if size is larger than 5
         for(Map.Entry<String,String> slot:currentStudent.getSchedule().entrySet()){
             data.add(new Subject(slot.getKey(),slot.getValue()));
-            currentStudent.subjectList.add(new Subject(slot.getKey(),slot.getValue()));
+//            currentStudent.subjectList.add(new Subject(slot.getKey(),slot.getValue()));
             currentStudent.currentUnits = currentStudent.currentUnits + new Subject(slot.getKey(), slot.getValue()).getSubjectUnit();
 
         }
@@ -448,12 +448,16 @@ public class studentController {
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         System.out.println(numberFormat.format(misc));
         ArrayList<String> subjectList = new ArrayList<String>();
+        System.out.println("size is" + st1.subjectList.size());
         for(int i =0; i<st1.subjectList.size();i++){
             StringBuilder str = new StringBuilder();
             str.append(st1.subjectList.get(i).name);
             str.append("\t\t\t");
+            str.append(st1.subjectList.get(i).subjectUnit);
+            str.append("\t\t\t");
             str.append(st1.subjectList.get(i).time);
-            str.append("\n");
+//            str.append("\n");
+
             subjectList.add(str.toString());
 
         }
@@ -462,10 +466,14 @@ public class studentController {
 
 
         feeText.setText(
+                "STUDENT ENROLLMENT RECORD" +"\n\n\n" +
                 "Name:\t\t\t"+st1.name+"\n"
-                + "ID Number:\t\t\t" + st1.idNumber+"\n"
+                + "ID Number:\t\t" + st1.idNumber+"\n"
+                        + "Email:\t\t\t"+ st1.email +"\n"
                 + "Date:\t\t\t"+ dt +"\n" +
-                        subjectList.toString()+
+                        "\n\nCourse\t\t\t" + "Units" +"\t\t\t" + "Date" + "\n" +
+
+                        subjectList.toString().substring(1, subjectList.toString().length()-1).replaceAll(", ", "\n") + "\n"+
 
 
                 "-----------------------------------------------------------\n"+
