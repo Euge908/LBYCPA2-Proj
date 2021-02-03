@@ -17,7 +17,7 @@ public class Student {
     public String idNumber;
     public String email;
     public String password;
-    public String pic = "images/placeholderProfilePic.jpg";
+    public String pic = "placeholderProfilePic.jpg";
 
     boolean enrollmentStatus; //not sure if this is still necessary
     double tuition;
