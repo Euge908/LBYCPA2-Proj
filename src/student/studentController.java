@@ -108,6 +108,8 @@ public class studentController {
 //        System.out.println((currentDay.contains(pastDay) || pastDay.contains(currentDay)));
 //        System.out.println((currentUpperBound<=pastLowerBound || pastUpperBound<=currentLowerBound));
 //        System.out.println(pastLowerBound + "," + pastUpperBound);
+        
+
 
         //if the days are the same and there is time intersection
         if (currentDay.contains(pastDay) || pastDay.contains(currentDay)) {
@@ -355,10 +357,14 @@ public class studentController {
         //still allows multiple classes to work
         if (timeSlot.containsKey(course)) {
             List<String> availableSched = timeSlot.get(course);
-            for (String sched : availableSched) {
-                timeComboBox.getItems().add(sched);
-                timeComboBox.getSelectionModel().selectFirst();
-
+            if(!availableSched.isEmpty()){
+                for (String sched : availableSched) {
+                    timeComboBox.getItems().add(sched);
+                    timeComboBox.getSelectionModel().selectFirst();
+                }
+            }
+            else{
+                display("Sorry, No time slots yet for the course");
             }
 
             //if not found
@@ -395,7 +401,7 @@ public class studentController {
 
         for (Subject a : data) {
             System.out.println(a.getName() +" vs " + course);
-            if (a.getName().toLowerCase().equals(course)) {
+            if (a.getName().toUpperCase().equals(course)) {
 
 
                 System.out.println(true);
