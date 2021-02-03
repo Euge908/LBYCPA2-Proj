@@ -112,7 +112,7 @@ public class studentController {
 //        System.out.println((currentDay.contains(pastDay) || pastDay.contains(currentDay)));
 //        System.out.println((currentUpperBound<=pastLowerBound || pastUpperBound<=currentLowerBound));
 //        System.out.println(pastLowerBound + "," + pastUpperBound);
-        
+
 
 
         //if the days are the same and there is time intersection
@@ -196,6 +196,7 @@ public class studentController {
         //check if student has subjects  if size is larger than 5
         for(Map.Entry<String,String> slot:currentStudent.getSchedule().entrySet()){
             data.add(new Subject(slot.getKey(),slot.getValue()));
+            currentStudent.subjectList.add(new Subject(slot.getKey(),slot.getValue()));
             currentStudent.currentUnits = currentStudent.currentUnits + new Subject(slot.getKey(), slot.getValue()).getSubjectUnit();
 
         }
@@ -447,8 +448,28 @@ public class studentController {
 
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         System.out.println(numberFormat.format(misc));
+        ArrayList<String> subjectList = new ArrayList<String>();
+        for(int i =0; i<st1.subjectList.size();i++){
+            StringBuilder str = new StringBuilder();
+            str.append(st1.subjectList.get(i).name);
+            str.append("\t\t\t");
+            str.append(st1.subjectList.get(i).time);
+            str.append("\n");
+            subjectList.add(str.toString());
+
+        }
+        System.out.println("subjcts are + " + subjectList);
+
+
 
         feeText.setText(
+                "Name:\t\t\t"+st1.name+"\n"
+                + "ID Number:\t\t\t" + st1.idNumber+"\n"
+                + "Date:\t\t\t"+ dt +"\n" +
+                        subjectList.toString()+
+
+
+                "-----------------------------------------------------------\n"+
                 "TOTAL UNITS ENROLLED: "+st1.currentUnits+"\n\n"+
                 "FEES\t\t\t\t\tASSESSMENT"
                 + "\n\n" + "Course Fee:\t\t\t" + tuitionFee
