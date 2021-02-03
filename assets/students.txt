@@ -1,4 +1,4 @@
-Dave Johnson|dave_Johnson@dlsu.edu.ph|pass1|11910607|placeholderProfilePic.jpg|0|18
+Dave Johnson|dave_Johnson@dlsu.edu.ph|pass1|11910607|placeholderProfilePic.jpg|0|18|CALENG2>14:15-17:45,TH|LBYCPA2>09:15-12:15,W
 John Doe|john_doe@dlsu_edu_ph|pass2|12011210|placeHolderProfilePic.jpg|0|18
 Lana Hamilton|lana_hamilton@dlsu.edu.ph|pass3|12048842|placeHolderProfilePic.jpg|3|18|CALENG2>14:15-17:45,TH
 Jack Morgan|jack_morgan@dlsu.edu.ph|pass4|11896939|placeHolderProfilePic.jpg|0|18
@@ -40,3 +40,4 @@ Nicholas Cole|nicholas_cole@dlsu.edu.ph|wtm7b|11766881|placeHolderProfilePic.jpg
 Maximilian Watson|maximilian_watson@dlsu.edu.ph|jgoxx|11860268|placeHolderProfilePic.jpg|0|18
 Sarah Rogers|sarah_rogers@dlsu.edu.ph|7vmo6|11990937|placeHolderProfilePic.jpg|0|18
 Kristian Hunt|kristian_hunt@dlsu.edu.ph|lsw6h|11950658|placeHolderProfilePic.jpg|0|18
+Ana Illhai|ana.illahi@dlsu.edu.ph|anana|20201201|images/placeholderProfilePic.jpg|0|5

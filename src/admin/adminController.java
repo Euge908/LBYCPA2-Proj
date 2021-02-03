@@ -307,6 +307,7 @@ public class adminController {
                         if(isValidRange(cSlotField.getText())){
                             char[] pat = "mtwhfs".toCharArray();
                             String day = sortByPattern(cDayField.getText().toLowerCase().toCharArray(),pat);
+
                             String time = cSlotField.getText()+","+day;
 
                             Boolean valid = true;
@@ -551,7 +552,7 @@ public class adminController {
     {
 
         // Regex to check valid time in 24-hour format.
-        String regex = "([01]?[0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9]";
+        String regex = "([01][0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9]";
 
         // Compile the ReGex
         Pattern p = Pattern.compile(regex);
