@@ -490,6 +490,7 @@ public class studentController {
                 display("Thank you for using the program!!");
                 try {
                     save();
+                    System.exit(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -507,6 +508,7 @@ public class studentController {
             }
         }
         database.writeStudentList(students);
+
     }
 
     public void setActive(Student student){
