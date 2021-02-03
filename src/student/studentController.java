@@ -403,7 +403,7 @@ public class studentController {
 
         for (Subject a : data) {
             System.out.println(a.getName() +" vs " + course);
-            if (a.getName().toUpperCase().equals(course)) {
+            if (a.getName().toUpperCase().equals(course.toUpperCase())) {
 
 
                 System.out.println(true);
