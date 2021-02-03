@@ -419,7 +419,10 @@ public class studentController {
                 return;
             }
 
+
+
         }
+        display("subject not found");
 
     }
 
