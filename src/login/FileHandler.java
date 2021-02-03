@@ -110,6 +110,7 @@ public class FileHandler {
             fileWrite.close();
         }
         catch (Exception e) { e.printStackTrace();}
+
     }
 
     public static void writeCourseList(HashMap<String,List<String>> timeSlots) {

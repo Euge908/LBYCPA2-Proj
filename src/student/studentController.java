@@ -418,7 +418,10 @@ public class studentController {
                 return;
             }
 
+
+
         }
+        display("subject not found");
 
     }
 
@@ -488,7 +491,10 @@ public class studentController {
                 System.out.println("enter");
                 display("Thank you for using the program!!");
                 try {
+
+                    //exit if saveing
                     save();
+                    System.exit(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -506,6 +512,7 @@ public class studentController {
             }
         }
         database.writeStudentList(students);
+
     }
 
     public void setActive(Student student){
