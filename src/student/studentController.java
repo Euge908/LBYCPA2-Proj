@@ -90,6 +90,7 @@ public class studentController {
     private Alert errorMessage = new Alert(Alert.AlertType.WARNING);
 
 
+
     public boolean isTimeConflict(String time1, String time2) {
         //TODO: Time format is "14:15-17:45,TH" and "14:15-17:45,TH"
 
@@ -340,7 +341,7 @@ public class studentController {
             //currentStudent.
         }
 
-        currentStudent.currentUnits = tempUnits;
+        currentStudent.currentUnits += tempUnits;
         generateTuition(currentStudent);
 
     }
@@ -429,7 +430,7 @@ public class studentController {
      */
     private void generateTuition(Student st1) {
         LocalDate dt = LocalDate.now();
-
+        feeText.setEditable(false);
 //         multiply current units with multiplier
         double tuitionFee = st1.currentUnits * tuitionMultiplier;
         System.out.println("\n\nCurrent Units: "+st1.currentUnits+"\n\n");
@@ -443,8 +444,10 @@ public class studentController {
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         System.out.println(numberFormat.format(misc));
 
-        feeText.setText("FEES\t\t\t\t\tASSESSMENT"
-                + "\n\n" + "Tuition:\t\t\t\t" + tuitionFee
+        feeText.setText(
+                "TOTAL UNITS ENROLLED: "+st1.currentUnits+"\n\n"+
+                "FEES\t\t\t\t\tASSESSMENT"
+                + "\n\n" + "Course Fee:\t\t\t" + tuitionFee
                 + "\n" + "Miscellaneous:\t\t\t" + (numberFormat.format(misc))
                 + "\n" + "Special Fees:\t\t\t" + (numberFormat.format(special))
                 + "\n" + "Development Fees:\t\t" + (numberFormat.format(development))
