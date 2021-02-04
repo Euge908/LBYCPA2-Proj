@@ -40,7 +40,7 @@ public class Student {
         this.password = password;
         this.idNumber = idNumber;
         this.maxUnits = maxUnits;
-        this.pic = "images/placeholderProfilePic.jpg";
+        this.pic = "placeholderProfilePic.jpg";
     }
 
     //constructor

@@ -1,4 +1,4 @@
-Dave Johnson|dave_Johnson@dlsu.edu.ph|pass1|11910607|placeholderProfilePic.jpg|0|18
+Dave Johnson|dave_Johnson@dlsu.edu.ph|pass1|11910607|placeholderProfilePic.jpg|3|18|GEFILI1>07:30-09:00,TH
 John Doe|john_doe@dlsu_edu_ph|pass2|12011210|placeHolderProfilePic.jpg|0|18
 Lana Hamilton|lana_hamilton@dlsu.edu.ph|pass3|12048842|placeHolderProfilePic.jpg|0|18
 Jack Morgan|jack_morgan@dlsu.edu.ph|pass4|11896939|placeHolderProfilePic.jpg|0|18
