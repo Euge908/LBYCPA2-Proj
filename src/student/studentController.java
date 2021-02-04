@@ -47,6 +47,7 @@ public class studentController {
     public Button logOutButton;
     public Text welcomeTxt;
     public ImageView logo;
+    public ComboBox searchCourseComboBox;
     boolean enteredSearch;
 
     public Button backToLoginBtn;
@@ -57,8 +58,6 @@ public class studentController {
      */
     int tempUnits = 0;
 
-    @FXML
-    TextField courseTextField;
     @FXML
     Button addCourseButton, deleteCourseButton;
     @FXML
@@ -125,6 +124,8 @@ public class studentController {
 
     public void initialize() throws FileNotFoundException {
         timeSlot = database.openCourseList();
+        searchCourseComboBox.getItems().setAll(timeSlot.keySet());
+        searchCourseComboBox.setValue("");
 
 
         Image image = new Image(new FileInputStream("assets/icon.png"));
@@ -153,14 +154,6 @@ public class studentController {
         courseCodeRef.setCellValueFactory(new PropertyValueFactory<Subject, String>("name"));
         unitRef.setCellValueFactory(new PropertyValueFactory<Subject, Integer>("subjectUnit"));
         scheduleRef.setCellValueFactory(new PropertyValueFactory<Subject, String>("time"));
-
-
-
-
-
-
-
-
 
 
     }
@@ -244,7 +237,7 @@ public class studentController {
 
         System.out.println("seclected time is "+ selectedTime);
 
-        String course = courseTextField.getText().toUpperCase();
+        String course = searchCourseComboBox.getValue().toString().toUpperCase();
 
         Subject courseToBeAdded = new Subject(course, selectedTime);
 
@@ -318,6 +311,7 @@ public class studentController {
 
 
 
+        System.out.println(data.size()+"sssd");
         if (data.size() == 0) {
             //add something first before enrolling
             errorMessage.setContentText("Add something first");
@@ -331,7 +325,20 @@ public class studentController {
         //set the
 
         for (Subject x : data) {
-            currentStudent.addSubject(x);
+            Boolean valid = true;
+
+            //check if subject is already in the subjectlist
+            for(int i=0;i<currentStudent.subjectList.size();i++){
+                if((x.getName().equalsIgnoreCase(currentStudent.subjectList.get(i).getName()))){
+                    valid = false;
+                }
+            }
+
+            if(valid){
+                currentStudent.addSubject(x);
+            }
+
+
 
 
             //add student to course
@@ -348,8 +355,9 @@ public class studentController {
     }
 
     public void search() {
+
         enteredSearch = true;
-        String course = courseTextField.getText().toUpperCase();
+
 
         //ComboBox dayComboBox, timeComboBox;
 
@@ -357,9 +365,13 @@ public class studentController {
         timeComboBox.getItems().clear();
 
 
+        String course = searchCourseComboBox.getValue().toString().toUpperCase();
+
+
         //still doesn't check if student already enrolled in course
         //still allows multiple classes to work
         if (timeSlot.containsKey(course)) {
+
             List<String> availableSched = timeSlot.get(course);
             if(!availableSched.isEmpty()){
                 for (String sched : availableSched) {
@@ -399,7 +411,7 @@ public class studentController {
 
     public void deleteCourse() {
         timeComboBox.getItems().clear();
-        String course = courseTextField.getText();
+        String course = searchCourseComboBox.getValue().toString().toUpperCase();
 
 
 
@@ -415,6 +427,12 @@ public class studentController {
                 tempUnits = tempUnits - a.subjectUnit;
                 System.out.println("temp units is " + tempUnits);
                 //hello
+
+                for(int i=0;i<currentStudent.subjectList.size();i++){
+                    if(a.getName().equalsIgnoreCase(currentStudent.subjectList.get(i).getName())){
+                        currentStudent.subjectList.remove(i);
+                    }
+                }
 
                 return;
             }
