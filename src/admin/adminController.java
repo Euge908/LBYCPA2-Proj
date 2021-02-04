@@ -286,6 +286,9 @@ public class adminController {
 
                 coursesTableView.setItems(coursesData);
                 courseUnitsLabel.setText("Units: " + String.valueOf(new Subject(course).getSubjectUnit()));
+
+                cDayField.clear();
+                cSlotField.clear();
             } else {
                 display("No course found");
                 courseComboBox.getSelectionModel().clearSelection();
@@ -321,6 +324,9 @@ public class adminController {
                             if(valid){
                                 timeSlot.get(courseComboBox.getValue()).add(cSlotField.getText()+","+day);
                                 coursesData.add(new Subject(course,cSlotField.getText()+","+day));
+
+                                cDayField.clear();
+                                cSlotField.clear();
                             }
                             else{
                                 display("Slot is already present");
@@ -332,7 +338,7 @@ public class adminController {
 
                     }
                     else {
-                        display("Use 24 hr format / Day of the week abbreviations");
+                        display("Use 24 hr format (with 0 if 0-9 ex. 01:00) \n Day of the week abbreviations (M,T,W,H,F,S only)");
                     }
                 }
                 else{
@@ -342,8 +348,6 @@ public class adminController {
             else {
                 display("No selected course");
             }
-            cDayField.clear();
-            cSlotField.clear();
         }
         else {
             display("No selected course");
@@ -511,20 +515,16 @@ public class adminController {
     public static boolean isValidDay(String s){
         Boolean flag = true;
 
-        if(s.length()>2){
-            return false;
-        }
-
-        else{
-            String[] valid = {"M","T","W","H","F","S","MW","TH","WM","HT"};
-            for(String v:valid){
-                if(s.trim().toLowerCase().equalsIgnoreCase(v.toLowerCase())){
-                    flag = true;
-                    break;
-                }
+        String days = "MTWHFS";
+        s = s.toUpperCase();
+        for(char c: s.toCharArray()){
+            System.out.println(c);
+            if(days.indexOf(c) == -1) {
+                System.out.println(days.indexOf(c));
+                flag = false;
             }
+            break;
         }
-
         return flag;
     }
 
