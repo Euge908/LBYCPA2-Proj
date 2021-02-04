@@ -54,7 +54,7 @@ public class adminController {
 
 
     /** course table variables */
-    public TableView sSubjectsTableView;
+    public TableView<Map.Entry<String,String>> sSubjectsTableView;
     public Label courseUnitsLabel;
     public Label name;
     private ObservableList<Map.Entry<String, String>> subjectsData = FXCollections.observableArrayList();
@@ -101,7 +101,7 @@ public class adminController {
     private final ObservableList<Student> classData = FXCollections.observableArrayList();
     FilteredList<Student> filteredclass = new FilteredList<>(classData, b -> true);
 
-    public TableView classesTable;
+    public TableView<Student> classesTable;
     public TableColumn idCol;
     public TableColumn nameCol;
     public TableColumn unitsCol;
@@ -124,8 +124,11 @@ public class adminController {
 
 
     public void initialize(){
+
+
         timeSlot = database.openCourseList();
         studentList = database.openStudentsList();
+
 
         courseSearchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -243,9 +246,13 @@ public class adminController {
                 studentsCountLabel.setText("Number of students: " + classData.size());
             } else {
                 display("course not found");
+                classesTable.setItems(null);
+
             }
         }else {
             display("field is empty");
+            classesTable.setItems(null);
+
         }
 
     }
@@ -390,8 +397,18 @@ public class adminController {
                     for (Student s : studentList) {
                         if (s.getSchedule().containsValue(subject.getTime()) && s.getSchedule().containsKey(subject.getName())) {
                             s.deleteSchdule(subject.getName());
+                            s.delete(subject.getName());
                         }
                     }
+
+                    studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+                    studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+
+                    classesTable.setItems(null);
+                    courseLabel.setText("Course: ");
+                    studentsCountLabel.setText("Number of students: ");
+
+                    courseSearchField.clear();
 
                     ObservableList<Subject> updated = coursesTableView.getItems();
 
@@ -496,8 +513,24 @@ public class adminController {
                         for(Student s:studentList){
                             if(s.getSchedule().containsKey(c)){
                                 s.deleteSchdule(c);
+                                s.delete(c);
                             }
                         }
+
+                        studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+                        studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+
+                        coursesTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
+                        coursesTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+                        courseSearchField.clear();
+
+                        classesTable.setItems(null);
+                        courseLabel.setText("Course: " );
+                        studentsCountLabel.setText("Number of students: ");
+
+
+
+
                         sSubjectsTableView.getItems().clear();
 
                     } else {
@@ -510,6 +543,7 @@ public class adminController {
                 display("Course not found");
             }
         }
+
     }
 
     public static boolean isValidDay(String s){
@@ -623,11 +657,13 @@ public class adminController {
             idnum.setText(student.getIdNumber());
             email.setText(student.getEmail());
 
-            Image temp = new Image("file:assets/pictures" + student.getPic());
+            Image temp = new Image("file:assets/pictures/" + student.getPic());
 
             //if there is no error
             if(!temp.isError()) {
                 studentImage.setFill(new ImagePattern(temp));
+
+
             }
             else{
                 System.out.println("file missing/invalid/unsupported/not in assets");
@@ -644,6 +680,8 @@ public class adminController {
     public void changeName(TableColumn.CellEditEvent cellEditEvent) {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
         student.setName(cellEditEvent.getNewValue().toString());
+
+        courseSearchField.clear();
     }
 
     public void changeId(TableColumn.CellEditEvent cellEditEvent) {
@@ -658,10 +696,16 @@ public class adminController {
 
         if(valid){
             student.setIdNumber(cellEditEvent.getNewValue().toString());
+
+            courseSearchField.clear();
         }
+
+
         else{
             studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
             studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(true);
+
+
             display("ID number must be unique for each student");
         }
 
@@ -681,6 +725,8 @@ public class adminController {
 
         if(valid){
             student.setEmail(cellEditEvent.getNewValue().toString());
+
+            courseSearchField.clear();
         }
         else{
             studentTableView.getSelectionModel().getTableView().getColumns().get(0).setVisible(false);
@@ -810,7 +856,7 @@ public class adminController {
                 name.setText("name");
                 email.setText("E-mail");
                 idnum.setText("Id number");
-                Image temp = new Image("file:assets/pictures" + "placeholderProfilePic.jpg");
+                Image temp = new Image("file:assets/pictures/" + "placeholderProfilePic.jpg");
 
                 //if there is no error
                 if (!temp.isError()) {
@@ -848,7 +894,7 @@ public class adminController {
             if (link.isEmpty()) {
                 display("Field is empty!");
             } else {
-                Image temp = new Image("file:assets/pictures" + link);
+                Image temp = new Image("file:assets/pictures/" + link);
 
                 //if there is no error
                 if (!temp.isError()) {

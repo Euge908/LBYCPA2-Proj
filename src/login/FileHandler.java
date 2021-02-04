@@ -61,8 +61,13 @@ public class FileHandler {
                 student.setSchedule(subjects);
                 students.add(student);
 
+
             }
             read.close();
+
+            for(Student s:students){
+                System.out.println(s.getCurrentUnits());
+            }
         }
         catch (Exception e) { e.printStackTrace();}
 

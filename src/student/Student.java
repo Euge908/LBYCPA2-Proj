@@ -51,6 +51,7 @@ public class Student {
         this.idNumber = idNumber;
         this.maxUnits = maxUnits;
         this.pic = pic;
+        this.currentUnits = currentUnits;
     }
 
     public void setName(String name) {

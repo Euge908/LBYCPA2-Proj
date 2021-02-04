@@ -434,6 +434,8 @@ public class studentController {
                     }
                 }
 
+                currentStudent.getSchedule().remove(a.getName());
+
                 return;
             }
 
@@ -468,6 +470,7 @@ public class studentController {
         ArrayList<String> subjectList = new ArrayList<String>();
         System.out.println("size is" + st1.subjectList.size());
         for(int i =0; i<st1.subjectList.size();i++){
+            System.out.println(st1.subjectList.get(i).name+"+");
             StringBuilder str = new StringBuilder();
             str.append(st1.subjectList.get(i).name);
             str.append("\t\t\t");
