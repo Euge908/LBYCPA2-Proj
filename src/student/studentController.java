@@ -48,7 +48,7 @@ public class studentController {
     public Text welcomeTxt;
     public ImageView logo;
     public ComboBox searchCourseComboBox;
-    boolean enteredSearch;
+//    boolean enteredSearch;
 
     public Button backToLoginBtn;
     public Rectangle studentImage;
@@ -294,7 +294,7 @@ public class studentController {
             tempUnits = tempUnits + courseToBeAdded.getSubjectUnit();
             //clear time combo
             timeComboBox.getItems().clear();
-            enteredSearch = false;
+//            enteredSearch = false;
             System.out.println("temp units is " + tempUnits);
 
         } else {
@@ -356,7 +356,7 @@ public class studentController {
 
     public void search() {
 
-        enteredSearch = true;
+//        enteredSearch = true;
 
 
         //ComboBox dayComboBox, timeComboBox;
@@ -469,11 +469,11 @@ public class studentController {
         System.out.println("size is" + st1.subjectList.size());
         for(int i =0; i<st1.subjectList.size();i++){
             StringBuilder str = new StringBuilder();
-            str.append(st1.subjectList.get(i).name);
+            str.append(st1.subjectList.get(i).name.replaceAll("\\s+",""));
             str.append("\t\t\t");
             str.append(st1.subjectList.get(i).subjectUnit);
             str.append("\t\t\t");
-            str.append(st1.subjectList.get(i).time);
+            str.append(st1.subjectList.get(i).time.replaceAll("\\s+",""));
 //            str.append("\n");
 
             subjectList.add(str.toString());
