@@ -65,9 +65,6 @@ public class FileHandler {
             }
             read.close();
 
-            for(Student s:students){
-                System.out.println(s.getCurrentUnits());
-            }
         }
         catch (Exception e) { e.printStackTrace();}
 

@@ -888,7 +888,7 @@ public class adminController {
 
     public void changeImg(MouseEvent mouseEvent) {
 
-        if(name.getText().equalsIgnoreCase("name")) {
+        if(!name.getText().equalsIgnoreCase("name")) {
 
             String link = imageLinkField.getText();
             if (link.isEmpty()) {
