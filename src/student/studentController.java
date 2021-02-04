@@ -189,12 +189,14 @@ public class studentController {
         for(Map.Entry<String,String> slot:currentStudent.getSchedule().entrySet()){
             data.add(new Subject(slot.getKey(),slot.getValue()));
 //            currentStudent.subjectList.add(new Subject(slot.getKey(),slot.getValue()));
-            currentStudent.currentUnits = currentStudent.currentUnits + new Subject(slot.getKey(), slot.getValue()).getSubjectUnit();
+//            currentStudent.currentUnits = currentStudent.currentUnits + new Subject(slot.getKey(), slot.getValue()).getSubjectUnit();
 
         }
 
         //set the table values of enrolled courses
         enrolledCoursesTable.setItems(data);
+        System.out.println("curent units upon intialize is:   "+ currentStudent.currentUnits);
+
         generateTuition(currentStudent);
     }
 
@@ -349,7 +351,7 @@ public class studentController {
             //currentStudent.
         }
 
-        currentStudent.currentUnits += tempUnits;
+        currentStudent.currentUnits = tempUnits;
         generateTuition(currentStudent);
 
     }
@@ -424,8 +426,9 @@ public class studentController {
                 data.remove(a);
                 display("Removed " + course);
                 enrollCoursesTable.setItems(data);
+
                 tempUnits = tempUnits - a.subjectUnit;
-                System.out.println("temp units is " + tempUnits);
+                System.out.println("update temp units from deletion is " + tempUnits);
                 //hello
 
                 for(int i=0;i<currentStudent.subjectList.size();i++){
