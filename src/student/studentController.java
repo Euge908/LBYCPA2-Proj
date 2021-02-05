@@ -273,7 +273,7 @@ public class studentController {
             //check if max units is acheived
             //check if already enrolled
 
-            if (tempUnits + courseToBeAdded.getSubjectUnit() >= currentStudent.getMaxUnits()) {
+            if (tempUnits + courseToBeAdded.getSubjectUnit() > currentStudent.getMaxUnits()) {
                 errorMessage.setContentText("Max Units Cannot Add anymore");
                 errorMessage.showAndWait();
                 timeComboBox.getItems().clear();
