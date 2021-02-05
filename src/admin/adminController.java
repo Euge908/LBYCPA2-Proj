@@ -422,9 +422,7 @@ public class adminController {
                 }
             });
 
-
-
-
+            
 
         }
         else{
@@ -688,7 +686,8 @@ public class adminController {
         Student student =  studentTableView.getSelectionModel().getSelectedItem();
         Boolean valid = true;
         for(Student s:studentList){
-            if(s.getIdNumber().equalsIgnoreCase(student.getIdNumber())){
+            if(cellEditEvent.getNewValue().toString().equalsIgnoreCase(student.getIdNumber())){
+                System.out.println(s.getIdNumber()+"vsss"+student.getIdNumber());
                 valid = false;
                 break;
             }
